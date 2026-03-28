@@ -303,7 +303,17 @@ Immediately call `browser_take_screenshot` — save to `screenshots/frame-0N-v1.
 
 ### What to check on each iteration
 
-Against `ai-manual-content.js` rules:
+**Against the Step 4 per-frame editorial brief (primary check — do this first):**
+
+For each frame, open the approved brief and verify:
+- **Layers:** only elements approved in the Layer intent section are present — no additions, no omissions
+- **Strongest zone:** completely clear of all elements (gradient, shape, line, text) — this is a hard constraint
+- **Positions:** each element sits within the quietest zone as described in the brief
+- **Copy:** text strings match the final approved copy exactly — word for word, punctuation included
+- **Reading order:** the first → second → third visual beat matches the Composition check
+- **Survival test:** no element present that failed the survival test in the brief
+
+**Against `ai-manual-content.js` rules (secondary check):**
 - Shapes visible but subordinate to the photo (opacity 0.4–0.6 for lines, per-type ceiling in the manual)
 - Gradient direction matches the text anchor zone
 - Text zone not crowded (font scale, line count, two-layer max)
