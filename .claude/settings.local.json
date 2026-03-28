@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed 's/## PART VIII.*//')",
+      "Read(//tmp/**)",
+      "Bash(\"C:/Projects/Photos/PostersCreator/docs/spec-app.md\":*)",
+      "WebFetch(domain:claude.com)",
+      "Bash(wc:*)",
+      "Bash(bash \"C:/Users/MBedoya1/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.6/skills/brainstorming/scripts/start-server.sh\" --project-dir \"C:/Projects/Photos/PostersCreator/frameforge\")",
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git:*)",
+      "Bash(C:/Users/MBedoya1/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.6/scripts/start-server.sh --project-dir \"C:/Projects/Photos/PostersCreator/frameforge\")",
+      "Bash(cat \"C:/Projects/Photos/PostersCreator/frameforge/.superpowers/brainstorm/\"*/state/server-info)",
+      "Bash(echo \"Syntax check result: $?\")",
+      "Bash(ls:*)",
+      "Bash(C:\\\\Users\\\\MBedoya1\\\\.claude\\\\plugins\\\\cache\\\\claude-plugins-official\\\\superpowers\\\\5.0.6\\\\scripts\\\\start-server.sh --project-dir \"C:\\\\Projects\\\\Photos\\\\PostersCreator\\\\frameforge\")",
+      "Bash(cat \"C:/Projects/Photos/PostersCreator/frameforge/.superpowers/brainstorm\"/*/state/server-info)",
+      "Bash(bash /c/Users/MBedoya1/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.6/skills/brainstorming/scripts/start-server.sh --project-dir \"/c/Projects/Photos/PostersCreator/frameforge\")",
+      "Bash(xargs cat:*)",
+      "Bash(C:/Users/MBedoya1/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.6/scripts/start-server.sh --project-dir \"C:/Projects/Photos/PostersCreator\")",
+      "Bash(/c/Users/MBedoya1/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.6/skills/brainstorming/scripts/start-server.sh --project-dir \"/c/Projects/Photos/PostersCreator\")",
+      "Bash(xargs grep:*)",
+      "Bash(grep -rn \"AI_MANUAL\\\\|ai.*manual\\\\|manual.*export\" C:/Projects/Photos/PostersCreator/frameforge --include=*.js)",
+      "Bash(grep -rn \"generateMockups\\\\|brief.*json\\\\|brief.*export\" C:/Projects/Photos/PostersCreator/frameforge --include=*.js)",
+      "Bash(claude mcp:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_file_upload",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_close",
+      "mcp__playwright__browser_snapshot"
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  }
+}

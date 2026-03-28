@@ -1,0 +1,152 @@
+<h2>3 approaches to "active brief"</h2>
+<p class="subtitle">All three store the active brief in localStorage and show its name in the toolbar. The difference is how you set it.</p>
+
+<div style="display:flex;flex-direction:column;gap:24px;max-width:860px;margin:0 auto">
+
+  <!-- Approach A -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)" style="display:block;padding:0;overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:0">
+      <div class="letter" style="margin:18px 0 0 14px;flex-shrink:0">A</div>
+      <div style="flex:1;padding:16px 18px">
+        <h3 style="margin:0 0 4px">Star icon on each list item</h3>
+        <p style="margin:0 0 12px;color:var(--color-text-secondary)">Click the ★ next to any brief in the list → instantly activates it. No need to open details first.</p>
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;overflow:hidden;font-size:12px">
+          <!-- mini toolbar -->
+          <div style="padding:6px 10px;border-bottom:1px solid var(--color-border);display:flex;gap:8px;align-items:center;background:var(--color-surface-raised)">
+            <span style="font-size:11px;color:var(--color-text-secondary)">FrameForge</span>
+            <span style="flex:1"></span>
+            <span style="background:var(--color-primary);color:#fff;padding:2px 8px;border-radius:3px;font-size:10px">My Briefs</span>
+            <span style="font-size:10px;color:var(--color-text-secondary);border:1px solid var(--color-border);padding:2px 6px;border-radius:3px">★ Patagonia Trip</span>
+          </div>
+          <!-- brief list items -->
+          <div style="display:flex">
+            <div style="width:220px;border-right:1px solid var(--color-border);padding:8px 0">
+              <div style="padding:6px 8px;display:flex;align-items:center;gap:6px;background:var(--color-surface-raised)">
+                <span style="color:var(--color-primary);font-size:13px">★</span>
+                <div style="flex:1">
+                  <div style="font-weight:600;font-size:11px">Patagonia Trip</div>
+                  <div style="font-size:10px;color:var(--color-text-secondary)">Instagram · Today</div>
+                </div>
+              </div>
+              <div style="padding:6px 8px;display:flex;align-items:center;gap:6px">
+                <span style="color:var(--color-text-muted);font-size:13px">☆</span>
+                <div style="flex:1">
+                  <div style="font-size:11px">City Portraits</div>
+                  <div style="font-size:10px;color:var(--color-text-secondary)">Print · Mar 20</div>
+                </div>
+              </div>
+              <div style="padding:6px 8px;display:flex;align-items:center;gap:6px">
+                <span style="color:var(--color-text-muted);font-size:13px">☆</span>
+                <div style="flex:1">
+                  <div style="font-size:11px">Wedding 2025</div>
+                  <div style="font-size:10px;color:var(--color-text-secondary)">Facebook · Mar 15</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;padding:10px;font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center">
+              Select a brief to see details →
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-secondary)">
+          <strong>Pro:</strong> fastest — one click, no detail panel required &nbsp;·&nbsp;
+          <strong>Con:</strong> star icon adds visual noise to every list item
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach B -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)" style="display:block;padding:0;overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:0">
+      <div class="letter" style="margin:18px 0 0 14px;flex-shrink:0">B</div>
+      <div style="flex:1;padding:16px 18px">
+        <h3 style="margin:0 0 4px">"Set Active" button in detail panel <span style="font-size:11px;font-weight:400;color:var(--color-primary)">(recommended)</span></h3>
+        <p style="margin:0 0 12px;color:var(--color-text-secondary)">Select a brief → detail panel shows a "Set Active" button alongside Edit, Export, etc. Clicking it activates the brief and closes the modal.</p>
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;overflow:hidden;font-size:12px">
+          <!-- mini toolbar -->
+          <div style="padding:6px 10px;border-bottom:1px solid var(--color-border);display:flex;gap:8px;align-items:center;background:var(--color-surface-raised)">
+            <span style="font-size:11px;color:var(--color-text-secondary)">FrameForge</span>
+            <span style="flex:1"></span>
+            <span style="background:var(--color-primary);color:#fff;padding:2px 8px;border-radius:3px;font-size:10px">My Briefs</span>
+            <span style="font-size:10px;color:var(--color-text-secondary);border:1px solid var(--color-border);padding:2px 6px;border-radius:3px">● City Portraits</span>
+          </div>
+          <!-- two-panel -->
+          <div style="display:flex">
+            <div style="width:180px;border-right:1px solid var(--color-border);padding:8px 0">
+              <div style="padding:6px 8px">
+                <div style="font-size:11px">Patagonia Trip</div>
+                <div style="font-size:10px;color:var(--color-text-secondary)">Instagram · Today</div>
+              </div>
+              <div style="padding:6px 8px;background:var(--color-surface-raised);border-left:2px solid var(--color-primary)">
+                <div style="font-weight:600;font-size:11px">City Portraits ●</div>
+                <div style="font-size:10px;color:var(--color-text-secondary)">Print · Mar 20</div>
+              </div>
+              <div style="padding:6px 8px">
+                <div style="font-size:11px">Wedding 2025</div>
+                <div style="font-size:10px;color:var(--color-text-secondary)">Facebook · Mar 15</div>
+              </div>
+            </div>
+            <div style="flex:1;padding:10px">
+              <div style="font-weight:600;font-size:12px;margin-bottom:4px">City Portraits</div>
+              <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px">Print A4 · 12 img · Mar 20</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap">
+                <span style="background:var(--color-primary);color:#fff;padding:2px 7px;border-radius:3px;font-size:10px">Set Active</span>
+                <span style="border:1px solid var(--color-border);padding:2px 7px;border-radius:3px;font-size:10px">Edit</span>
+                <span style="border:1px solid var(--color-border);padding:2px 7px;border-radius:3px;font-size:10px">Export</span>
+                <span style="border:1px solid var(--color-border);padding:2px 7px;border-radius:3px;font-size:10px">…</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-secondary)">
+          <strong>Pro:</strong> consistent with existing button pattern, clear intent &nbsp;·&nbsp;
+          <strong>Con:</strong> requires selecting brief first (2 clicks vs 1)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approach C -->
+  <div class="option" data-choice="c" onclick="toggleSelect(this)" style="display:block;padding:0;overflow:hidden">
+    <div style="display:flex;align-items:flex-start;gap:0">
+      <div class="letter" style="margin:18px 0 0 14px;flex-shrink:0">C</div>
+      <div style="flex:1;padding:16px 18px">
+        <h3 style="margin:0 0 4px">Double-click to activate</h3>
+        <p style="margin:0 0 12px;color:var(--color-text-secondary)">Single-click = select (show details). Double-click = set as active and close modal. Active brief shown with a dot in the list.</p>
+        <div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;overflow:hidden;font-size:12px">
+          <div style="padding:6px 10px;border-bottom:1px solid var(--color-border);display:flex;gap:8px;align-items:center;background:var(--color-surface-raised)">
+            <span style="font-size:11px;color:var(--color-text-secondary)">FrameForge</span>
+            <span style="flex:1"></span>
+            <span style="background:var(--color-primary);color:#fff;padding:2px 8px;border-radius:3px;font-size:10px">My Briefs</span>
+            <span style="font-size:10px;color:var(--color-text-secondary);border:1px solid var(--color-border);padding:2px 6px;border-radius:3px">● Wedding 2025</span>
+          </div>
+          <div style="padding:8px 12px;font-size:11px;color:var(--color-text-secondary);font-style:italic;border-bottom:1px solid var(--color-border)">
+            Single-click to preview · Double-click to set active
+          </div>
+          <div style="display:flex">
+            <div style="width:180px;padding:8px 0">
+              <div style="padding:6px 8px">
+                <div style="font-size:11px">Patagonia Trip</div>
+              </div>
+              <div style="padding:6px 8px">
+                <div style="font-size:11px">City Portraits</div>
+              </div>
+              <div style="padding:6px 8px;background:var(--color-surface-raised)">
+                <div style="font-weight:600;font-size:11px">Wedding 2025 ●</div>
+              </div>
+            </div>
+            <div style="flex:1;padding:10px;font-size:11px;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;border-left:1px solid var(--color-border)">
+              Double-clicked → active, modal closed
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-secondary)">
+          <strong>Pro:</strong> no extra buttons &nbsp;·&nbsp;
+          <strong>Con:</strong> hidden interaction, not discoverable, may conflict with touch
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

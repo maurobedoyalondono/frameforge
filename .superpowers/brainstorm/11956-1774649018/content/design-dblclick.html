@@ -1,0 +1,111 @@
+<h2>Design: double-click to set active brief</h2>
+<p class="subtitle">Two parts: (1) indicator in the toolbar, (2) interaction in the My Briefs list</p>
+
+<div style="display:flex;flex-direction:column;gap:28px;max-width:820px;margin:0 auto">
+
+  <!-- Part 1: Toolbar -->
+  <div>
+    <div class="label">PART 1 — Toolbar indicator (after "My Briefs" button)</div>
+    <div style="margin-top:10px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;overflow:hidden">
+      <div style="padding:8px 14px;display:flex;align-items:center;gap:6px;font-size:12px;background:var(--color-surface-raised);border-bottom:1px solid var(--color-border)">
+        <span style="font-weight:700;font-size:13px">Frame<span style="color:var(--color-primary)">Forge</span></span>
+        <span style="width:1px;height:16px;background:var(--color-border);margin:0 4px"></span>
+        <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:4px;font-size:11px;cursor:pointer">+ New Brief</span>
+        <span style="padding:3px 9px;border-radius:4px;font-size:11px;cursor:pointer;color:var(--color-text-secondary)">≡ My Briefs</span>
+        <!-- active brief label — NEW -->
+        <span style="font-size:11px;color:var(--color-text-muted);padding:2px 0">
+          <span style="color:var(--color-primary);margin-right:3px">●</span>Patagonia Trip
+        </span>
+        <span style="width:1px;height:16px;background:var(--color-border);margin:0 4px"></span>
+        <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:4px;font-size:11px;color:var(--color-text-secondary)">Load JSON</span>
+        <span style="font-size:11px;color:var(--color-text-secondary);padding:3px 6px;">My Wildlife Series</span>
+        <span style="margin-left:auto;display:flex;gap:6px">
+          <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:4px;font-size:11px;color:var(--color-text-muted)" >Preview All</span>
+          <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:4px;font-size:11px;color:var(--color-text-muted)">Export All</span>
+        </span>
+      </div>
+      <div style="padding:8px 14px;font-size:11px;color:var(--color-text-secondary)">
+        <strong>● Patagonia Trip</strong> — appears right after "My Briefs", plain text (not a button), muted colour with a primary-coloured dot. Hidden when no brief is active.
+      </div>
+    </div>
+  </div>
+
+  <!-- Part 2: My Briefs modal -->
+  <div>
+    <div class="label">PART 2 — My Briefs list with double-click hint + active indicator</div>
+    <div style="margin-top:10px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;overflow:hidden;font-size:12px">
+
+      <!-- modal header -->
+      <div style="padding:10px 14px;background:var(--color-surface-raised);border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center">
+        <strong>My Briefs</strong>
+        <span style="color:var(--color-text-muted);cursor:pointer">✕</span>
+      </div>
+
+      <div style="display:flex">
+
+        <!-- list panel -->
+        <div style="width:240px;border-right:1px solid var(--color-border);display:flex;flex-direction:column">
+          <!-- search + sort row -->
+          <div style="padding:8px;display:flex;gap:6px;border-bottom:1px solid var(--color-border)">
+            <span style="flex:1;border:1px solid var(--color-border);border-radius:3px;padding:3px 6px;font-size:11px;color:var(--color-text-muted)">Search briefs…</span>
+            <span style="border:1px solid var(--color-border);border-radius:3px;padding:3px 6px;font-size:11px;color:var(--color-text-muted)">↕</span>
+          </div>
+
+          <!-- hint text — NEW -->
+          <div style="padding:5px 10px;font-size:10px;color:var(--color-text-muted);border-bottom:1px solid var(--color-border);font-style:italic">
+            Double-click to set active
+          </div>
+
+          <!-- list items -->
+          <div style="flex:1">
+            <!-- active brief — has dot -->
+            <div style="padding:8px 10px;display:flex;align-items:center;gap:6px;background:var(--color-surface-raised);border-left:2px solid var(--color-primary)">
+              <span style="color:var(--color-primary);font-size:10px">●</span>
+              <div>
+                <div style="font-weight:600;font-size:11px">Patagonia Trip</div>
+                <div style="font-size:10px;color:var(--color-text-secondary)">Instagram · Today</div>
+              </div>
+            </div>
+            <!-- others — no dot -->
+            <div style="padding:8px 10px">
+              <div style="font-size:11px">City Portraits</div>
+              <div style="font-size:10px;color:var(--color-text-secondary)">Print · Mar 20</div>
+            </div>
+            <div style="padding:8px 10px">
+              <div style="font-size:11px">Wedding 2025</div>
+              <div style="font-size:10px;color:var(--color-text-secondary)">Facebook · Mar 15</div>
+            </div>
+          </div>
+
+          <!-- footer -->
+          <div style="padding:8px 10px;border-top:1px solid var(--color-border)">
+            <span style="border:1px solid var(--color-border);padding:3px 8px;border-radius:3px;font-size:11px;cursor:pointer">+ New Brief</span>
+          </div>
+        </div>
+
+        <!-- detail panel -->
+        <div style="flex:1;padding:14px">
+          <div style="font-weight:600;font-size:13px;margin-bottom:4px">Patagonia Trip <span style="color:var(--color-primary);font-size:11px">● active</span></div>
+          <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:8px">Instagram Portrait · 8 images · Today</div>
+          <div style="font-size:11px;margin-bottom:12px;color:var(--color-text-secondary)">Three generations, the mountains, the horses.</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:3px;font-size:11px">Edit</span>
+            <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:3px;font-size:11px">Export Package</span>
+            <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:3px;font-size:11px">Copy Prompt</span>
+            <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:3px;font-size:11px">Duplicate</span>
+            <span style="border:1px solid var(--color-border);padding:3px 9px;border-radius:3px;font-size:11px;color:var(--color-error)">Delete</span>
+          </div>
+          <div style="margin-top:14px;font-size:11px;color:var(--color-text-muted);font-style:italic">
+            Double-click this brief in the list to set it active and close.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;font-size:11px;color:var(--color-text-secondary)">
+      When you double-click a brief: it becomes active (● dot appears, left border highlight), the modal closes, and the toolbar label updates.
+      The detail panel also shows "● active" badge next to the title when the selected brief is the active one.
+    </div>
+  </div>
+
+</div>
