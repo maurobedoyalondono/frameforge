@@ -360,7 +360,7 @@
         {
           "id": "stat-value",
           "type": "text",
-          "content": "4 a 5 metros",
+          "content": "60 a 90 cm",
           "font": {
             "family": "Montserrat",
             "style": "normal",
@@ -449,7 +449,7 @@
           "dimensions": { "width_pct": 8, "height_px": 1 },
           "stroke_color": "#d4c8a0",
           "stroke_width_px": 1,
-          "stroke_opacity": 0.22
+          "stroke_opacity": 0.55
         },
         {
           "id": "grass-left-2",
@@ -460,7 +460,7 @@
           "dimensions": { "width_pct": 7, "height_px": 1 },
           "stroke_color": "#d4c8a0",
           "stroke_width_px": 1,
-          "stroke_opacity": 0.16
+          "stroke_opacity": 0.48
         },
         {
           "id": "grass-right-1",
@@ -471,7 +471,7 @@
           "dimensions": { "width_pct": 8, "height_px": 1 },
           "stroke_color": "#d4c8a0",
           "stroke_width_px": 1,
-          "stroke_opacity": 0.20
+          "stroke_opacity": 0.52
         },
         {
           "id": "grass-right-2",
@@ -482,7 +482,7 @@
           "dimensions": { "width_pct": 7, "height_px": 1 },
           "stroke_color": "#d4c8a0",
           "stroke_width_px": 1,
-          "stroke_opacity": 0.15
+          "stroke_opacity": 0.45
         },
         {
           "id": "fauna-tag",

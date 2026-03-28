@@ -737,8 +737,9 @@ export function renderShapeLayer(ctx, layer, w, h, project) {
     ? py(dims.height_pct, h)
     : (dims.height_px ?? 2);
 
-  const posX = px(layer.position?.x_pct ?? 0, w);
-  const posY = py(layer.position?.y_pct ?? 0, h);
+  const resolved = resolvePosition(layer.position, w, h);
+  const posX = resolved.x;
+  const posY = resolved.y;
 
   ctx.save();
 
