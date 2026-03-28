@@ -1,0 +1,161 @@
+<h2>Complete Design — Both Features</h2>
+<p class="subtitle">Review the full floating toolbar. Scroll down for Feature 1 (pin_above removal) summary.</p>
+
+<div class="section">
+  <h3>Feature 2 — Floating Text Toolbar</h3>
+  <p style="color:#888;font-size:12px;margin-bottom:16px;">Appears above selected text on canvas. Flips below if text is near the top edge.</p>
+
+  <div style="background:#0d0d1a;border:1px solid #333;border-radius:8px;padding:24px;">
+
+    <!-- Canvas mock -->
+    <div style="background:linear-gradient(160deg,#1a2535,#0a1520);border-radius:6px;height:320px;position:relative;overflow:visible;">
+
+      <!-- Floating toolbar — two rows -->
+      <div style="position:absolute;top:30px;left:50%;transform:translateX(-50%);background:#252535;border:1.5px solid #5b8aff;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.7);overflow:hidden;min-width:520px;">
+
+        <!-- Row 1: Formatting controls -->
+        <div style="display:flex;align-items:center;gap:5px;padding:6px 10px;border-bottom:1px solid #333;">
+
+          <!-- Font family -->
+          <div style="background:#1e1e2e;border:1px solid #444;border-radius:4px;padding:3px 8px;color:#fff;font-size:10px;display:flex;align-items:center;gap:4px;cursor:pointer;min-width:130px;font-family:Georgia,serif;font-weight:700;">
+            Playfair Display <span style="color:#666;margin-left:auto;font-family:sans-serif;">▾</span>
+          </div>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- Size -->
+          <div style="display:flex;align-items:center;gap:3px;">
+            <span style="color:#555;font-size:9px;margin-right:1px;">Sz</span>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:18px;height:20px;color:#ccc;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">−</button>
+            <span style="color:#fff;min-width:26px;text-align:center;font-size:11px;font-weight:600;">8.5</span>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:18px;height:20px;color:#ccc;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">+</button>
+          </div>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- B / I -->
+          <button style="background:#2a2a4a;border:1px solid #5b8aff;border-radius:3px;width:22px;height:22px;color:#5b8aff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;">B</button>
+          <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:22px;height:22px;color:#888;font-size:12px;font-style:italic;cursor:pointer;display:flex;align-items:center;justify-content:center;">I</button>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- Alignment -->
+          <div style="display:flex;gap:2px;">
+            <button style="background:#2a2a4a;border:1px solid #5b8aff;border-radius:3px;width:22px;height:22px;color:#5b8aff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Left">
+              <svg width="11" height="10" viewBox="0 0 11 10"><line x1="1" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5"/><line x1="1" y1="5" x2="7" y2="5" stroke="currentColor" stroke-width="1.5"/><line x1="1" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:22px;height:22px;color:#888;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Center">
+              <svg width="11" height="10" viewBox="0 0 11 10"><line x1="1" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5"/><line x1="2.5" y1="5" x2="8.5" y2="5" stroke="currentColor" stroke-width="1.5"/><line x1="1.5" y1="8" x2="9.5" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:22px;height:22px;color:#888;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Right">
+              <svg width="11" height="10" viewBox="0 0 11 10"><line x1="1" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5"/><line x1="4" y1="5" x2="10" y2="5" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="8" x2="10" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+          </div>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- Line height -->
+          <div style="display:flex;align-items:center;gap:3px;">
+            <span style="color:#555;font-size:9px;">↕</span>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:18px;height:20px;color:#ccc;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">−</button>
+            <span style="color:#fff;min-width:22px;text-align:center;font-size:11px;">1.2</span>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:18px;height:20px;color:#ccc;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">+</button>
+          </div>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- Width -->
+          <div style="display:flex;align-items:center;gap:3px;">
+            <span style="color:#555;font-size:9px;">↔</span>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:18px;height:20px;color:#ccc;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">−</button>
+            <span style="color:#fff;min-width:28px;text-align:center;font-size:11px;">80%</span>
+            <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;width:18px;height:20px;color:#ccc;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">+</button>
+          </div>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- Color -->
+          <div style="width:22px;height:22px;border-radius:4px;background:#ffffff;border:1.5px solid #555;cursor:pointer;" title="Text color"></div>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- Shadow toggle -->
+          <button style="background:#1e1e2e;border:1px solid #3a3a4a;border-radius:3px;padding:0 7px;height:22px;color:#888;font-size:9px;cursor:pointer;white-space:nowrap;letter-spacing:0.3px;">SHADOW</button>
+
+          <div style="width:1px;height:18px;background:#3a3a4a;flex-shrink:0;"></div>
+
+          <!-- Delete -->
+          <button style="background:transparent;border:none;width:22px;height:22px;color:#664444;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;border-radius:3px;margin-left:2px;" title="Delete layer">🗑</button>
+
+        </div>
+
+        <!-- Row 2: Text content -->
+        <div style="padding:5px 10px;">
+          <input style="width:100%;box-sizing:border-box;background:#1e1e2e;border:1px solid #3a3a4a;border-radius:4px;padding:5px 9px;color:#fff;font-size:11px;font-family:sans-serif;" value="GOLDEN HOUR — YELLOWSTONE" spellcheck="false" />
+        </div>
+
+        <!-- Arrow pointing to text -->
+        <div style="position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #5b8aff;"></div>
+      </div>
+
+      <!-- Selected text on canvas -->
+      <div style="position:absolute;top:160px;left:50%;transform:translateX(-50%);border:1.5px dashed #5b8aff;border-radius:3px;padding:8px 16px;color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;white-space:nowrap;">
+        GOLDEN HOUR — YELLOWSTONE
+      </div>
+
+    </div>
+
+    <!-- Control legend -->
+    <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <div style="color:#666;font-size:10px;"><span style="color:#5b8aff;">Row 1:</span> Font · Size · Bold/Italic · Align L/C/R · Line height ↕ · Width ↔ · Color · Shadow · Delete</div>
+      <div style="color:#666;font-size:10px;"><span style="color:#5b8aff;">Row 2:</span> Text content input (full width)</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Feature 2 — Font picker (on font family click)</h3>
+  <div style="background:#0d0d1a;border:1px solid #333;border-radius:8px;padding:16px;">
+    <div style="color:#888;font-size:11px;line-height:1.6;">
+      <strong style="color:#ccc;">Section 1 — In this project</strong> (fonts from current JSON, always shown first)<br>
+      <strong style="color:#ccc;">Section 2 — Editorial photography</strong> (12 curated: Playfair Display, Cormorant Garamond, Bebas Neue, DM Serif Display, Cinzel, Josefin Sans, Inter, Montserrat, Source Sans 3, DM Sans, Oswald, Open Sans)<br>
+      <strong style="color:#ccc;">Section 3 — Search</strong> any Google Font by name → loads dynamically, re-renders canvas
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Feature 1 — Remove pin_above (rule lines)</h3>
+  <div style="background:#0d0d1a;border:1px solid #333;border-radius:8px;padding:16px;">
+    <div style="color:#888;font-size:11px;line-height:1.8;">
+      <div>✂ <strong style="color:#ccc;">layers.js</strong> — remove pin_above positioning branch from <code style="color:#aaa;font-size:10px;">renderShapeLayer()</code></div>
+      <div>✂ <strong style="color:#ccc;">ai-manual-content.js</strong> — remove "Rule lines (pin_above)" section entirely</div>
+      <div>✂ <strong style="color:#ccc;">docs/spec-app.md</strong> — remove any mention of pin_above</div>
+      <div>✂ <strong style="color:#ccc;">docs/ai-manual.md</strong> — same</div>
+      <div style="color:#555;font-size:10px;margin-top:6px;">Shapes (line, circle, etc.) stay — just the auto-pin behavior and the concept from the docs go away.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Positioning logic (floating toolbar)</h3>
+  <div style="background:#0d0d1a;border:1px solid #333;border-radius:8px;padding:16px;">
+    <div style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div style="color:#5b8aff;font-size:10px;font-weight:600;margin-bottom:6px;">Normal: toolbar above text</div>
+        <div style="background:#1a2535;border-radius:4px;height:80px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#252535;border:1px solid #5b8aff;border-radius:4px;padding:3px 10px;font-size:9px;color:#ccc;white-space:nowrap;">[ toolbar ]</div>
+          <div style="position:absolute;top:34px;left:50%;transform:translateX(-50%);border:1px dashed #5b8aff;border-radius:2px;padding:4px 10px;font-size:10px;color:#fff;white-space:nowrap;">TEXT</div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="color:#f5a623;font-size:10px;font-weight:600;margin-bottom:6px;">Near top: toolbar flips below</div>
+        <div style="background:#1a2535;border-radius:4px;height:80px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);border:1px dashed #5b8aff;border-radius:2px;padding:4px 10px;font-size:10px;color:#fff;white-space:nowrap;">TEXT</div>
+          <div style="position:absolute;top:34px;left:50%;transform:translateX(-50%);background:#252535;border:1px solid #f5a623;border-radius:4px;padding:3px 10px;font-size:9px;color:#ccc;white-space:nowrap;">[ toolbar ]</div>
+        </div>
+      </div>
+    </div>
+    <div style="color:#555;font-size:10px;margin-top:8px;">Toolbar is clamped horizontally so it never goes off-screen. Position recalculates on canvas resize and drag.</div>
+  </div>
+</div>

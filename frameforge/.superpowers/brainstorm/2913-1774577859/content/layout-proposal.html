@@ -1,0 +1,192 @@
+<h2>Proposed UI Redesign</h2>
+<p class="subtitle">Three structural changes — toolbar grouping, left panel balance, inspector order</p>
+
+<div class="section">
+  <span class="label">Full Layout</span>
+
+  <div style="background:#12121a; border:1px solid #2a2a3a; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif; font-size:11px; color:#ccc; user-select:none;">
+
+    <!-- Toolbar -->
+    <div style="height:44px; background:#1a1a26; border-bottom:1px solid #2a2a3a; display:flex; align-items:center; padding:0 10px; gap:0;">
+
+      <!-- Group 1: Brief -->
+      <div style="display:flex; align-items:center; gap:4px; padding-right:10px; border-right:1px solid #2a2a3a;">
+        <div style="background:#5b8aff; color:#fff; padding:4px 10px; border-radius:5px; font-weight:600; font-size:10px; white-space:nowrap;">✦ New Brief</div>
+      </div>
+
+      <!-- Group 2: Load -->
+      <div style="display:flex; align-items:center; gap:4px; padding:0 10px; border-right:1px solid #2a2a3a;">
+        <div style="background:#1e1e2e; border:1px solid #2a2a3a; padding:4px 9px; border-radius:5px; font-size:10px; white-space:nowrap;">⬆ Load JSON</div>
+        <div style="background:#1e1e2e; border:1px solid #2a2a3a; padding:4px 9px; border-radius:5px; font-size:10px; white-space:nowrap;">🖼 Load Images</div>
+      </div>
+
+      <!-- Center: project title -->
+      <div style="flex:1; text-align:center; color:#888; font-size:10px; letter-spacing:0.05em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 12px;">
+        monkey-poster-v2
+      </div>
+
+      <!-- Group 3: View toggles -->
+      <div style="display:flex; align-items:center; gap:4px; padding:0 10px; border-left:1px solid #2a2a3a; border-right:1px solid #2a2a3a;">
+        <div style="background:#1e1e2e; border:1px solid #2a2a3a; padding:4px 7px; border-radius:5px; font-size:11px;" title="Safe zone">⬛</div>
+      </div>
+
+      <!-- Group 4: Export -->
+      <div style="display:flex; align-items:center; gap:4px; padding:0 10px; border-right:1px solid #2a2a3a;">
+        <div style="background:#1e1e2e; border:1px solid #2a2a3a; padding:4px 9px; border-radius:5px; font-size:10px; white-space:nowrap;">▶ Preview All</div>
+        <div style="background:#3fcf8e22; border:1px solid #3fcf8e44; color:#3fcf8e; padding:4px 9px; border-radius:5px; font-size:10px; white-space:nowrap;">↓ Export This</div>
+        <div style="background:#3fcf8e22; border:1px solid #3fcf8e44; color:#3fcf8e; padding:4px 9px; border-radius:5px; font-size:10px; white-space:nowrap;">↓↓ Export All</div>
+      </div>
+
+      <!-- Group 5: Danger -->
+      <div style="padding-left:10px;">
+        <div style="color:#ff5555; padding:4px 7px; border-radius:5px; font-size:11px; border:1px solid #ff555533;" title="Clear project">🗑</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div style="display:flex; height:420px;">
+
+      <!-- Left panel -->
+      <div style="width:180px; border-right:1px solid #2a2a3a; display:flex; flex-direction:column; flex-shrink:0;">
+
+        <!-- Frames section — takes most of the space -->
+        <div style="flex:1; display:flex; flex-direction:column; min-height:0; overflow:hidden;">
+          <div style="padding:6px 10px; font-size:9px; font-weight:700; letter-spacing:0.1em; color:#666; text-transform:uppercase; border-bottom:1px solid #1e1e2a; display:flex; justify-content:space-between; align-items:center;">
+            <span>Frames</span>
+            <span style="color:#444;">2</span>
+          </div>
+          <div style="flex:1; overflow-y:auto; padding:6px;">
+            <!-- Frame 1 active -->
+            <div style="border:2px solid #5b8aff; border-radius:6px; background:#1e1e2e; margin-bottom:6px; overflow:hidden;">
+              <div style="background:#1a1a2e; height:90px; display:flex; align-items:center; justify-content:center; color:#5b8aff; font-size:9px;">🖼 Frame 1</div>
+              <div style="padding:3px 6px; font-size:9px; color:#888; font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">monkey-hero</div>
+            </div>
+            <!-- Frame 2 -->
+            <div style="border:1px solid #2a2a3a; border-radius:6px; background:#1a1a26; overflow:hidden;">
+              <div style="background:#161620; height:90px; display:flex; align-items:center; justify-content:center; color:#444; font-size:9px;">🖼 Frame 2</div>
+              <div style="padding:3px 6px; font-size:9px; color:#555; font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">monkey-detail</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drag handle -->
+        <div style="height:5px; background:#1e1e2a; cursor:row-resize; display:flex; align-items:center; justify-content:center;">
+          <div style="width:30px; height:2px; background:#333; border-radius:1px;"></div>
+        </div>
+
+        <!-- Images section — collapsible, resizable -->
+        <div style="height:140px; border-top:1px solid #2a2a3a; display:flex; flex-direction:column;">
+          <div style="padding:6px 10px; font-size:9px; font-weight:700; letter-spacing:0.1em; color:#666; text-transform:uppercase; border-bottom:1px solid #1e1e2a; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+            <span>Images</span>
+            <span style="color:#444; font-size:10px;">3 ▾</span>
+          </div>
+          <div style="flex:1; overflow-y:auto; display:flex; flex-wrap:wrap; gap:4px; padding:6px; align-content:flex-start;">
+            <div style="width:52px; height:52px; background:#1e2030; border:1px solid #3a3a4a; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#5b8aff; font-size:9px; flex-shrink:0;">IMG</div>
+            <div style="width:52px; height:52px; background:#1e2030; border:1px solid #3a3a4a; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#5b8aff; font-size:9px; flex-shrink:0;">IMG</div>
+            <div style="width:52px; height:52px; background:#1e2030; border:1px solid #3a3a4a; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#5b8aff; font-size:9px; flex-shrink:0;">IMG</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Canvas -->
+      <div style="flex:1; background:#0e0e18; display:flex; align-items:center; justify-content:center; position:relative;">
+        <div style="width:200px; height:250px; background:#1a1a2a; border-radius:4px; box-shadow:0 4px 20px rgba(0,0,0,0.5); position:relative; overflow:hidden; border:1px solid #2a2a3a;">
+          <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:#ccc;">
+            <div style="font-size:8px; opacity:0.4;">🦊 poster canvas</div>
+            <div style="font-size:10px; font-weight:600; text-align:center; padding:0 12px;">Small Wonder,<br>Boundless Canopy</div>
+            <div style="font-size:7px; opacity:0.4; letter-spacing:0.1em;">DRAG TEXT TO REPOSITION</div>
+          </div>
+        </div>
+        <!-- Status bar integrated into canvas area bottom -->
+        <div style="position:absolute; bottom:0; left:0; right:0; height:24px; background:#12121c; border-top:1px solid #1e1e2a; display:flex; align-items:center; padding:0 12px; font-size:9px; color:#444; justify-content:space-between;">
+          <span>Frame 1 of 2 · monkey-hero</span>
+          <span>Ready</span>
+        </div>
+      </div>
+
+      <!-- Right inspector -->
+      <div style="width:240px; border-left:1px solid #2a2a3a; display:flex; flex-direction:column; overflow:hidden;">
+        <div style="padding:6px 12px; font-size:9px; font-weight:700; letter-spacing:0.1em; color:#666; text-transform:uppercase; border-bottom:1px solid #1e1e2a;">Inspector</div>
+        <div style="flex:1; overflow-y:auto; padding:8px 0;">
+
+          <!-- Errors/Warnings first (actionable) — only shown when present -->
+          <div style="margin:0 8px 8px; background:#ff555510; border:1px solid #ff555530; border-radius:5px; padding:6px 8px;">
+            <div style="font-size:9px; font-weight:700; color:#ff5555; margin-bottom:3px;">⚠ 1 Warning</div>
+            <div style="font-size:9px; color:#aa5555; line-height:1.4;">Image "monkey.jpg" not loaded</div>
+          </div>
+
+          <!-- Frame section -->
+          <div style="padding:0 12px 8px; border-bottom:1px solid #1e1e2a; margin-bottom:8px;">
+            <div style="font-size:9px; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:5px;">Frame</div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#555; font-size:9px;">Index</span><span style="color:#888; font-size:9px;">1 / 2</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span style="color:#555; font-size:9px;">ID</span><span style="color:#888; font-size:9px; font-family:monospace;">monkey-hero</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:#555; font-size:9px;">Layers</span><span style="color:#888; font-size:9px;">7</span></div>
+          </div>
+
+          <!-- Layers -->
+          <div style="padding:0 12px 8px; border-bottom:1px solid #1e1e2a; margin-bottom:8px;">
+            <div style="font-size:9px; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:5px;">Layers</div>
+            <div style="display:flex; flex-wrap:wrap; gap:3px;">
+              <span style="background:#5b8aff25; color:#8ab0ff; border:1px solid #5b8aff30; padding:1px 6px; border-radius:8px; font-size:9px; font-family:monospace;">image ×1</span>
+              <span style="background:#f5c51820; color:#f0c840; border:1px solid #f5c51825; padding:1px 6px; border-radius:8px; font-size:9px; font-family:monospace;">text ×4</span>
+              <span style="background:#ff825020; color:#ff9060; border:1px solid #ff825025; padding:1px 6px; border-radius:8px; font-size:9px; font-family:monospace;">shape ×2</span>
+            </div>
+          </div>
+
+          <!-- Fonts -->
+          <div style="padding:0 12px 8px; border-bottom:1px solid #1e1e2a; margin-bottom:8px;">
+            <div style="font-size:9px; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:5px;">Fonts</div>
+            <div style="display:flex; flex-direction:column; gap:3px;">
+              <span style="display:flex; align-items:center; gap:4px;"><span style="color:#3fcf8e; font-size:10px;">✓</span><span style="color:#888; font-size:9px;">Montserrat</span></span>
+              <span style="display:flex; align-items:center; gap:4px;"><span style="color:#3fcf8e; font-size:10px;">✓</span><span style="color:#888; font-size:9px;">Playfair Display</span></span>
+            </div>
+          </div>
+
+          <!-- Export (collapsed by default — just header) -->
+          <div style="padding:0 12px 8px; border-bottom:1px solid #1e1e2a; margin-bottom:8px;">
+            <div style="font-size:9px; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer; display:flex; justify-content:space-between;">
+              <span>Export</span><span style="color:#333;">▸</span>
+            </div>
+          </div>
+
+          <!-- Images -->
+          <div style="padding:0 12px;">
+            <div style="font-size:9px; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:5px;">Images</div>
+            <div style="display:flex; align-items:center; gap:4px; margin-bottom:3px;">
+              <span style="color:#f5c518; font-size:10px;">⚠</span>
+              <span style="color:#888; font-size:9px; font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">monkey.jpg</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px;">
+  <span class="label">Key Changes</span>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:10px;">
+    <div style="background:#1a1a26; border:1px solid #2a2a3a; border-radius:8px; padding:14px;">
+      <div style="font-size:11px; font-weight:700; color:#5b8aff; margin-bottom:6px;">Toolbar — 5 Groups</div>
+      <div style="font-size:10px; color:#888; line-height:1.6;">
+        [Brief] · [Load JSON, Load Images] · [project-title] · [safe-zone] · [Preview, Export This, Export All] · [Clear]<br><br>
+        <span style="color:#555;">Export buttons highlighted green. Danger clear isolated right.</span>
+      </div>
+    </div>
+    <div style="background:#1a1a26; border:1px solid #2a2a3a; border-radius:8px; padding:14px;">
+      <div style="font-size:11px; font-weight:700; color:#5b8aff; margin-bottom:6px;">Left Panel — Drag Handle</div>
+      <div style="font-size:10px; color:#888; line-height:1.6;">
+        Filmstrip fills available space. Drag handle between sections. Images panel defaults to ~140px but can be resized or collapsed to just its header bar.
+      </div>
+    </div>
+    <div style="background:#1a1a26; border:1px solid #2a2a3a; border-radius:8px; padding:14px;">
+      <div style="font-size:11px; font-weight:700; color:#5b8aff; margin-bottom:6px;">Inspector — Reordered</div>
+      <div style="font-size:10px; color:#888; line-height:1.6;">
+        Warnings/errors surface to top when present. Export section collapsed by default (rarely changed). Fonts and Layers stay visible.
+      </div>
+    </div>
+  </div>
+</div>

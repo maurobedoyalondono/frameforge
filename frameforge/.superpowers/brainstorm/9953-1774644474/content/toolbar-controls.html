@@ -1,0 +1,125 @@
+<h2>Floating Toolbar — Controls & Layout</h2>
+<p class="subtitle">Proposed complete control set. Click to select your preference for the content input placement.</p>
+
+<div class="section">
+  <h3>Proposed floating toolbar (appears above selected text on canvas)</h3>
+
+  <!-- Mockup of the floating toolbar -->
+  <div style="background:#0d0d1a;border:1px solid #333;border-radius:8px;padding:20px;margin-bottom:24px;">
+
+    <!-- Canvas background -->
+    <div style="background:linear-gradient(135deg,#1a2a3a,#0a1a2a);border-radius:6px;height:200px;position:relative;overflow:visible;">
+
+      <!-- Floating toolbar mockup -->
+      <div style="position:absolute;top:24px;left:50%;transform:translateX(-50%);background:#252535;border:1.5px solid #5b8aff;border-radius:8px;padding:6px 10px;box-shadow:0 6px 20px rgba(0,0,0,0.6);white-space:nowrap;z-index:10;">
+
+        <!-- Row: all controls in groups -->
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;">
+
+          <!-- Font family -->
+          <div style="background:#1e1e2e;border:1px solid #444;border-radius:4px;padding:3px 7px;color:#ccc;font-size:10px;display:flex;align-items:center;gap:3px;cursor:pointer;min-width:80px;">
+            <span style="color:#fff;">Playfair Display</span>
+            <span style="color:#666;">▾</span>
+          </div>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- Size stepper -->
+          <div style="display:flex;align-items:center;gap:3px;">
+            <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:18px;height:18px;color:#ccc;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">−</button>
+            <span style="color:#fff;min-width:28px;text-align:center;font-size:10px;">8.5</span>
+            <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:18px;height:18px;color:#ccc;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">+</button>
+          </div>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- B / I -->
+          <button style="background:#3a3a5a;border:1px solid #5b8aff;border-radius:3px;width:20px;height:20px;color:#5b8aff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;">B</button>
+          <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:20px;height:20px;color:#aaa;font-size:11px;font-style:italic;cursor:pointer;display:flex;align-items:center;justify-content:center;">I</button>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- Alignment -->
+          <button style="background:#3a3a5a;border:1px solid #5b8aff;border-radius:3px;width:20px;height:20px;color:#5b8aff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Align left">⬛<span style="font-size:7px;margin-left:-2px;">≡</span></button>
+          <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:20px;height:20px;color:#aaa;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Center">≡</button>
+          <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:20px;height:20px;color:#aaa;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Align right">≡⬛</button>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- Line height stepper -->
+          <div style="display:flex;align-items:center;gap:3px;" title="Line height">
+            <span style="color:#666;font-size:9px;">↕</span>
+            <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:18px;height:18px;color:#ccc;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">−</button>
+            <span style="color:#fff;min-width:24px;text-align:center;font-size:10px;">1.2</span>
+            <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:18px;height:18px;color:#ccc;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">+</button>
+          </div>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- Width stepper -->
+          <div style="display:flex;align-items:center;gap:3px;" title="Max width">
+            <span style="color:#666;font-size:9px;">↔</span>
+            <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:18px;height:18px;color:#ccc;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">−</button>
+            <span style="color:#fff;min-width:28px;text-align:center;font-size:10px;">80%</span>
+            <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;width:18px;height:18px;color:#ccc;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">+</button>
+          </div>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- Color swatch -->
+          <div style="width:20px;height:20px;border-radius:4px;background:#ffffff;border:1.5px solid #666;cursor:pointer;" title="Text color"></div>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- Shadow toggle -->
+          <button style="background:#1e1e2e;border:1px solid #444;border-radius:3px;padding:0 6px;height:20px;color:#aaa;font-size:9px;cursor:pointer;white-space:nowrap;">Sh</button>
+
+          <div style="width:1px;height:18px;background:#444;"></div>
+
+          <!-- Delete -->
+          <button style="background:transparent;border:1px solid transparent;border-radius:3px;width:20px;height:20px;color:#ff5555;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">🗑</button>
+
+        </div>
+
+        <!-- Arrow pointing down to text -->
+        <div style="position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid #5b8aff;"></div>
+      </div>
+
+      <!-- Selected text element on canvas -->
+      <div style="position:absolute;top:88px;left:50%;transform:translateX(-50%);border:1.5px dashed #5b8aff;border-radius:3px;padding:6px 14px;color:#fff;font-size:13px;font-weight:700;letter-spacing:1px;white-space:nowrap;">
+        GOLDEN HOUR
+      </div>
+
+    </div>
+
+    <div style="margin-top:12px;color:#888;font-size:11px;">
+      Controls (left → right): <strong style="color:#ccc;">Font family · Size · B / I · Alignment · Line height · Width · Color · Shadow · Delete</strong>
+    </div>
+  </div>
+
+</div>
+
+<div class="section">
+  <h3>Where should the text content input go?</h3>
+  <p style="color:#888;font-size:12px;margin-bottom:12px;">The floating toolbar above has no room for a text input. Where should you edit the actual text content?</p>
+
+  <div class="options">
+
+    <div class="option" data-choice="content-toolbar" onclick="toggleSelect(this)">
+      <div class="letter">A</div>
+      <div class="content">
+        <h3>Below the toolbar — second row</h3>
+        <p>A text input appears as a second row directly below the formatting controls. Still floats near the text on canvas.</p>
+      </div>
+    </div>
+
+    <div class="option" data-choice="content-inspector" onclick="toggleSelect(this)">
+      <div class="letter">B</div>
+      <div class="content">
+        <h3>In the Inspector panel (right side)</h3>
+        <p>Text content lives in the Inspector. The floating toolbar handles formatting only. Clean separation.</p>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<h2>Font Family — how it works in the toolbar</h2>
+<p class="subtitle">The app always has exactly 2 font families per project (set in the JSON). Here's how each option looks when you click a text layer.</p>
+
+<div class="cards">
+
+  <!-- Option A: 2-font dropdown from project -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:16px;border-radius:6px 6px 0 0;">
+
+      <div style="color:#888;font-size:10px;margin-bottom:8px;">This project uses: <strong style="color:#ccc;">Playfair Display</strong> + <strong style="color:#ccc;">Inter</strong></div>
+
+      <!-- Toolbar with dropdown open -->
+      <div style="background:#252535;border:1.5px solid #5b8aff;border-radius:8px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px;font-size:10px;box-shadow:0 4px 12px rgba(0,0,0,0.5);position:relative;">
+        <div style="background:#1e1e2e;border:1px solid #5b8aff;border-radius:4px;padding:3px 7px;color:#fff;display:flex;align-items:center;gap:4px;min-width:130px;">
+          <span>Playfair Display</span><span style="color:#666;margin-left:auto;">▾</span>
+        </div>
+        <span style="color:#666;">·</span>
+        <span style="color:#aaa;">12.5</span>
+        <span style="color:#555;">·</span>
+        <span style="color:#aaa;font-weight:700;">B</span>
+        <span style="color:#555;">···</span>
+      </div>
+
+      <!-- Dropdown open -->
+      <div style="background:#1e1e2e;border:1px solid #5b8aff;border-radius:6px;margin-top:2px;margin-left:10px;width:160px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+        <div style="padding:8px 12px;color:#fff;font-size:11px;background:#2a2a4a;border-bottom:1px solid #333;">
+          <div style="font-family:Georgia,serif;font-size:13px;font-weight:700;">Playfair Display</div>
+          <div style="font-size:9px;color:#5b8aff;margin-top:2px;">Display font (headlines)</div>
+        </div>
+        <div style="padding:8px 12px;color:#ccc;font-size:11px;border-bottom:1px solid #333;cursor:pointer;">
+          <div style="font-family:sans-serif;font-size:12px;">Inter</div>
+          <div style="font-size:9px;color:#888;margin-top:2px;">Body / sans-serif</div>
+        </div>
+        <div style="padding:6px 12px;color:#555;font-size:9px;font-style:italic;">
+          Change project fonts in the JSON globals
+        </div>
+      </div>
+
+      <div style="margin-top:12px;color:#666;font-size:10px;">Result: you see the 2 fonts your project actually uses, labeled by role.</div>
+    </div>
+    <div class="card-body">
+      <h3>A — Project fonts only (2 choices)</h3>
+      <p>Dropdown shows the 2 fonts defined in your project's globals. Fast and safe — no typos, no wrong fonts. Change project fonts in the JSON to get different options here.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Full font list (many options) -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:16px;border-radius:6px 6px 0 0;">
+
+      <div style="color:#888;font-size:10px;margin-bottom:8px;">Full list — any Google Font</div>
+
+      <!-- Toolbar with input open -->
+      <div style="background:#252535;border:1.5px solid #5b8aff;border-radius:8px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px;font-size:10px;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+        <input style="background:#1e1e2e;border:1px solid #5b8aff;border-radius:4px;padding:3px 7px;color:#fff;font-size:10px;min-width:130px;" value="Playfair Display" />
+        <span style="color:#555;">···</span>
+      </div>
+
+      <!-- Suggestions list -->
+      <div style="background:#1e1e2e;border:1px solid #5b8aff;border-radius:6px;margin-top:2px;margin-left:10px;width:180px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+        <div style="padding:7px 10px;color:#fff;font-size:10px;background:#2a2a4a;cursor:pointer;">
+          <span style="font-family:Georgia,serif;font-weight:700;">Playfair Display</span>
+        </div>
+        <div style="padding:7px 10px;color:#aaa;font-size:10px;cursor:pointer;border-top:1px solid #333;">
+          <span style="font-family:Georgia,serif;font-style:italic;">Playfair Display SC</span>
+        </div>
+        <div style="padding:7px 10px;color:#aaa;font-size:10px;cursor:pointer;border-top:1px solid #333;">
+          <span style="font-size:9px;color:#666;">Oswald · Bebas Neue · DM Serif Display · Cormorant…</span>
+        </div>
+        <div style="padding:5px 10px;color:#555;font-size:9px;font-style:italic;">1,500+ fonts available</div>
+      </div>
+
+      <div style="margin-top:12px;color:#666;font-size:10px;">You type a font name, suggestions appear. Font must be valid on Google Fonts.</div>
+    </div>
+    <div class="card-body">
+      <h3>B — Type any Google Font (1,500+ options)</h3>
+      <p>Text input with autocomplete suggestions. Maximum flexibility — use any Google Fonts family, regardless of what's in project globals. More complex to build; risk of typos loading wrong font.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Project fonts + custom override -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:16px;border-radius:6px 6px 0 0;">
+
+      <div style="color:#888;font-size:10px;margin-bottom:8px;">Project fonts + manual override</div>
+
+      <!-- Toolbar fragment -->
+      <div style="background:#252535;border:1.5px solid #5b8aff;border-radius:8px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px;font-size:10px;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+        <div style="display:flex;border:1px solid #444;border-radius:4px;overflow:hidden;">
+          <div style="padding:3px 8px;background:#2a2a4a;border-right:1px solid #5b8aff;color:#fff;font-size:9px;cursor:pointer;">Playfair</div>
+          <div style="padding:3px 8px;background:#1e1e2e;color:#888;font-size:9px;cursor:pointer;">Inter</div>
+          <div style="padding:3px 8px;background:#1e1e2e;color:#555;font-size:9px;cursor:pointer;border-left:1px solid #333;">✎</div>
+        </div>
+        <span style="color:#555;">···</span>
+      </div>
+
+      <!-- Custom input shown after clicking pencil -->
+      <div style="margin-top:8px;margin-left:10px;background:#1e1e2e;border:1px solid #555;border-radius:4px;padding:6px 10px;width:180px;">
+        <div style="color:#666;font-size:9px;margin-bottom:4px;">Custom font override:</div>
+        <input style="background:#2a2a3a;border:1px solid #444;border-radius:3px;padding:3px 6px;color:#fff;font-size:10px;width:100%;box-sizing:border-box;" value="Bebas Neue" />
+        <div style="color:#555;font-size:9px;margin-top:3px;">Must be a valid Google Fonts name</div>
+      </div>
+
+      <div style="margin-top:12px;color:#666;font-size:10px;">Quick toggle for project fonts, pencil icon opens a text override.</div>
+    </div>
+    <div class="card-body">
+      <h3>C — Project quick-switch + custom override</h3>
+      <p>Toggle buttons for the 2 project fonts. A pencil icon opens a text input for any other font. Best of both: fast common case, escape hatch for edge cases.</p>
+    </div>
+  </div>
+
+</div>

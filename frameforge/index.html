@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrameForge — Photography Layout Tool</title>
+
+  <!-- Google Fonts: UI typeface -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/shell.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── Toolbar ──────────────────────────────────────────────────────── -->
+  <header id="toolbar" role="toolbar" aria-label="Main toolbar">
+    <!-- Built by shell.js/buildToolbar() -->
+  </header>
+
+  <!-- ── Main area ────────────────────────────────────────────────────── -->
+  <main id="main">
+
+    <!-- Filmstrip + Image Tray (left panel) -->
+    <nav id="filmstrip" aria-label="Frame filmstrip">
+      <div class="filmstrip-header">
+        <span class="filmstrip-header-title">Frames</span>
+        <span id="filmstrip-count">0</span>
+      </div>
+      <div id="filmstrip-list" role="listbox" aria-label="Frame list">
+        <!-- Populated by filmstrip.js -->
+      </div>
+
+      <!-- Resize handle between frames and images -->
+      <div id="left-panel-resize" aria-hidden="true"></div>
+
+      <!-- Image Tray: drag thumbnails from here onto a frame to assign -->
+      <div class="image-tray-header">
+        <span class="image-tray-header-title">Images</span>
+        <span id="image-tray-count">0</span>
+      </div>
+      <div id="image-tray-list" aria-label="Loaded images — drag onto a frame to assign">
+        <!-- Populated by image-tray.js -->
+      </div>
+    </nav>
+
+    <!-- Canvas area (center) -->
+    <section id="canvas-area" aria-label="Canvas preview">
+      <div id="canvas-wrap">
+        <!-- main-canvas injected by app.js -->
+        <div id="safe-zone-overlay" aria-hidden="true"></div>
+        <div id="text-toolbar"  style="display:none" aria-label="Text layer editor"  role="toolbar"></div>
+        <div id="shape-toolbar" style="display:none" aria-label="Shape layer editor" role="toolbar"></div>
+      </div>
+
+      <!-- Frame navigation -->
+      <div id="canvas-nav">
+        <button id="btn-prev-frame" class="canvas-nav-btn" title="Previous frame (←)" aria-label="Previous frame" disabled>
+          ← Prev
+        </button>
+        <span id="canvas-frame-indicator"></span>
+        <button id="btn-next-frame" class="canvas-nav-btn" title="Next frame (→)" aria-label="Next frame" disabled>
+          Next →
+        </button>
+      </div>
+    </section>
+
+    <!-- Inspector (right) -->
+    <aside id="inspector" aria-label="Frame inspector">
+      <div class="inspector-header">
+        <span class="inspector-header-title">Inspector</span>
+      </div>
+      <div id="inspector-content">
+        <!-- Populated by inspector.js -->
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ── Status bar ───────────────────────────────────────────────────── -->
+  <footer id="statusbar" aria-live="polite">
+    <span class="status-dot"></span>
+    <span id="status-message">Ready</span>
+    <span class="status-sep">·</span>
+    <span class="status-item" id="status-storage">FrameForge v1.0</span>
+  </footer>
+
+</div><!-- /#app -->
+
+<!-- ── Dropzone overlay ──────────────────────────────────────────────── -->
+<div id="dropzone" aria-hidden="true">
+  <!-- Populated by app.js -->
+</div>
+
+<!-- ── Context menu ─────────────────────────────────────────────────── -->
+<div id="context-menu" role="menu" aria-label="Context menu">
+  <!-- Populated by shell.js ContextMenu -->
+</div>
+
+<!-- ── Progress overlay ─────────────────────────────────────────────── -->
+<div id="progress-overlay" class="hidden" role="dialog" aria-label="Progress" aria-modal="true">
+  <div class="progress-box">
+    <div class="progress-label" id="progress-label">Working…</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+    <div class="progress-sub" id="progress-sub"></div>
+  </div>
+</div>
+
+<!-- ── Toast container ──────────────────────────────────────────────── -->
+<div id="toast-container" aria-live="assertive" aria-relevant="additions"></div>
+
+<!-- ── App entry point ──────────────────────────────────────────────── -->
+<script type="module" src="app.js"></script>
+
+</body>
+</html>

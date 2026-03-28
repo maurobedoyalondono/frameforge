@@ -1,0 +1,110 @@
+<h2>Text Toolbar — Where should it live?</h2>
+<p class="subtitle">When you click a text layer on the canvas, where should the editing toolbar appear?</p>
+
+<div class="cards">
+
+  <!-- Option A: Floating near text -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:16px;min-height:220px;position:relative;border-radius:6px 6px 0 0;overflow:hidden;">
+      <!-- Canvas mock -->
+      <div style="background:#0d0d1a;border:1px solid #333;border-radius:4px;width:100%;height:180px;position:relative;overflow:hidden;">
+        <!-- Photo placeholder -->
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a2a3a,#0a1a2a);opacity:0.8;"></div>
+        <!-- Text block being edited -->
+        <div style="position:absolute;bottom:30px;left:20px;">
+          <div style="background:rgba(91,138,255,0.15);border:1.5px dashed #5b8aff;border-radius:3px;padding:4px 8px;color:#fff;font-size:11px;font-weight:700;letter-spacing:0.5px;">GOLDEN HOUR</div>
+        </div>
+        <!-- Floating toolbar ABOVE text -->
+        <div style="position:absolute;bottom:62px;left:12px;background:#2a2a3a;border:1px solid #5b8aff;border-radius:6px;padding:4px 8px;display:flex;gap:6px;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+          <span style="color:#aaa;font-size:9px;font-family:monospace;">Inter ▾</span>
+          <div style="width:1px;height:14px;background:#444;"></div>
+          <span style="color:#fff;font-size:9px;">B</span>
+          <span style="color:#aaa;font-size:9px;font-style:italic;">I</span>
+          <div style="width:1px;height:14px;background:#444;"></div>
+          <span style="color:#aaa;font-size:9px;">≡ ≡ ≡</span>
+          <div style="width:1px;height:14px;background:#444;"></div>
+          <div style="width:12px;height:12px;border-radius:2px;background:#5b8aff;"></div>
+          <div style="width:1px;height:14px;background:#444;"></div>
+          <span style="color:#ff5555;font-size:10px;">🗑</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Floating near the text</h3>
+      <p>Toolbar floats just above (or below) the selected text element on the canvas. Moves with the text. Minimal — only shows when something is selected.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Top of canvas (fixed contextual bar, better organized) -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:16px;min-height:220px;position:relative;border-radius:6px 6px 0 0;overflow:hidden;">
+      <div style="background:#0d0d1a;border:1px solid #333;border-radius:4px;width:100%;overflow:hidden;">
+        <!-- Contextual bar at top of canvas area -->
+        <div style="background:#1e1e2e;border-bottom:1px solid #5b8aff;padding:5px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span style="color:#5b8aff;font-size:8px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Text</span>
+          <div style="width:1px;height:14px;background:#333;"></div>
+          <span style="color:#aaa;font-size:8px;font-family:monospace;background:#2a2a3a;border:1px solid #444;border-radius:3px;padding:2px 4px;">Inter ▾</span>
+          <div style="width:1px;height:14px;background:#333;"></div>
+          <span style="color:#aaa;font-size:8px;">Size: −</span><span style="color:#fff;font-size:8px;">8.5</span><span style="color:#aaa;font-size:8px;">+</span>
+          <div style="width:1px;height:14px;background:#333;"></div>
+          <span style="color:#fff;font-size:8px;font-weight:700;background:#2a2a3a;padding:2px 5px;border-radius:3px;">B</span>
+          <span style="color:#aaa;font-size:8px;font-style:italic;background:#2a2a3a;padding:2px 5px;border-radius:3px;">I</span>
+          <div style="width:1px;height:14px;background:#333;"></div>
+          <span style="color:#aaa;font-size:8px;">≡ ≡ ≡</span>
+          <div style="width:1px;height:14px;background:#333;"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:#5b8aff;"></div>
+          <div style="width:1px;height:14px;background:#333;"></div>
+          <span style="color:#ff5555;font-size:10px;">🗑</span>
+        </div>
+        <!-- Canvas -->
+        <div style="background:linear-gradient(135deg,#1a2a3a,#0a1a2a);height:140px;position:relative;">
+          <div style="position:absolute;bottom:20px;left:16px;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.5px;">GOLDEN HOUR</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Contextual bar above the canvas</h3>
+      <p>Replaces the current broken strip but better organized — grouped sections with clear labels. Appears only when text is selected. Fixed position above the canvas area.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Side panel / Inspector -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:16px;min-height:220px;position:relative;border-radius:6px 6px 0 0;overflow:hidden;">
+      <div style="background:#0d0d1a;border:1px solid #333;border-radius:4px;display:flex;height:180px;overflow:hidden;">
+        <!-- Canvas -->
+        <div style="flex:1;background:linear-gradient(135deg,#1a2a3a,#0a1a2a);position:relative;">
+          <div style="position:absolute;bottom:20px;left:12px;color:#fff;font-size:9px;font-weight:700;border:1.5px dashed #5b8aff;padding:3px 6px;border-radius:2px;">GOLDEN HOUR</div>
+        </div>
+        <!-- Side panel -->
+        <div style="width:90px;background:#1e1e2e;border-left:1px solid #5b8aff;padding:8px 6px;display:flex;flex-direction:column;gap:6px;">
+          <div style="color:#5b8aff;font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Text Layer</div>
+          <div style="color:#aaa;font-size:7px;">Family</div>
+          <div style="background:#2a2a3a;border:1px solid #444;border-radius:3px;padding:2px 4px;color:#fff;font-size:7px;font-family:monospace;">Inter ▾</div>
+          <div style="color:#aaa;font-size:7px;">Size</div>
+          <div style="display:flex;gap:2px;align-items:center;">
+            <div style="background:#2a2a3a;border:1px solid #444;border-radius:2px;width:12px;height:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;">−</div>
+            <span style="color:#fff;font-size:7px;flex:1;text-align:center;">8.5</span>
+            <div style="background:#2a2a3a;border:1px solid #444;border-radius:2px;width:12px;height:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;">+</div>
+          </div>
+          <div style="color:#aaa;font-size:7px;">Line height</div>
+          <div style="display:flex;gap:2px;align-items:center;">
+            <div style="background:#2a2a3a;border:1px solid #444;border-radius:2px;width:12px;height:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;">−</div>
+            <span style="color:#fff;font-size:7px;flex:1;text-align:center;">1.2</span>
+            <div style="background:#2a2a3a;border:1px solid #444;border-radius:2px;width:12px;height:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;">+</div>
+          </div>
+          <div style="color:#aaa;font-size:7px;">Style</div>
+          <div style="display:flex;gap:3px;">
+            <div style="background:#2a2a3a;border:1px solid #444;border-radius:2px;padding:2px 4px;color:#fff;font-size:8px;font-weight:700;">B</div>
+            <div style="background:#2a2a3a;border:1px solid #444;border-radius:2px;padding:2px 4px;color:#aaa;font-size:8px;font-style:italic;">I</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Right-side panel (like the Inspector)</h3>
+      <p>Text editing controls move into a dedicated panel on the right, replacing or extending the Inspector when a text layer is selected. More room for all controls — no crowding.</p>
+    </div>
+  </div>
+
+</div>
