@@ -596,7 +596,7 @@ export class ConceptBuilder {
         setStatus('Generating thumbnail sheets…');
         await yieldToUI();
         const { thumbW, thumbH } = this._thumbDimensions();
-        const sheetBlobs = await generateThumbnailSheets(this._imageElements, thumbW, thumbH);
+        const sheetBlobs = await generateThumbnailSheets(this._imageElements, this._imageFiles.map(f => f.name), thumbW, thumbH);
         for (let i = 0; i < sheetBlobs.length; i++) {
           const sheetNum = String(i + 1).padStart(2, '0');
           triggerDownload(sheetBlobs[i], `${slug}-thumbs-${sheetNum}.png`);

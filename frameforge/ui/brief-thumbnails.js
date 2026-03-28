@@ -7,11 +7,12 @@
  * Constants are exported so callers can show the user the derived dimensions.
  */
 
-export const THUMB_BASE = 200;  // base width px — change to adjust all thumbnail sizes
+export const THUMB_BASE = 400;  // base width px — change to adjust all thumbnail sizes
 export const THUMB_COLS = 5;    // columns per sheet
 export const THUMB_ROWS = 2;    // rows per sheet  → 10 images per sheet at defaults
 
-const LABEL_H = 24;             // height of the sheet label strip at bottom (px)
+const LABEL_H    = 32;          // height of the sheet label strip at bottom (px)
+const NAME_BOX_H = 28;          // height of the filename box below each thumbnail (px)
 
 /**
  * Load a File into an HTMLImageElement via object URL.
@@ -36,14 +37,16 @@ export function fileToImageElement(file) {
  * Each image is cropped center-fill to thumbW × thumbH.
  *
  * @param {HTMLImageElement[]} images
+ * @param {string[]} names    — original filenames, parallel to images
  * @param {number} thumbW  — thumbnail cell width in px
  * @param {number} thumbH  — thumbnail cell height in px
  * @returns {Promise<Blob[]>}  one PNG Blob per sheet
  */
-export async function generateThumbnailSheets(images, thumbW, thumbH) {
+export async function generateThumbnailSheets(images, names, thumbW, thumbH) {
   const perSheet = THUMB_COLS * THUMB_ROWS;
+  const slotH    = thumbH + NAME_BOX_H;
   const sheetW   = THUMB_COLS * thumbW;
-  const sheetH   = THUMB_ROWS * thumbH + LABEL_H;
+  const sheetH   = THUMB_ROWS * slotH + LABEL_H;
   const blobs    = [];
 
   for (let s = 0; s * perSheet < images.length; s++) {
@@ -58,12 +61,12 @@ export async function generateThumbnailSheets(images, thumbW, thumbH) {
     ctx.fillRect(0, 0, sheetW, sheetH);
 
     batch.forEach((img, i) => {
-      const col = i % THUMB_COLS;
-      const row = Math.floor(i / THUMB_COLS);
-      const x   = col * thumbW;
-      const y   = row * thumbH;
+      const col  = i % THUMB_COLS;
+      const row  = Math.floor(i / THUMB_COLS);
+      const x    = col * thumbW;
+      const y    = row * slotH;
 
-      // Clip to cell
+      // Clip to photo cell
       ctx.save();
       ctx.beginPath();
       ctx.rect(x, y, thumbW, thumbH);
@@ -88,33 +91,47 @@ export async function generateThumbnailSheets(images, thumbW, thumbH) {
       // Image number badge (top-left of cell)
       const num = s * perSheet + i + 1;
       ctx.fillStyle = 'rgba(0,0,0,0.70)';
-      ctx.fillRect(x, y, 24, 17);
+      ctx.fillRect(x, y, 32, 22);
       ctx.fillStyle = '#e8e8f0';
-      ctx.font = 'bold 11px sans-serif';
+      ctx.font = 'bold 14px sans-serif';
       ctx.textAlign    = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(String(num), x + 12, y + 8);
+      ctx.fillText(String(num), x + 16, y + 11);
+
+      // Filename box (below the photo cell)
+      const name  = names[s * perSheet + i] ?? '';
+      const nameY = y + thumbH;
+      ctx.fillStyle = '#12121e';
+      ctx.fillRect(x, nameY, thumbW, NAME_BOX_H);
+      ctx.strokeStyle = '#2a2a3e';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x + 0.5, nameY + 0.5, thumbW - 1, NAME_BOX_H - 1);
+      ctx.fillStyle    = '#9898b0';
+      ctx.font         = '12px sans-serif';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(truncate(ctx, name, thumbW - 12), x + thumbW / 2, nameY + NAME_BOX_H / 2);
     });
 
     // Sheet label strip
     const start = s * perSheet + 1;
     const end   = Math.min((s + 1) * perSheet, images.length);
     ctx.fillStyle = '#222230';
-    ctx.fillRect(0, THUMB_ROWS * thumbH, sheetW, LABEL_H);
+    ctx.fillRect(0, THUMB_ROWS * slotH, sheetW, LABEL_H);
     ctx.strokeStyle = '#3a3a46';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(0, THUMB_ROWS * thumbH + 0.5);
-    ctx.lineTo(sheetW, THUMB_ROWS * thumbH + 0.5);
+    ctx.moveTo(0, THUMB_ROWS * slotH + 0.5);
+    ctx.lineTo(sheetW, THUMB_ROWS * slotH + 0.5);
     ctx.stroke();
     ctx.fillStyle    = '#9898b0';
-    ctx.font         = '12px sans-serif';
+    ctx.font         = '14px sans-serif';
     ctx.textAlign    = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(
       `Sheet ${s + 1} — Images ${start}–${end}`,
       sheetW / 2,
-      THUMB_ROWS * thumbH + LABEL_H / 2,
+      THUMB_ROWS * slotH + LABEL_H / 2,
     );
 
     blobs.push(await canvasToBlob(canvas));
@@ -124,6 +141,17 @@ export async function generateThumbnailSheets(images, thumbW, thumbH) {
 }
 
 // ── Internal helpers ─────────────────────────────────────────────────────────
+
+function truncate(ctx, text, maxWidth) {
+  if (ctx.measureText(text).width <= maxWidth) return text;
+  let lo = 0, hi = text.length;
+  while (lo < hi) {
+    const mid = Math.ceil((lo + hi) / 2);
+    if (ctx.measureText(text.slice(0, mid) + '…').width <= maxWidth) lo = mid;
+    else hi = mid - 1;
+  }
+  return text.slice(0, lo) + '…';
+}
 
 function canvasToBlob(canvas) {
   return new Promise((resolve, reject) => {

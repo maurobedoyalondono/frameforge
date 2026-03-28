@@ -10,6 +10,8 @@ This document is a **protocol for AI models**. Hand it to any capable AI alongsi
 
 **Image sheet** (`inputs/`) — a low-resolution thumbnail grid of the project's source photos, prepared by the user. This is the only form in which source photos are shared with an AI model. Raw photos are never shared — they live in `images/` for local Playwright use only.
 
+FrameForge can generate image sheets directly: use the **Export → Thumbnail Sheet** feature to group photos into a labeled grid. Each thumbnail is printed with the original filename beneath it — this is what allows the AI to reference photos by name and what allows `image_src` labels in the JSON to be traced back to specific files. Always generate the sheet through this export rather than assembling it manually.
+
 ---
 
 ## Prerequisites
@@ -29,7 +31,7 @@ This document is a **protocol for AI models**. Hand it to any capable AI alongsi
 ## How to start a new project
 
 1. Create `test-projects/my-project/`
-2. Inside it, create `inputs/` and place an **image sheet** there — a single image file containing all source photos as a labeled thumbnail grid (not the raw photos)
+2. Inside it, create `inputs/` and place an **image sheet** there — use **Export → Thumbnail Sheet** in FrameForge to generate it from the raw photos. The sheet groups all photos into a labeled grid with the original filename under each thumbnail.
 3. Place the raw source photos in `test-projects/my-project/images/` (Playwright use only — never send these to an AI model)
 4. Tell the AI: **"follow the steps in `test-projects/README.md` for `my-project`"**
 
@@ -58,7 +60,7 @@ test-projects/
 ## Step 1 — Read and confirm
 
 - Study the framework images in `frameforge/img/` to understand layout conventions
-- Study the image sheet in `inputs/` — note subject position, negative space, tonal register, orientation for each photo
+- Study the image sheet in `inputs/` — each thumbnail has the original filename printed beneath it. Read both the image and its filename; the filename is what ties this thumbnail to its raw file in `images/` and to the `image_src` label you will assign in the JSON
 - Confirm this is done before proceeding — **do not generate anything yet**
 
 ---
@@ -263,9 +265,19 @@ async () => {
 
 ---
 
-## Step 8 — Screenshot and iterate
+## Step 8 — Make art
 
-### localStorage quota limitation
+This is where the work becomes what it is. Every previous step — concept, curation, brief, JSON — was preparation. Now you look at each rendered image and ask a single question: **does this work as a photograph?**
+
+Not: did I follow the brief. Not: is the opacity in range. Those are tools, not the goal. The goal is an image that flows.
+
+### The shape library is yours
+
+FrameForge ships a full library of shapes — lines, rectangles, circles, organic forms, graphic elements. There is no limit on using them. A shape is not decoration; it is a compositional instrument. Use as many as the image demands, in any combination, at any scale or opacity. Stack them, layer them, use one or twelve. The only question is whether the result works as an image. If it does, it is correct.
+
+### Technical setup
+
+#### localStorage quota limitation
 
 FrameForge persists images in localStorage (~5 MB). Large JPEGs exceed this after the first 2–3 images. The rest exist in memory only and are lost on frame navigation.
 
@@ -301,23 +313,21 @@ Immediately call `browser_take_screenshot` — save to `screenshots/frame-0N-v1.
 
 **Without Playwright:** user re-loads the updated JSON and re-shares screenshots manually after each iteration.
 
-### What to check on each iteration
+### Looking at each frame
 
-**Against the Step 4 per-frame editorial brief (primary check — do this first):**
+Take the screenshot. Then stop and look at it — not at the brief, not at the manual. At the image.
 
-For each frame, open the approved brief and verify:
-- **Layers:** only elements approved in the Layer intent section are present — no additions, no omissions
-- **Strongest zone:** completely clear of all elements (gradient, shape, line, text) — this is a hard constraint
-- **Positions:** each element sits within the quietest zone as described in the brief
-- **Copy:** text strings match the final approved copy exactly — word for word, punctuation included
-- **Reading order:** the first → second → third visual beat matches the Composition check
-- **Survival test:** no element present that failed the survival test in the brief
+Ask:
 
-**Against `ai-manual-content.js` rules (secondary check):**
-- Shapes visible but subordinate to the photo (opacity 0.4–0.6 for lines, per-type ceiling in the manual)
-- Gradient direction matches the text anchor zone
-- Text zone not crowded (font scale, line count, two-layer max)
-- Zone-mode shapes rendering in the correct position (not at 0,0)
+- **Does the eye move freely?** Or does something snag it — a text block that sits wrong, a gradient edge that cuts where it shouldn't, a shape that announces itself?
+- **Does the type belong to the photo?** Text should feel like it grew from the image, not like it was placed on top of it. If it looks pasted, something is off — scale, weight, position, or opacity.
+- **Does the frame breathe?** Overcrowded frames suffocate. If anything can be removed and the image is stronger for it, remove it.
+- **Does the frame carry its silence?** Some images do more with less. A clean frame next to a dense one creates rhythm. Use that.
+- **Does it sit in the series?** Look at adjacent frames together. The series should flow — there should be a visual conversation between frames, not a collection of unrelated cards.
+
+If something feels wrong, trust that. Diagnose it by looking, not by cross-referencing rules. Adjust opacity, reposition, resize, change weight — whatever the image is asking for. Then re-inject and look again.
+
+The brief and the manual exist to prevent specific failure modes. They are not a substitute for judgment. When the image looks right, it is right. When it doesn't, no amount of rule-compliance will fix it.
 
 Edit JSON → re-inject → screenshot affected frames → save as `frame-0N-v2.jpg`.
 
