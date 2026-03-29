@@ -266,15 +266,10 @@ export function computeShapeBounds(ctx, layer, w, h, _project) {
       return { top: pos.y, bottom: pos.y + height, left: pos.x, right: pos.x + width };
     }
 
-    const dims    = layer.dimensions || {};
-    const x_pct   = layer.position?.x_pct;
-    const y_pct   = layer.position?.y_pct;
-
-    if (x_pct == null || y_pct == null) return null;
+    const dims   = layer.dimensions || {};
     if (dims.width_pct == null) return null;
 
-    const posX   = px(x_pct, w);
-    const posY   = py(y_pct, h);
+    const { x: posX, y: posY } = resolvePosition(layer.position, w, h);
     const width  = px(dims.width_pct, w);
     const height = dims.height_pct != null
       ? py(dims.height_pct, h)

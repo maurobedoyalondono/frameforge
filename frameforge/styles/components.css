@@ -1507,17 +1507,19 @@ code {
 
 /* ─── Layers Panel ──────────────────────────────────────────── */
 #layers-panel {
-  position: absolute; top: 8px; right: 8px; z-index: 50;
-  width: 240px; max-height: 50%; overflow-y: auto;
+  position: fixed; top: 120px; right: 20px; z-index: 200;
+  width: 240px; max-height: 60vh; overflow-y: auto;
   background: var(--color-bg-panel);
   border: 1.5px solid var(--color-accent);
   border-radius: 8px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+  user-select: none;
 }
 .lp-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 6px 8px 4px 10px;
   border-bottom: 1px solid var(--color-border);
+  cursor: move;
 }
 .lp-title {
   font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;

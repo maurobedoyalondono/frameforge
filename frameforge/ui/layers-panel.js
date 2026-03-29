@@ -23,13 +23,16 @@ export class LayersPanel {
     `;
     this._listEl = this._el.querySelector('.lp-list');
 
-    // Header actions (show-all / hide-all)
-    this._el.querySelector('.lp-header').addEventListener('click', e => {
+    // Header actions (show-all / hide-all) + drag initiation
+    const header = this._el.querySelector('.lp-header');
+    header.addEventListener('click', e => {
       const btn = e.target.closest('[data-action]');
       if (!btn) return;
       if (btn.dataset.action === 'show-all') { this.onLayerVisibilityAll?.(true);  return; }
       if (btn.dataset.action === 'hide-all') { this.onLayerVisibilityAll?.(false); return; }
     });
+
+    this._initDrag(header);
 
     this._listEl.addEventListener('click', e => {
       const row = e.target.closest('[data-layer-id]');
@@ -112,6 +115,51 @@ export class LayersPanel {
     }).join('');
   }
 
+  _initDrag(handle) {
+    let startX, startY, startLeft, startTop;
+
+    handle.addEventListener('mousedown', e => {
+      if (e.target.closest('[data-action]')) return; // button clicks — no drag
+      e.preventDefault();
+      const rect = this._el.getBoundingClientRect();
+      startX    = e.clientX;
+      startY    = e.clientY;
+      startLeft = rect.left;
+      startTop  = rect.top;
+
+      const onMove = mv => {
+        const left = Math.max(0, Math.min(window.innerWidth  - 20, startLeft + mv.clientX - startX));
+        const top  = Math.max(0, Math.min(window.innerHeight - 20, startTop  + mv.clientY - startY));
+        this._el.style.left  = `${left}px`;
+        this._el.style.top   = `${top}px`;
+        this._el.style.right = '';
+      };
+      const onUp = () => {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup',   onUp);
+        this._savePos();
+      };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup',   onUp);
+    });
+  }
+
+  _savePos() {
+    const rect = this._el.getBoundingClientRect();
+    try { localStorage.setItem('ff.layers_panel_pos', JSON.stringify({ left: Math.round(rect.left), top: Math.round(rect.top) })); } catch { /* ignore */ }
+  }
+
+  _restorePos() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('ff.layers_panel_pos') || 'null');
+      if (saved && typeof saved.left === 'number') {
+        this._el.style.left  = `${saved.left}px`;
+        this._el.style.top   = `${saved.top}px`;
+        this._el.style.right = '';
+      }
+    } catch { /* ignore */ }
+  }
+
   setSelectedId(id) {
     this._selectedId = id;
     if (!this._listEl) return;
@@ -121,6 +169,7 @@ export class LayersPanel {
   }
 
   show() {
+    this._restorePos();
     this._el.style.display = '';
   }
 
