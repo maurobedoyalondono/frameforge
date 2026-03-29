@@ -302,6 +302,11 @@ export function buildToolbar(toolbarEl) {
         <path d="M8 4.5a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5v-3.5a.5.5 0 0 1 .5-.5z"/>
       </svg>
     </button>
+    <button class="btn btn-ghost btn-icon" id="btn-layers" title="Layers OFF [L]" disabled>
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4z"/>
+      </svg>
+    </button>
 
     <div class="toolbar-sep"></div>
 
@@ -360,6 +365,7 @@ export function buildToolbar(toolbarEl) {
     btnExportThis:document.getElementById('btn-export-this'),
     btnExportAll: document.getElementById('btn-export-all'),
     btnSafeZone:  document.getElementById('btn-safe-zone'),
+    btnLayers:    document.getElementById('btn-layers'),
     btnClear:     document.getElementById('btn-clear-project'),
     projectTitle: document.getElementById('project-title'),
   };
@@ -371,13 +377,14 @@ export function buildToolbar(toolbarEl) {
  * @param {boolean} hasProject
  * @param {boolean} [safeZoneActive]
  */
-export function updateToolbarState(btns, hasProject, safeZoneActive = false) {
+export function updateToolbarState(btns, hasProject, safeZoneActive = false, layersActive = false) {
   const els = [
     btns.btnLoadImages,
     btns.btnPreviewAll,
     btns.btnExportThis,
     btns.btnExportAll,
     btns.btnSafeZone,
+    btns.btnLayers,
     btns.btnClear,
   ];
   for (const el of els) {
@@ -386,6 +393,10 @@ export function updateToolbarState(btns, hasProject, safeZoneActive = false) {
   if (btns.btnSafeZone) {
     btns.btnSafeZone.style.color = safeZoneActive ? 'var(--color-warning)' : '';
     btns.btnSafeZone.title = safeZoneActive ? 'Safe zone ON [Z]' : 'Safe zone OFF [Z]';
+  }
+  if (btns.btnLayers) {
+    btns.btnLayers.style.color = layersActive ? 'var(--color-accent)' : '';
+    btns.btnLayers.title = layersActive ? 'Layers ON [L]' : 'Layers OFF [L]';
   }
 }
 
@@ -399,6 +410,7 @@ export function updateToolbarState(btns, hasProject, safeZoneActive = false) {
  * @param {function} handlers.exportCurrent
  * @param {function} handlers.exportAll
  * @param {function} handlers.toggleSafeZone
+ * @param {function} handlers.toggleLayersPanel
  * @param {function} handlers.rerender
  */
 export function registerKeyboardShortcuts(handlers) {
@@ -430,6 +442,13 @@ export function registerKeyboardShortcuts(handlers) {
       case 'Z':
         e.preventDefault();
         handlers.toggleSafeZone?.();
+        break;
+      case 'l':
+      case 'L':
+        if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          handlers.toggleLayersPanel?.();
+        }
         break;
       case 'r':
       case 'R':

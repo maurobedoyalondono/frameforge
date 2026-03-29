@@ -48,7 +48,7 @@
             "direction": "to-bottom",
             "from_opacity": 0.0,
             "from_position_pct": 40,
-            "to_opacity": 0.65,
+            "to_opacity": 0.78,
             "to_position_pct": 100
           }
         },
@@ -70,15 +70,15 @@
             "mode": "zone",
             "zone": "bottom-left",
             "offset_x_pct": 6,
-            "offset_y_pct": -17
+            "offset_y_pct": -13
           },
           "max_width_pct": 82,
           "align": "left",
           "shadow": {
             "enabled": true,
             "color": "#000000",
-            "opacity": 0.4,
-            "blur_px": 12,
+            "opacity": 0.45,
+            "blur_px": 14,
             "offset_x": 0,
             "offset_y": 2
           }
@@ -93,9 +93,9 @@
             "weight": 400,
             "size_pct": 2.5,
             "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#7B9FAE",
-            "opacity": 1.0
+            "letter_spacing_em": 0.01,
+            "color": "#FFFFFF",
+            "opacity": 0.85
           },
           "position": {
             "mode": "zone",
@@ -104,7 +104,15 @@
             "offset_y_pct": -6
           },
           "max_width_pct": 82,
-          "align": "left"
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.5,
+            "blur_px": 10,
+            "offset_x": 0,
+            "offset_y": 1
+          }
         }
       ]
     },
@@ -117,7 +125,7 @@
           "type": "image",
           "src": "towering-trees",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 40 },
+          "position": { "x_pct": 50, "y_pct": 35 },
           "opacity": 1.0
         },
         {
@@ -128,11 +136,11 @@
           "blend_mode": "normal",
           "gradient": {
             "enabled": true,
-            "direction": "to-top",
+            "direction": "to-bottom",
             "from_opacity": 0.0,
-            "from_position_pct": 60,
-            "to_opacity": 0.55,
-            "to_position_pct": 0
+            "from_position_pct": 45,
+            "to_opacity": 0.78,
+            "to_position_pct": 100
           }
         },
         {
@@ -146,17 +154,25 @@
             "size_pct": 1.8,
             "line_height": 1.4,
             "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
+            "color": "#FFFFFF",
+            "opacity": 0.75
           },
           "position": {
             "mode": "zone",
-            "zone": "top-left",
+            "zone": "bottom-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 7
+            "offset_y_pct": -18
           },
           "max_width_pct": 82,
-          "align": "left"
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.4,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
         },
         {
           "id": "body",
@@ -174,12 +190,20 @@
           },
           "position": {
             "mode": "zone",
-            "zone": "top-left",
+            "zone": "bottom-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 12
+            "offset_y_pct": -8
           },
           "max_width_pct": 82,
-          "align": "left"
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.5,
+            "blur_px": 10,
+            "offset_x": 0,
+            "offset_y": 2
+          }
         }
       ]
     },
@@ -192,11 +216,11 @@
           "type": "image",
           "src": "aerial-amazon",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 55 },
+          "position": { "x_pct": 50, "y_pct": 45 },
           "opacity": 1.0
         },
         {
-          "id": "gradient-overlay",
+          "id": "gradient-top",
           "type": "overlay",
           "color": "#0D1F14",
           "opacity": 1.0,
@@ -206,9 +230,54 @@
             "direction": "to-top",
             "from_opacity": 0.0,
             "from_position_pct": 50,
-            "to_opacity": 0.65,
+            "to_opacity": 0.70,
             "to_position_pct": 0
           }
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "AMAZONAS · SELVA TROPICAL",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 700,
+            "size_pct": 1.8,
+            "line_height": 1.4,
+            "letter_spacing_em": 0.15,
+            "color": "#7B9FAE",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "top-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": 6
+          },
+          "max_width_pct": 72,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.5,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        },
+        {
+          "id": "rule-divider",
+          "type": "shape",
+          "shape": "line",
+          "angle_deg": 0,
+          "position": {
+            "mode": "absolute",
+            "x_pct": 6,
+            "y_pct": 11.0
+          },
+          "dimensions": { "width_pct": 18, "height_px": 1 },
+          "fill_color": "#FFFFFF",
+          "fill_opacity": 0.30
         },
         {
           "id": "headline",
@@ -218,8 +287,8 @@
             "family": "DM Serif Display",
             "style": "normal",
             "weight": 400,
-            "size_pct": 7.5,
-            "line_height": 1.1,
+            "size_pct": 6.5,
+            "line_height": 1.08,
             "letter_spacing_em": -0.02,
             "color": "#FFFFFF",
             "opacity": 1.0
@@ -228,15 +297,15 @@
             "mode": "zone",
             "zone": "top-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 7
+            "offset_y_pct": 13
           },
-          "max_width_pct": 82,
+          "max_width_pct": 72,
           "align": "left",
           "shadow": {
             "enabled": true,
             "color": "#000000",
             "opacity": 0.4,
-            "blur_px": 12,
+            "blur_px": 14,
             "offset_x": 0,
             "offset_y": 2
           }
@@ -259,10 +328,18 @@
             "mode": "zone",
             "zone": "top-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 35
+            "offset_y_pct": 37
           },
-          "max_width_pct": 82,
-          "align": "left"
+          "max_width_pct": 72,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.70,
+            "blur_px": 18,
+            "offset_x": 0,
+            "offset_y": 1
+          }
         }
       ]
     },

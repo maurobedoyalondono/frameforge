@@ -49,6 +49,9 @@ test-projects/
     │   ├── photo-01.jpg
     │   └── ...
     ├── concept-template.html        ← layout reference card (Step 5)
+    ├── concept-template.md          ← plain-text concept reference (Step 5)
+    ├── color-notes.md               ← per-frame color analysis and overrides (Step 5b)
+    ├── frame-image-mapping.md       ← frame → image_src → raw file (Step 6)
     ├── my-project.json              ← generated project definition (Step 6)
     └── screenshots/                 ← layout captures for iteration
         ├── frame-01-v1.jpg
@@ -96,7 +99,9 @@ Present as a numbered list. **Wait for user approval before continuing.**
 
 ### Series-level decisions
 
-**Visual palette:** 2–3 hex colors sampled from the image sheet thumbnails. For each: name, role (primary tone / type accent / shape base), and which image or tonal zone it was pulled from.
+**Visual palette:** 2–3 hex colors chosen as design colors — overlays, type accents, and graphic elements. These are not extracted from the photographs; they are editorial choices that must hold up as text and shapes placed on top of them. For each: name, role (primary tone / type accent / shape base), and why it fits the subject matter and mood of the series.
+
+The palette is a series-level default. It will be validated per frame in Step 5b by the color advisor — individual frames may require overrides where the palette color disappears or conflicts with the actual photograph at the text zone.
 
 **Type system:** One display face + one sans-serif, both must be valid Google Fonts family names (verify at fonts.google.com — an invalid name silently falls back to system sans-serif with no warning). For each: why it fits the subject matter and mood — not just aesthetic preference.
 
@@ -177,7 +182,26 @@ Model it on `frameforge/img/sample-template.png` and `sample-template4.png`:
 
 The HTML must be fully self-contained (inline CSS, no external dependencies). Save as `my-project/concept-template.html`.
 
+Also save `my-project/concept-template.md` — a plain-text markdown version of the approved concept. Include: series title and platform, color palette (hex + role), type system (families + size scale), application rules, and for each frame: frame-id, `image_src` label, thumbnail sheet position, silent/text status, and exact proposed text strings. **No placeholders** — every field must contain the actual approved value. This is the reference document for Step 8 and for any future session picking up the project. See `amazon/concept-template.md` as the reference for structure and level of detail.
+
 **Wait for user approval before writing the JSON.**
+
+---
+
+## Step 5b — Analyze per-frame color
+
+Before generating the JSON, dispatch the `frameforge-color-advisor` sub-agent (`.claude/skills/frameforge-color-advisor/SKILL.md`). This agent reads each frame's raw photograph, looks at the actual text zone, and determines whether the approved palette colors are legible there — or whether per-frame overrides are needed.
+
+Fill these placeholders when dispatching:
+
+- `[CONCEPT_TEMPLATE_MD_PATH]` → `my-project/concept-template.md`
+- `[FRAME_IMAGE_MAPPING_PATH]` → `my-project/frame-image-mapping.md`
+- `[THUMBNAIL_SHEETS_PATH]` → `my-project/inputs/`
+- `[COLOR_NOTES_PATH]` → `my-project/color-notes.md`
+
+The agent writes `my-project/color-notes.md`. This file contains a per-frame, per-role decision table: for each text role in each frame, either the palette color is confirmed safe or an override is given (typically `#FFFFFF`). The art director in Step 8 reads this file before setting any color — it supersedes the concept template's color specs for any frame where a conflict is found.
+
+**The concept palette is a series default. Color notes are the per-frame truth.**
 
 ---
 
@@ -193,9 +217,25 @@ Generate the complete FrameForge JSON following `ai-manual-content.js`:
 
 Save as `my-project/my-project.json`.
 
+Also save `my-project/frame-image-mapping.md` — a table mapping each frame to its `image_src` label, thumbnail sheet position, and the raw filename from `images/`. Format:
+
+```markdown
+| Frame | `image_src` label | Sheet · position | Raw file (`images/`) |
+|-------|-------------------|------------------|----------------------|
+| frame-01 | `canopy-walkway` | Sheet 5 · #45 | `dji_fly_20260228_131446_0609_1772316071531_photo.jpg` |
+| frame-02 | `towering-trees` | Sheet 3 · #22 | `CC2A3478.jpg` |
+| frame-03 | `aerial-amazon` | Sheet 5 · #46 | `aerial-amazon.jpg` |
+```
+
+Every row must be filled with the actual raw filename read from the thumbnail sheet — never a placeholder. The raw filenames come from the thumbnail sheets (`inputs/`): each thumbnail has the original filename printed directly beneath it. Open each sheet image and read the label under the photo at the listed position.
+
+**Leave no row blank.** This file is filled once and used forever — every future session, every Playwright injection, every iteration reads from here instead of opening thumbnail sheets.
+
 ---
 
 ## Step 7 — Load into FrameForge
+
+**Before loading any images, verify that `frame-image-mapping.md` is complete** — every row must have a raw filename. If any row is blank, open the relevant thumbnail sheet, read the label under that position, and fill it in now. Do not proceed until the file is complete. This is the step where the mapping is established; it cannot be recovered later without reopening the thumbnail sheets.
 
 ### Without Playwright
 
@@ -231,9 +271,26 @@ async () => {
 ```javascript
 async () => {
   const images = [
-    ['label-for-frame-01', '/frameforge/data/test-projects/my-project/images/photo-01.jpg'],
-    ['label-for-frame-02', '/frameforge/data/test-projects/my-project/images/photo-02.jpg'],
-    // one entry per frame
+    ['canopy-walkway',        '/frameforge/data/test-projects/amazon/images/dji_fly_20260228_131446_0609_1772316071531_photo.jpg'],
+    ['towering-trees',        '/frameforge/data/test-projects/amazon/images/CC2A3478.jpg'],
+    ['aerial-amazon',         '/frameforge/data/test-projects/amazon/images/aerial-amazon.jpg'],
+    ['canoe-at-dusk',         '/frameforge/data/test-projects/amazon/images/CC2A8728.jpg'],
+    ['child-in-the-rain',     '/frameforge/data/test-projects/amazon/images/CC2A0719.jpg'],
+    ['river-as-highway',      '/frameforge/data/test-projects/amazon/images/IMG_9302.jpg'],
+    ['soccer-game',           '/frameforge/data/test-projects/amazon/images/CC2A9853.jpg'],
+    ['women-laughing',        '/frameforge/data/test-projects/amazon/images/d80ba5a6-82ee-4fea-85f8-3235cd1e3fc3.jpg'],
+    ['squirrel-monkey',       '/frameforge/data/test-projects/amazon/images/CC2A0551.jpg'],
+    ['poison-dart-frog',      '/frameforge/data/test-projects/amazon/images/CC2A9770.jpg'],
+    ['white-chinned-jacamar', '/frameforge/data/test-projects/amazon/images/CC2A4844.jpg'],
+    ['woolly-monkey',         '/frameforge/data/test-projects/amazon/images/CC2A0205.jpg'],
+    ['pink-dolphin',          '/frameforge/data/test-projects/amazon/images/CC2A9025.jpg'],
+    ['musmuquis',             '/frameforge/data/test-projects/amazon/images/CC2A9238.jpg'],
+    ['black-tailed-trogon',   '/frameforge/data/test-projects/amazon/images/CC2A3908.jpg'],
+    ['wire-tailed-manakin',   '/frameforge/data/test-projects/amazon/images/CC2A3875.jpg'],
+    ['amazon-tree-frog',      '/frameforge/data/test-projects/amazon/images/CC2A5120.jpg'],
+    ['striated-heron-dusk',   '/frameforge/data/test-projects/amazon/images/CC2A5844.jpg'],
+    ['mouse-opossum',         '/frameforge/data/test-projects/amazon/images/CC2A9785.jpg'],
+    ['woman-with-anaconda',   '/frameforge/data/test-projects/amazon/images/IMG_0768.jpg'],
   ];
   const files = await Promise.all(images.map(async ([name, path]) => {
     const blob = await fetch(path).then(r => r.blob());
@@ -270,6 +327,29 @@ async () => {
 This is where the work becomes what it is. Every previous step — concept, curation, brief, JSON — was preparation. Now you look at each rendered image and ask a single question: **does this work as a photograph?**
 
 Not: did I follow the brief. Not: is the opacity in range. Those are tools, not the goal. The goal is an image that flows.
+
+### Art Director Agent — one frame at a time
+
+**With Playwright (Claude Code):** Use the `frameforge-art-director` skill (`.claude/skills/frameforge-art-director/SKILL.md`). Dispatch one subagent per frame. The skill defines the full per-frame workflow:
+
+1. **Art Director** renders the frame, looks at the photograph, makes visual decisions, proposes all text strings
+2. **Copy Reviewer** reviews every proposed string — grammar, factual accuracy, narrative fit against the concept template, register. Art director may not write any text to the JSON until the reviewer approves
+3. **Art Director** writes approved copy to the JSON, finalizes the visual design, saves the screenshot (canvas element only — never full page)
+4. **Human approval** — present screenshot to user and wait. Do not dispatch the next frame until the user says so
+
+**Never batch-screenshot all frames and move on.** Step 8 is a creative process, not a capture job. Each frame gets a full creative + editorial review cycle before moving on.
+
+#### What the copy reviewer catches
+
+The copy reviewer reads the concept template before reviewing any string. This means it enforces:
+- **No-text frame rules** — if the concept marks a frame as silent (`sin texto`), text does not belong there regardless of what the JSON draft contains
+- **Factual accuracy** — superlatives, measurements, species names, place names must be verifiable and correctly scoped
+- **Series consistency** — a claim made in one frame (e.g. "the world's largest rainforest") cannot be duplicated in another frame where it doesn't apply
+- **Editorial register** — colloquial or informal language is flagged and corrected to match the series voice
+
+#### Screenshots
+
+Always capture the canvas element only — never the full browser window. Use `browser_snapshot` to get the canvas ref, then `browser_take_screenshot` with `element: "canvas"` and the ref, `type: "jpeg"`. Full-page screenshots are too large and cause API errors.
 
 ### The shape library is yours
 

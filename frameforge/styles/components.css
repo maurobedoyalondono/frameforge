@@ -1091,7 +1091,9 @@ code {
 /* ── Floating toolbars (text + shape) ────────────────────────────────────── */
 
 #text-toolbar,
-#shape-toolbar {
+#shape-toolbar,
+#image-toolbar,
+#overlay-toolbar {
   position: absolute;
   z-index: 50;
   background: var(--color-bg-panel);
@@ -1103,7 +1105,9 @@ code {
 
 /* Arrow pointing down toward selected layer (default) */
 #text-toolbar.arrow-down::after,
-#shape-toolbar.arrow-down::after {
+#shape-toolbar.arrow-down::after,
+#image-toolbar.arrow-down::after,
+#overlay-toolbar.arrow-down::after {
   content: '';
   position: absolute;
   bottom: -8px;
@@ -1117,7 +1121,9 @@ code {
 
 /* Arrow pointing up (toolbar is below text) */
 #text-toolbar.arrow-up::after,
-#shape-toolbar.arrow-up::after {
+#shape-toolbar.arrow-up::after,
+#image-toolbar.arrow-up::after,
+#overlay-toolbar.arrow-up::after {
   content: '';
   position: absolute;
   top: -8px;
@@ -1434,3 +1440,112 @@ code {
   color: var(--color-accent);
   margin-left: 8px;
 }
+
+/* ─── Image Toolbar ─────────────────────────────────────────── */
+.it-row {
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 8px; white-space: nowrap;
+}
+.it-btn {
+  width: 20px; height: 22px; padding: 0;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.it-btn:hover { background: var(--color-bg-panel-alt); border-color: var(--color-border-light); }
+.it-toggle    { width: auto; padding: 0 8px; }
+.it-active {
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent) !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-accent) !important;
+}
+.it-sep   { width: 1px; height: 16px; background: var(--color-border); margin: 0 2px; }
+.it-label { font-size: 10px; color: var(--color-text-muted); }
+.it-val   { font-size: var(--font-size-sm); min-width: 28px; text-align: center; }
+.it-delete { color: var(--color-text-muted); background: transparent; }
+.it-delete:hover { color: var(--color-error); background: rgba(255,85,85,0.1); }
+
+/* ─── Overlay Toolbar ───────────────────────────────────────── */
+.ot-row1, .ot-row2 {
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 8px; white-space: nowrap;
+}
+.ot-row2 { border-top: 1px solid var(--color-border); }
+.ot-btn {
+  width: 20px; height: 22px; padding: 0;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.ot-btn:hover  { background: var(--color-bg-panel-alt); border-color: var(--color-border-light); }
+.ot-toggle     { width: auto; padding: 0 8px; }
+.ot-active {
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent) !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-accent) !important;
+}
+.ot-sep   { width: 1px; height: 16px; background: var(--color-border); margin: 0 2px; }
+.ot-label { font-size: 10px; color: var(--color-text-muted); }
+.ot-val   { font-size: var(--font-size-sm); min-width: 28px; text-align: center; }
+.ot-color {
+  width: 22px; height: 22px; padding: 0;
+  border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer;
+}
+.ot-select {
+  height: 22px; padding: 0 4px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm); color: inherit; cursor: pointer;
+}
+.ot-delete { color: var(--color-text-muted); background: transparent; }
+.ot-delete:hover { color: var(--color-error); background: rgba(255,85,85,0.1); }
+
+/* ─── Layers Panel ──────────────────────────────────────────── */
+#layers-panel {
+  position: absolute; top: 8px; right: 8px; z-index: 50;
+  width: 240px; max-height: 50%; overflow-y: auto;
+  background: var(--color-bg-panel);
+  border: 1.5px solid var(--color-accent);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+.lp-header {
+  padding: 6px 10px 4px;
+  border-bottom: 1px solid var(--color-border);
+}
+.lp-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+.lp-list { padding: 4px 0; }
+.lp-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 8px; cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+.lp-row:hover    { background: rgba(255,255,255,0.06); }
+.lp-selected     { background: color-mix(in srgb, var(--color-accent) 25%, transparent) !important; }
+.lp-hidden-layer { opacity: 0.5; }
+.lp-icon  { flex-shrink: 0; font-size: 12px; }
+.lp-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-swatch {
+  flex-shrink: 0; width: 12px; height: 12px;
+  border-radius: 50%; border: 1px solid var(--color-border);
+}
+.lp-swatch-empty { background: transparent; }
+.lp-op   { flex-shrink: 0; font-size: 10px; color: var(--color-text-muted); min-width: 28px; text-align: right; }
+.lp-btn  {
+  flex-shrink: 0; width: 20px; height: 20px; padding: 0;
+  background: transparent; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--color-text-muted);
+}
+.lp-btn:hover { color: inherit; }
+.lp-delete { opacity: 0; }
+.lp-row:hover .lp-delete { opacity: 1; }
+.lp-delete:hover { color: var(--color-error) !important; }

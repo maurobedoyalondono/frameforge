@@ -25,8 +25,11 @@ import * as briefStorage     from './modules/brief-storage.js';
 import { ImageTray } from './ui/image-tray.js';
 import { initDrag, destroyDrag } from './modules/drag.js';
 import { computeTextBounds, computeShapeBounds } from './modules/layers.js';
-import { TextToolbar } from './ui/text-toolbar.js';
-import { ShapeToolbar } from './ui/shape-toolbar.js';
+import { TextToolbar }    from './ui/text-toolbar.js';
+import { ShapeToolbar }   from './ui/shape-toolbar.js';
+import { ImageToolbar }   from './ui/image-toolbar.js';
+import { OverlayToolbar } from './ui/overlay-toolbar.js';
+import { LayersPanel }    from './ui/layers-panel.js';
 
 // ── App State ─────────────────────────────────────────────────────────────
 
@@ -73,8 +76,16 @@ async function init() {
   const textToolbarEl = document.getElementById('text-toolbar');
   const textToolbar   = new TextToolbar(textToolbarEl, loadFont);
 
-  const shapeToolbarEl = document.getElementById('shape-toolbar');
-  const shapeToolbar   = new ShapeToolbar(shapeToolbarEl);
+  const shapeToolbarEl   = document.getElementById('shape-toolbar');
+  const shapeToolbar     = new ShapeToolbar(shapeToolbarEl);
+
+  const imageToolbarEl   = document.getElementById('image-toolbar');
+  const overlayToolbarEl = document.getElementById('overlay-toolbar');
+  const layersPanelEl    = document.getElementById('layers-panel');
+
+  const imageToolbar   = new ImageToolbar(imageToolbarEl);
+  const overlayToolbar = new OverlayToolbar(overlayToolbarEl);
+  const layersPanel    = new LayersPanel(layersPanelEl);
 
   // Canvas for main preview
   const mainCanvas = document.createElement('canvas');
@@ -109,7 +120,8 @@ async function init() {
 
   // Persisted prefs
   let prefs = storage.loadPrefs();
-  renderer.showSafeZone = prefs.safe_zone_visible ?? false;
+  renderer.showSafeZone    = prefs.safe_zone_visible ?? false;
+  renderer.showLayerBounds = prefs.layers_visible    ?? false;
 
   // ── DropZone ─────────────────────────────────────────────────────────────
   new DropZone(
@@ -138,7 +150,7 @@ async function init() {
   showEmptyState();
   filmstrip.clear();
   inspector.clear();
-  updateToolbarState(tb, false);
+  updateToolbarState(tb, false, false, false);
 
   // ── Event bindings ────────────────────────────────────────────────────────
 
@@ -166,6 +178,7 @@ async function init() {
   tb.btnExportThis.addEventListener('click', () => doExportFrame(project.activeFrameIndex));
   tb.btnExportAll .addEventListener('click', () => doExportAll());
   tb.btnSafeZone  .addEventListener('click', () => toggleSafeZone());
+  tb.btnLayers    .addEventListener('click', () => toggleLayersPanel());
   tb.btnClear     .addEventListener('click', () => doClearProject());
 
   // ── Keyboard shortcuts ───────────────────────────────────────────────────
@@ -174,8 +187,9 @@ async function init() {
     prevFrame:       () => navigateFrame(-1),
     exportCurrent:   () => doExportFrame(project.activeFrameIndex),
     exportAll:       () => doExportAll(),
-    toggleSafeZone:  () => toggleSafeZone(),
-    rerender:        () => project.isLoaded && renderCurrentFrame(),
+    toggleSafeZone:    () => toggleSafeZone(),
+    toggleLayersPanel: () => toggleLayersPanel(),
+    rerender:          () => project.isLoaded && renderCurrentFrame(),
   });
 
   // ── White frame changes ───────────────────────────────────────────────────
@@ -272,6 +286,18 @@ async function init() {
     el.classList.toggle('arrow-up',   flip);
   }
 
+  // Position a toolbar to the right of the canvas, vertically centered.
+  // Used for full-frame layers (image, overlay) where above/below has no space.
+  function positionElementRight(el) {
+    const GAP      = 12;
+    const toolbarH = el.offsetHeight || 60;
+    const left     = mainCanvas.offsetWidth + GAP;
+    const top      = Math.max(4, (mainCanvas.offsetHeight - toolbarH) / 2);
+    el.style.top  = `${Math.round(top)}px`;
+    el.style.left = `${Math.round(left)}px`;
+    el.classList.remove('arrow-down', 'arrow-up');
+  }
+
   function positionToolbar() {
     const layerId = renderer.selectedLayerId;
     if (!layerId || !project.isLoaded) return;
@@ -290,6 +316,10 @@ async function init() {
     } else if (layer.type === 'shape') {
       const bounds = computeShapeBounds(ctx, layer, w, h, project);
       positionElement(shapeToolbarEl, bounds);
+    } else if (layer.type === 'image') {
+      positionElementRight(imageToolbarEl);
+    } else if (layer.type === 'overlay') {
+      positionElementRight(overlayToolbarEl);
     }
   }
 
@@ -298,20 +328,28 @@ async function init() {
   function onLayerClick(layer) {
     renderer.selectedLayerId = layer?.id ?? null;
 
+    // Hide all toolbars, then show the right one
+    textToolbar.hide();
+    shapeToolbar.hide();
+    imageToolbar.hide();
+    overlayToolbar.hide();
+
     if (layer?.type === 'text') {
       textToolbar.setProjectFonts(project.getFontFamilies?.() ?? []);
       textToolbar.show(layer);
-      shapeToolbar.hide();
-      // Defer positioning until the toolbar is visible and has a layout size
       requestAnimationFrame(() => positionToolbar());
     } else if (layer?.type === 'shape') {
       shapeToolbar.show(layer);
-      textToolbar.hide();
       requestAnimationFrame(() => positionToolbar());
-    } else {
-      textToolbar.hide();
-      shapeToolbar.hide();
+    } else if (layer?.type === 'image') {
+      imageToolbar.show(layer);
+      requestAnimationFrame(() => positionToolbar());
+    } else if (layer?.type === 'overlay') {
+      overlayToolbar.show(layer);
+      requestAnimationFrame(() => positionToolbar());
     }
+
+    layersPanel.setSelectedId(layer?.id ?? null);
     renderCurrentFrame();
   }
 
@@ -330,6 +368,8 @@ async function init() {
     project.save();
     textToolbar.hide();
     renderer.selectedLayerId = null;
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(null);
     renderCurrentFrame();
     filmstrip.renderOne(project.activeFrameIndex, project);
     inspector.update(project, project.activeFrameIndex, validation);
@@ -349,9 +389,86 @@ async function init() {
     project.save();
     shapeToolbar.hide();
     renderer.selectedLayerId = null;
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(null);
     renderCurrentFrame();
     filmstrip.renderOne(project.activeFrameIndex, project);
     inspector.update(project, project.activeFrameIndex, validation);
+  };
+
+  imageToolbar.onChange = (layer) => {
+    project.save();
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+    requestAnimationFrame(() => positionToolbar());
+  };
+
+  imageToolbar.onDelete = (layer) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    if (!frame) return;
+    frame.layers = frame.layers.filter(l => l.id !== layer.id);
+    imageToolbar.hide();
+    renderer.selectedLayerId = null;
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(null);
+    project.save();
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+  };
+
+  overlayToolbar.onChange = (layer) => {
+    project.save();
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+    requestAnimationFrame(() => positionToolbar());
+  };
+
+  overlayToolbar.onDelete = (layer) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    if (!frame) return;
+    frame.layers = frame.layers.filter(l => l.id !== layer.id);
+    overlayToolbar.hide();
+    renderer.selectedLayerId = null;
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(null);
+    project.save();
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+  };
+
+  layersPanel.onLayerSelect = (layerId) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    const layer = frame?.layers?.find(l => l.id === layerId);
+    if (layer) onLayerClick(layer);
+  };
+
+  layersPanel.onLayerVisibilityToggle = (layerId) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    const layer = frame?.layers?.find(l => l.id === layerId);
+    if (!layer) return;
+    layer.visible = layer.visible === false ? undefined : false;
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(renderer.selectedLayerId);
+    project.save();
+    renderCurrentFrame();
+  };
+
+  layersPanel.onLayerDelete = (layerId) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    if (!frame) return;
+    frame.layers = frame.layers.filter(l => l.id !== layerId);
+    if (renderer.selectedLayerId === layerId) {
+      textToolbar.hide();
+      shapeToolbar.hide();
+      imageToolbar.hide();
+      overlayToolbar.hide();
+      renderer.selectedLayerId = null;
+    }
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(renderer.selectedLayerId);
+    project.save();
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
   };
 
   // ── Auto-restore last project ────────────────────────────────────────────
@@ -412,6 +529,9 @@ async function init() {
     renderer.selectedLayerId = null;
     textToolbar.hide();
     shapeToolbar.hide();
+    imageToolbar.hide();
+    overlayToolbar.hide();
+    layersPanel.hide();
 
     // Clean up images from previous project if switching to a different project ID
     const incomingId = data.project?.id;
@@ -448,7 +568,7 @@ async function init() {
     storage.savePrefs(prefs);
 
     // Update toolbar
-    updateToolbarState(tb, true, renderer.showSafeZone);
+    updateToolbarState(tb, true, renderer.showSafeZone, renderer.showLayerBounds);
     if (tb.projectTitle) {
       tb.projectTitle.textContent = data.project.title || data.project.id;
       tb.projectTitle.title       = data.project.title || '';
@@ -472,6 +592,14 @@ async function init() {
 
     // Initial render
     renderCurrentFrame();
+
+    // Restore layers panel if it was active
+    if (renderer.showLayerBounds) {
+      const frame = project.data.frames[project.activeFrameIndex];
+      layersPanel.render(frame);
+      layersPanel.setSelectedId(null);
+      layersPanel.show();
+    }
 
     // Initialize text drag on main canvas
     destroyDrag(mainCanvas); // clear any previous listener set
@@ -575,10 +703,19 @@ async function init() {
     renderer.selectedLayerId = null;
     textToolbar.hide();
     shapeToolbar.hide();
+    imageToolbar.hide();
+    overlayToolbar.hide();
 
     if (!project.setActiveFrame(index)) return;
     filmstrip.setActive(index);
     updateNavButtons();
+
+    if (renderer.showLayerBounds) {
+      const frame = project.data.frames[index];
+      layersPanel.render(frame);
+      layersPanel.setSelectedId(null);
+    }
+
     renderCurrentFrame();
     inspector.update(project, index, validation);
   }
@@ -719,10 +856,29 @@ async function init() {
     renderer.showSafeZone = !renderer.showSafeZone;
     prefs.safe_zone_visible = renderer.showSafeZone;
     storage.savePrefs(prefs);
-    updateToolbarState(tb, project.isLoaded, renderer.showSafeZone);
+    updateToolbarState(tb, project.isLoaded, renderer.showSafeZone, renderer.showLayerBounds);
 
     if (project.isLoaded) renderCurrentFrame();
     status.set(`Safe zone: ${renderer.showSafeZone ? 'ON' : 'OFF'}`, 'info', 2000);
+  }
+
+  function toggleLayersPanel() {
+    renderer.showLayerBounds = !renderer.showLayerBounds;
+    prefs.layers_visible = renderer.showLayerBounds;
+    storage.savePrefs(prefs);
+    updateToolbarState(tb, project.isLoaded, renderer.showSafeZone, renderer.showLayerBounds);
+
+    if (renderer.showLayerBounds && project.isLoaded) {
+      const frame = project.data.frames[project.activeFrameIndex];
+      layersPanel.render(frame);
+      layersPanel.setSelectedId(renderer.selectedLayerId);
+      layersPanel.show();
+    } else {
+      layersPanel.hide();
+    }
+
+    if (project.isLoaded) renderCurrentFrame();
+    status.set(`Layers: ${renderer.showLayerBounds ? 'ON' : 'OFF'}`, 'info', 2000);
   }
 
   // ── Clear project ─────────────────────────────────────────────────────────
@@ -744,11 +900,14 @@ async function init() {
     renderer.selectedLayerId = null;
     textToolbar.hide();
     shapeToolbar.hide();
+    imageToolbar.hide();
+    overlayToolbar.hide();
+    layersPanel.hide();
     filmstrip.clear();
     inspector.clear();
     imageTray.clear();
     showEmptyState();
-    updateToolbarState(tb, false);
+    updateToolbarState(tb, false, false, false);
     if (tb.projectTitle) tb.projectTitle.textContent = '';
 
     prefs.last_project_id = null;

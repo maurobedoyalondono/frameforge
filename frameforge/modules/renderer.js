@@ -6,15 +6,17 @@
  * thumbnail rendering for the filmstrip.
  */
 
-import { renderLayer, computeTextBounds, computeShapeBounds } from './layers.js';
+import { computeTextBounds, computeShapeBounds, computeImageBounds, computeOverlayBounds, renderLayer } from './layers.js';
 
 /**
  * Get bounding box for any selectable layer type.
  * Returns { top, bottom, left, right } in canvas pixels, or null.
  */
 function computeLayerBounds(ctx, layer, w, h, project) {
-  if (layer.type === 'text')  return computeTextBounds(ctx, layer, w, h, project);
-  if (layer.type === 'shape') return computeShapeBounds(ctx, layer, w, h, project);
+  if (layer.type === 'text')    return computeTextBounds(ctx, layer, w, h, project);
+  if (layer.type === 'shape')   return computeShapeBounds(ctx, layer, w, h, project);
+  if (layer.type === 'image')   return computeImageBounds(ctx, layer, w, h, project);
+  if (layer.type === 'overlay') return computeOverlayBounds(ctx, layer, w, h, project);
   return null;
 }
 
@@ -89,6 +91,8 @@ export class Renderer {
   constructor() {
     /** @type {boolean} */
     this.showSafeZone = false;
+    /** @type {boolean} */
+    this.showLayerBounds = false;
     /** @type {string|null} */
     this.selectedLayerId = null;
     /** @type {boolean} */
@@ -155,6 +159,7 @@ export class Renderer {
       // Render layers
       const layers = frame.layers || [];
       for (const layer of layers) {
+        if (layer.visible === false) continue;
         try {
           ctx.save();
           renderLayer(ctx, layer, effW, effH, project, frameIndex);
@@ -169,6 +174,11 @@ export class Renderer {
           ctx.strokeRect(2, 2, canvasW - 4, canvasH - 4);
           ctx.restore();
         }
+      }
+
+      // Layer bounds outlines (debug / art-direction aid)
+      if (this.showLayerBounds) {
+        this._drawLayerOutlines(ctx, frame, effW, effH, project);
       }
 
       // Frame-level logo (if defined outside layers)
@@ -201,6 +211,15 @@ export class Renderer {
                 (bounds.right  - bounds.left) + pad * 2,
                 (bounds.bottom - bounds.top)  + pad * 2
               );
+              // Type badge for full-frame layers so the selected type is always visible
+              if (selLayer.type === 'image' || selLayer.type === 'overlay') {
+                const label    = selLayer.type === 'image' ? 'IMG' : 'OVR';
+                const fontSize = Math.max(10, effW * 0.018);
+                ctx.setLineDash([]);
+                ctx.font      = `bold ${fontSize}px sans-serif`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+                ctx.fillText(label, bounds.left + pad * 2 + 4, bounds.top + pad * 2 + fontSize);
+              }
               ctx.restore();
             }
           } catch { /* ignore — selection indicator is cosmetic */ }
@@ -309,6 +328,52 @@ export class Renderer {
       ctx.fillStyle = '#2a2a3a';
       ctx.fillRect(0, 0, thumbWidth, thumbH);
       return { ok: false, error: err.message };
+    }
+  }
+
+  /**
+   * Draw faint dashed outlines around every visible (non-selected) layer.
+   * Called only when this.showLayerBounds is true.
+   *
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {object} frame
+   * @param {number} w
+   * @param {number} h
+   * @param {object} project
+   */
+  _drawLayerOutlines(ctx, frame, w, h, project) {
+    const layers = frame.layers || [];
+    let badgeRow = 0; // stack badges vertically for full-frame layers so they don't overlap
+    for (const layer of layers) {
+      if (layer.visible === false) continue;
+      if (layer.id === this.selectedLayerId) continue; // selected layer gets the bright border separately
+      const bounds = computeLayerBounds(ctx, layer, w, h, project);
+      if (!bounds) continue;
+
+      const pad = w * 0.008;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.lineWidth = Math.max(1, w / 600);
+      ctx.setLineDash([w / 70, w / 110]);
+      ctx.strokeRect(
+        bounds.left  - pad,
+        bounds.top   - pad,
+        (bounds.right  - bounds.left) + pad * 2,
+        (bounds.bottom - bounds.top)  + pad * 2
+      );
+
+      // Type badge for full-frame layers — stacked vertically so they never overlap
+      if (layer.type === 'image' || layer.type === 'overlay') {
+        const label    = layer.type === 'image' ? 'IMG' : 'OVR';
+        const fontSize = Math.max(10, w * 0.018);
+        const rowY     = bounds.top + pad * 2 + fontSize + badgeRow * (fontSize + 6);
+        ctx.setLineDash([]);
+        ctx.font      = `bold ${fontSize}px sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.fillText(label, bounds.left + pad * 2 + 4, rowY);
+        badgeRow++;
+      }
+      ctx.restore();
     }
   }
 

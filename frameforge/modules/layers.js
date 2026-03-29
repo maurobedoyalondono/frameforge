@@ -1092,3 +1092,13 @@ export function renderLayer(ctx, layer, w, h, project, frameIndex = null) {
       console.warn(`[layers] Unknown layer type: ${layer.type}`);
   }
 }
+
+export function computeImageBounds(ctx, layer, w, h, _project) {
+  // Image layers fill the entire canvas — bounds = full frame
+  return { top: 0, left: 0, bottom: h, right: w };
+}
+
+export function computeOverlayBounds(ctx, layer, w, h, _project) {
+  // Overlay layers fill the entire canvas — bounds = full frame
+  return { top: 0, left: 0, bottom: h, right: w };
+}

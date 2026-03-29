@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FrameForge Agent Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    canvas {
+      display: block;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body data-status="loading">
+  <canvas id="preview"></canvas>
+  <script type="module">
+    import { Renderer } from './modules/renderer.js';
+    import { Project }  from './modules/project.js';
+
+    // ── Image cache: srcName → HTMLImageElement ──────────────────────────────
+    const imageCache = new Map();
+
+    // ── Derive image base URL from the JSON URL ──────────────────────────────
+    function getImageBase(jsonUrl) {
+      const lastSlash = jsonUrl.lastIndexOf('/');
+      const dir = lastSlash >= 0 ? jsonUrl.slice(0, lastSlash + 1) : '';
+      return dir + 'images/';
+    }
+
+    // ── Resolve image fetch URL for a src key ────────────────────────────────
+    function imageUrl(srcKey, imageBase) {
+      // If src already has a file extension, use as-is; otherwise append .jpg
+      return imageBase + srcKey + (/\.[^/]+$/.test(srcKey) ? '' : '.jpg');
+    }
+
+    // ── Collect all src keys referenced by a frame ───────────────────────────
+    function collectSrcs(frame) {
+      const srcs = new Set();
+      if (frame.image_src) srcs.add(frame.image_src);
+      if (frame.logo?.src) srcs.add(frame.logo.src);
+      for (const layer of (frame.layers || [])) {
+        if (layer.src) srcs.add(layer.src);
+      }
+      return srcs;
+    }
+
+    // ── Load one image into cache and into project.imageElements ────────────
+    async function loadImage(srcKey, imageBase, project) {
+      if (imageCache.has(srcKey)) {
+        project.imageElements.set(srcKey, imageCache.get(srcKey));
+        return;
+      }
+      const url = imageUrl(srcKey, imageBase);
+      const img = new Image();
+      await new Promise((resolve) => {
+        img.onload  = resolve;
+        img.onerror = resolve; // don't block render on a missing image
+        img.src = url;
+      });
+      imageCache.set(srcKey, img);
+      project.imageElements.set(srcKey, img);
+    }
+
+    // ── Load all images for a frame ──────────────────────────────────────────
+    async function loadFrameImages(frame, imageBase, project) {
+      const srcs = collectSrcs(frame);
+      await Promise.all([...srcs].map(s => loadImage(s, imageBase, project)));
+    }
+
+    // ── Render to canvas ─────────────────────────────────────────────────────
+    function render(canvas, frameIndex, project) {
+      const exp = project.exportConfig;
+      const w   = exp?.width_px  ?? 1080;
+      const h   = exp?.height_px ?? 1350;
+
+      // Display at half resolution so it fits in the viewport
+      canvas.style.width  = `${Math.round(w / 2)}px`;
+      canvas.style.height = `${Math.round(h / 2)}px`;
+
+      renderer.renderFrame(canvas, frameIndex, project);
+    }
+
+    // ── State ────────────────────────────────────────────────────────────────
+    let project      = null;
+    let frameIndex   = 0;
+    let imageBase    = '';
+    let rendering    = false;
+    const renderer   = new Renderer();
+
+    // ── Boot: parse URL params, fetch JSON, render ───────────────────────────
+    async function boot() {
+      const params   = new URLSearchParams(window.location.search);
+      const jsonUrl  = params.get('json');
+      const frameId  = params.get('frame');
+
+      if (!jsonUrl || !frameId) {
+        document.body.dataset.status = 'error';
+        document.title = 'error: missing ?json= or ?frame= param';
+        return;
+      }
+
+      imageBase = getImageBase(jsonUrl);
+
+      // Fetch and parse project JSON
+      const r = await fetch(jsonUrl);
+      if (!r.ok) throw new Error(`fetch ${jsonUrl} → ${r.status} ${r.statusText}`);
+      const data = await r.json();
+
+      // Load into Project (imageElements starts empty — no localStorage needed)
+      project = new Project();
+      await project.load(data);
+
+      // Find target frame
+      const idx = project.data.frames.findIndex(f => f.id === frameId);
+      if (idx < 0) {
+        document.body.dataset.status = 'error';
+        document.title = `error: frame "${frameId}" not found`;
+        return;
+      }
+      frameIndex = idx;
+
+      // Load only this frame's images
+      await loadFrameImages(project.data.frames[idx], imageBase, project);
+
+      // Render
+      const canvas = document.getElementById('preview');
+      render(canvas, frameIndex, project);
+      document.body.dataset.status = 'ready';
+    }
+
+    // ── window.renderFrame — in-memory iteration API ─────────────────────────
+    window.renderFrame = async function(frameJson, globalsJson) {
+      if (!project || rendering) return;
+      rendering = true;
+
+      document.body.dataset.status = 'loading';
+
+      try {
+        // Replace the frame in project data
+        project.data.frames[frameIndex] = frameJson;
+
+        // Optionally replace globals
+        if (globalsJson) {
+          if (globalsJson.globals)  project.data.globals  = globalsJson.globals;
+          if (globalsJson.export)   project.data.export   = globalsJson.export;
+        }
+
+        // Load any new images referenced by the updated frame
+        await loadFrameImages(frameJson, imageBase, project);
+
+        // Re-render
+        const canvas = document.getElementById('preview');
+        render(canvas, frameIndex, project);
+        document.body.dataset.status = 'ready';
+      } finally {
+        rendering = false;
+      }
+    };
+
+    boot().catch(err => {
+      document.body.dataset.status = 'error';
+      document.title = `error: ${err.message}`;
+      console.error('[agent-preview] boot error:', err);
+    });
+  </script>
+</body>
+</html>

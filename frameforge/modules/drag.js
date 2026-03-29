@@ -117,12 +117,44 @@ function hitTestShapeLayer(pct, frame, canvas, project) {
 }
 
 /**
- * Find the topmost draggable layer (text or shape) at the given canvas % coords.
- * Text layers take priority if they overlap.
+ * Find the topmost image layer at the given canvas percentage coordinates.
+ * Image layers fill the entire frame — always a hit if visible.
+ */
+function hitTestImageLayer(pct, frame, canvas, project) {
+  const layers = frame.layers || [];
+  for (let i = layers.length - 1; i >= 0; i--) {
+    const layer = layers[i];
+    if (layer.type !== 'image') continue;
+    if (layer.visible === false) continue;
+    return layer; // image fills entire frame — always a hit
+  }
+  return null;
+}
+
+/**
+ * Find the topmost overlay layer at the given canvas percentage coordinates.
+ * Overlay layers fill the entire frame — always a hit if visible.
+ */
+function hitTestOverlayLayer(pct, frame, canvas, project) {
+  const layers = frame.layers || [];
+  for (let i = layers.length - 1; i >= 0; i--) {
+    const layer = layers[i];
+    if (layer.type !== 'overlay') continue;
+    if (layer.visible === false) continue;
+    return layer; // overlay fills entire frame — always a hit
+  }
+  return null;
+}
+
+/**
+ * Find the topmost draggable layer (text, shape, image, or overlay) at the given canvas % coords.
+ * Text and shape layers take priority if they overlap.
  */
 function hitTestLayer(pct, frame, canvas, project) {
   return hitTestTextLayer(pct, frame, canvas, project)
-      ?? hitTestShapeLayer(pct, frame, canvas, project);
+      ?? hitTestShapeLayer(pct, frame, canvas, project)
+      ?? hitTestImageLayer(pct, frame, canvas, project)
+      ?? hitTestOverlayLayer(pct, frame, canvas, project);
 }
 
 // ── Zone snap ─────────────────────────────────────────────────────────────
@@ -264,6 +296,17 @@ export function initDrag(canvas, project, getFrameIndex, onRender, onComplete, o
     const layer = frame.layers?.find(l => l.id === state.layerId);
     if (!layer) return;
 
+    // Image layers: drag sets the focal point (crop center), not a position anchor
+    if (layer.type === 'image') {
+      layer.position = {
+        x_pct: Math.round(Math.max(0, Math.min(100, currentPct.x))),
+        y_pct: Math.round(Math.max(0, Math.min(100, currentPct.y)))
+      };
+      onRender();
+      state.rafPending = false;
+      return;
+    }
+
     if (state.mode === 'absolute') {
       const newX = Math.max(0, Math.min(100, (state.startPos.x_pct ?? 0) + dx));
       const newY = Math.max(0, Math.min(100, (state.startPos.y_pct ?? 0) + dy));
@@ -337,6 +380,13 @@ export function initDrag(canvas, project, getFrameIndex, onRender, onComplete, o
 
     // Notify app to update filmstrip thumbnail
     onComplete(state.frameIndex);
+
+    // For image layers: re-fire selection so the image toolbar appears after focal-point drag
+    if (state.layerId) {
+      const _frame = project.data?.frames?.[state.frameIndex];
+      const _layer = _frame?.layers?.find(l => l.id === state.layerId);
+      if (_layer?.type === 'image') onLayerClick(_layer);
+    }
 
     state.layerId    = null;
     state.frameIndex = null;
