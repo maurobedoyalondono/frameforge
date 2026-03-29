@@ -1,0 +1,583 @@
+{
+  "project": {
+    "id": "tatacoa-textures",
+    "title": "Tatacoa Textures",
+    "version": "1.0",
+    "created": "2026-03-29",
+    "author": ""
+  },
+  "export": {
+    "target": "instagram-portrait",
+    "width_px": 1080,
+    "height_px": 1350,
+    "dpi": 72,
+    "scale_factor": 2,
+    "format": "png",
+    "filename_pattern": "{project_id}_{frame_index}_{frame_id}"
+  },
+  "globals": {
+    "background_color": "#000000",
+    "font_defaults": {
+      "family": "Source Sans 3",
+      "weight": 400,
+      "color": "#E0D8CE",
+      "opacity": 1.0
+    },
+    "safe_zone_pct": 5
+  },
+  "frames": [
+    {
+      "id": "frame-01",
+      "image_src": "wide-canyon-overview",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "wide-canyon-overview",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 50 },
+          "opacity": 1.0
+        },
+        {
+          "id": "gradient-overlay",
+          "type": "overlay",
+          "color": "#5C6B74",
+          "opacity": 1.0,
+          "blend_mode": "normal",
+          "gradient": {
+            "enabled": true,
+            "direction": "to-bottom",
+            "from_opacity": 0.0,
+            "from_position_pct": 52,
+            "to_opacity": 0.65,
+            "to_position_pct": 100
+          }
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "HUILA · COLOMBIA",
+          "font": {
+            "family": "Source Sans 3",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 1.8,
+            "line_height": 1.2,
+            "letter_spacing_em": 0.15,
+            "color": "#FFFFFF",
+            "opacity": 0.85
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "top-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": 7
+          },
+          "max_width_pct": 60,
+          "align": "left"
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "content": "TATACOA",
+          "font": {
+            "family": "Bebas Neue",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 11,
+            "line_height": 1.0,
+            "letter_spacing_em": 0.02,
+            "color": "#E0D8CE",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -16
+          },
+          "max_width_pct": 82,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 14,
+            "offset_x": 0,
+            "offset_y": 2
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "El segundo mayor desierto de Colombia. Doce millones de años de historia geológica.",
+          "font": {
+            "family": "Source Sans 3",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.01,
+            "color": "#E0D8CE",
+            "opacity": 0.9
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 82,
+          "align": "left"
+        }
+      ]
+    },
+    {
+      "id": "frame-02",
+      "image_src": "eroded-channels-closeup",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "eroded-channels-closeup",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 50 },
+          "opacity": 1.0
+        }
+      ]
+    },
+    {
+      "id": "frame-03",
+      "image_src": "columnar-formations",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "columnar-formations",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 60 },
+          "opacity": 1.0
+        },
+        {
+          "id": "gradient-overlay",
+          "type": "overlay",
+          "color": "#5C6B74",
+          "opacity": 1.0,
+          "blend_mode": "normal",
+          "gradient": {
+            "enabled": true,
+            "direction": "to-top",
+            "from_opacity": 0.0,
+            "from_position_pct": 60,
+            "to_opacity": 0.55,
+            "to_position_pct": 0
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "content": "SEDIMENTOS DEL MIOCENO",
+          "font": {
+            "family": "Bebas Neue",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 7.5,
+            "line_height": 1.0,
+            "letter_spacing_em": 0.02,
+            "color": "#FFFFFF",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "top-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": 7
+          },
+          "max_width_pct": 82,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 12,
+            "offset_x": 0,
+            "offset_y": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame-04",
+      "image_src": "mesa-formation",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "mesa-formation",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 50 },
+          "opacity": 1.0
+        }
+      ]
+    },
+    {
+      "id": "frame-05",
+      "image_src": "cacti-canyon-wall",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "cacti-canyon-wall",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 50 },
+          "opacity": 1.0
+        },
+        {
+          "id": "gradient-overlay",
+          "type": "overlay",
+          "color": "#5C6B74",
+          "opacity": 1.0,
+          "blend_mode": "normal",
+          "gradient": {
+            "enabled": true,
+            "direction": "to-bottom",
+            "from_opacity": 0.0,
+            "from_position_pct": 35,
+            "to_opacity": 0.65,
+            "to_position_pct": 100
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "content": "FLORA DEL DESIERTO",
+          "font": {
+            "family": "Bebas Neue",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 8.5,
+            "line_height": 1.0,
+            "letter_spacing_em": 0.02,
+            "color": "#E0D8CE",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -21
+          },
+          "max_width_pct": 82,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 12,
+            "offset_x": 0,
+            "offset_y": 2
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "El melocactus y los cactus columnares habitan las paredes del cañón, sobreviviendo meses sin lluvia.",
+          "font": {
+            "family": "Source Sans 3",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.01,
+            "color": "#E0D8CE",
+            "opacity": 0.9
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 82,
+          "align": "left"
+        }
+      ]
+    },
+    {
+      "id": "frame-06",
+      "image_src": "barrel-cactus-bloom",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "barrel-cactus-bloom",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 45 },
+          "opacity": 1.0
+        },
+        {
+          "id": "gradient-overlay",
+          "type": "overlay",
+          "color": "#5C6B74",
+          "opacity": 1.0,
+          "blend_mode": "normal",
+          "gradient": {
+            "enabled": true,
+            "direction": "to-bottom",
+            "from_opacity": 0.0,
+            "from_position_pct": 45,
+            "to_opacity": 0.68,
+            "to_position_pct": 100
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "content": "MELOCACTUS",
+          "font": {
+            "family": "Bebas Neue",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 9.5,
+            "line_height": 1.0,
+            "letter_spacing_em": 0.02,
+            "color": "#E0D8CE",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -7
+          },
+          "max_width_pct": 82,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 12,
+            "offset_x": 0,
+            "offset_y": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame-07",
+      "image_src": "burrowing-owls",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "burrowing-owls",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 50 },
+          "opacity": 1.0
+        },
+        {
+          "id": "gradient-overlay",
+          "type": "overlay",
+          "color": "#5C6B74",
+          "opacity": 1.0,
+          "blend_mode": "normal",
+          "gradient": {
+            "enabled": true,
+            "direction": "to-bottom",
+            "from_opacity": 0.0,
+            "from_position_pct": 50,
+            "to_opacity": 0.65,
+            "to_position_pct": 100
+          }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "content": "ATHENE CUNICULARIA",
+          "font": {
+            "family": "Bebas Neue",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 7.5,
+            "line_height": 1.0,
+            "letter_spacing_em": 0.02,
+            "color": "#E0D8CE",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -24
+          },
+          "max_width_pct": 82,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 12,
+            "offset_x": 0,
+            "offset_y": 2
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "El mochuelo excavador anida en las orillas erosionadas de la Tatacoa. Su camuflaje sigue la misma paleta que el suelo del desierto: tierra quemada, ceniza y sombra.",
+          "font": {
+            "family": "Source Sans 3",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.01,
+            "color": "#E0D8CE",
+            "opacity": 0.9
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 82,
+          "align": "left"
+        }
+      ]
+    },
+    {
+      "id": "frame-08",
+      "image_src": "desert-road",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "desert-road",
+          "fit": "cover",
+          "position": { "x_pct": 50, "y_pct": 50 },
+          "opacity": 1.0
+        },
+        {
+          "id": "gradient-overlay",
+          "type": "overlay",
+          "color": "#5C6B74",
+          "opacity": 1.0,
+          "blend_mode": "normal",
+          "gradient": {
+            "enabled": true,
+            "direction": "to-bottom",
+            "from_opacity": 0.0,
+            "from_position_pct": 40,
+            "to_opacity": 0.60,
+            "to_position_pct": 100
+          }
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "NEIVA · HUILA",
+          "font": {
+            "family": "Source Sans 3",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 1.8,
+            "line_height": 1.2,
+            "letter_spacing_em": 0.15,
+            "color": "#FFFFFF",
+            "opacity": 0.85
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "top-right",
+            "offset_x_pct": -6,
+            "offset_y_pct": 7
+          },
+          "max_width_pct": 40,
+          "align": "right"
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "content": "CAMINO DEL DESIERTO",
+          "font": {
+            "family": "Bebas Neue",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 9.5,
+            "line_height": 1.0,
+            "letter_spacing_em": 0.02,
+            "color": "#E0D8CE",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -7
+          },
+          "max_width_pct": 82,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 12,
+            "offset_x": 0,
+            "offset_y": 2
+          }
+        }
+      ]
+    }
+  ],
+  "image_index": [
+    {
+      "key": "wide-canyon-overview",
+      "frame_id": "frame-01",
+      "frame_index": 1,
+      "description": "Sheet 1, image 1. Opening frame. Wide canyon panorama at golden hour; visual mass in the canyon mid-ground. Sky and flat foreground are the quiet zones. Bottom gradient darkens the foreground for the headline stack. Full text treatment: eyebrow location tag (#FFFFFF per color-notes), large TATACOA headline, two-sentence geographic caption anchoring the series."
+    },
+    {
+      "key": "eroded-channels-closeup",
+      "frame_id": "frame-02",
+      "frame_index": 2,
+      "description": "Sheet 1, image 4. Silent frame. Close-up of eroded red earth channels — texture fills the frame edge to edge with no quiet zone. No overlay, no text, no shapes. The raw surface is presented clean. Editorial breath after the opening statement."
+    },
+    {
+      "key": "columnar-formations",
+      "frame_id": "frame-03",
+      "frame_index": 3,
+      "description": "Sheet 1, image 5. Geological label frame. Tall eroded columns dominate center and left; sky at the upper portion is the quiet zone. Top gradient subtly darkens sky for the headline. Focal point lowered to y_pct 60 to keep column tops in frame. Headline only: SEDIMENTOS DEL MIOCENO (#FFFFFF per color-notes — warm-ochre background at medium luminance requires maximum contrast)."
+    },
+    {
+      "key": "mesa-formation",
+      "frame_id": "frame-04",
+      "frame_index": 4,
+      "description": "Sheet 1, image 6. Silent frame. Mesa or isolated formation — the geological chapter's closing image. No overlay, no text, no shapes. Second editorial breath before the series transitions to life."
+    },
+    {
+      "key": "cacti-canyon-wall",
+      "frame_id": "frame-05",
+      "frame_index": 5,
+      "description": "Sheet 1, image 3. Flora transition frame. Clustered Melocactus and columnar cacti in the foreground against canyon walls. Eye enters at the nearest cactus and moves back to the formations. Bottom gradient; headline FLORA DEL DESIERTO plus single-sentence caption marks the thematic shift from geology to life."
+    },
+    {
+      "key": "barrel-cactus-bloom",
+      "frame_id": "frame-06",
+      "frame_index": 6,
+      "description": "Sheet 1, image 2. Life close-up. Barrel cactus with bloom at apex — the pink cephalium is the magnetic point and emotional beat of the series. Focal point y_pct 45 to keep the bloom in the upper frame. Headline only: MELOCACTUS, positioned near the canvas bottom to stay clear of the bloom."
+    },
+    {
+      "key": "burrowing-owls",
+      "frame_id": "frame-07",
+      "frame_index": 7,
+      "description": "Sheet 1, image 7. Conceptual payoff. Two burrowing owls in grass; their camouflage echoes the geological textures from frames 2–4. Text stays clear of both owl faces. Bottom gradient; headline ATHENE CUNICULARIA plus two-sentence caption connecting camouflage to the desert's color palette — the thematic resolution."
+    },
+    {
+      "key": "desert-road",
+      "frame_id": "frame-08",
+      "frame_index": 8,
+      "description": "Sheet 1, image 8. Closing frame. Wide road with a small figure in the distance — human scale restores proportion after the close-up frames. Eyebrow NEIVA · HUILA (#FFFFFF per color-notes — hazy sky at top-right without gradient requires maximum contrast) at top-right; CAMINO DEL DESIERTO headline at bottom-left. Quiet close."
+    }
+  ]
+}

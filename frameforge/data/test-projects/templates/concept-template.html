@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{SERIES_TITLE}} — Concept Template</title>
+<!--
+  CONCEPT TEMPLATE — FrameForge Layout Brief
+  ==========================================
+  This file is a sample. Copy it to your project folder, rename it
+  concept-template.html, and replace every {{PLACEHOLDER}} with the
+  actual approved values from the concept brief.
+
+  Placeholder reference
+  ---------------------
+  {{SERIES_TITLE}}        Series name in all caps (e.g. TATACOA TEXTURES)
+  {{PLATFORM_META}}       Platform description (e.g. Instagram Portrait 4:5 · 1080 × 1350 px · 72 DPI · N frames)
+  {{STYLE_META}}          Style line (e.g. Stark documentary · Bebas Neue + Source Sans 3)
+  {{COLOR_1_HEX}}         Primary overlay color hex (e.g. #5C6B74)
+  {{COLOR_1_ROLE}}        Role label (e.g. Overlay)
+  {{COLOR_2_HEX}}         Primary text color hex (e.g. #E0D8CE)
+  {{COLOR_2_ROLE}}        Role label (e.g. Text)
+  {{COLOR_3_HEX}}         Accent color hex (e.g. #B85530)
+  {{COLOR_3_ROLE}}        Role label (e.g. Accent — shapes only)
+  {{FRAME_N_ID}}          Frame identifier (e.g. frame-01 · wide-canyon-overview · CC2A1369.jpg)
+  {{FRAME_N_STATUS}}      Treatment label (e.g. Full text / Headline only / Silent)
+
+  Canvas classes
+  --------------
+  .canvas              Standard 4:5 frame with image placeholder background
+  .canvas-silent       Silent frame — centered "No overlay · No text · No shapes" label
+
+  Gradient helpers
+  ----------------
+  .grad-bottom         to-bottom gradient band (default height 60%, opacity ~0.65)
+  .grad-top            to-top gradient band (default height 55%, opacity ~0.55)
+
+  Adjust inline styles on .grad-bottom / .grad-top to match the approved gradient stops:
+    height: percentage of frame covered by gradient
+    background rgba opacity: to_opacity from the brief
+
+  Text layer classes (position the layer using inline top/bottom/left/right)
+  --------------------------------------------------------------------------
+  .layer-eyebrow-tl    Eyebrow — top-left
+  .layer-eyebrow-tr    Eyebrow — top-right
+  .layer-headline-tl   Display headline — top-left (size via inline font-size)
+  .layer-headline-bl   Display headline — bottom-left (size via inline font-size)
+  .layer-caption-bl    Caption body — bottom-left
+
+  Annotation helpers
+  ------------------
+  .annot               Small annotation label (white-ish)
+  .annot-grad          Gradient annotation (muted)
+  .zone-line-h         Horizontal hairline marking a zone boundary
+
+  Font size approximation
+  -----------------------
+  FrameForge size_pct maps to canvas-relative px. At canvas width 380px:
+    size_pct 11  ≈ 42px  (large display headline)
+    size_pct 9.5 ≈ 36px
+    size_pct 8.5 ≈ 32px
+    size_pct 7.5 ≈ 28px
+    size_pct 2.5 ≈  9px  (caption)
+    size_pct 1.8 ≈  7px  (eyebrow)
+  These are visual approximations for the brief card only.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<!--
+  Replace the Google Fonts import above with the actual font families
+  approved in the concept brief. Both must be valid Google Fonts names.
+-->
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #E0D8CE; font-family: 'Source Sans 3', sans-serif; padding: 48px; }
+
+  .series-header { margin-bottom: 40px; border-bottom: 1px solid #1e1e1e; padding-bottom: 24px; }
+  .series-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #5C6B74; margin-bottom: 6px; }
+  .series-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #E0D8CE; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .series-meta { font-size: 12px; color: #5C6B74; line-height: 1.8; }
+  .palette-row { display: flex; gap: 16px; margin-top: 10px; align-items: center; }
+  .swatch { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #888; }
+  .swatch-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 380px); gap: 32px; }
+
+  .frame-card { background: #111; border: 1px solid #1e1e1e; }
+  .frame-card-header { padding: 12px 16px; border-bottom: 1px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; }
+  .frame-id { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #5C6B74; }
+  .frame-status { font-size: 10px; color: #444; }
+
+  /* Canvas: 380×475 = 4:5 aspect ratio at display scale */
+  .canvas { width: 380px; height: 475px; background: #1a1a1a; position: relative; overflow: hidden; }
+
+  /* Gradient overlays — adjust height and rgba opacity per frame */
+  .grad-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(92,107,116,0.65) 100%);
+  }
+  .grad-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 55%;
+    background: linear-gradient(to top, transparent 0%, rgba(92,107,116,0.55) 100%);
+  }
+
+  /* Zone boundary hairline */
+  .zone-line-h { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.07); }
+
+  /* Text layers — position via inline top/bottom/left/right */
+  .layer-eyebrow-tl { position: absolute; top: 7%; left: 6%; font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase; color: #E0D8CE; opacity: 0.85; }
+  .layer-eyebrow-tr { position: absolute; top: 7%; right: 6%; font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase; color: #E0D8CE; opacity: 0.85; text-align: right; }
+  .layer-headline-tl { position: absolute; top: 11%; left: 6%; font-family: 'Bebas Neue', sans-serif; color: #E0D8CE; letter-spacing: 0.02em; line-height: 1.0; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .layer-headline-bl { position: absolute; bottom: 6%; left: 6%; font-family: 'Bebas Neue', sans-serif; color: #E0D8CE; letter-spacing: 0.02em; line-height: 1.0; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .layer-caption-bl { position: absolute; bottom: 6%; left: 6%; font-size: 7px; color: #E0D8CE; opacity: 0.9; line-height: 1.5; max-width: 82%; }
+
+  /* Annotations */
+  .annot { position: absolute; font-size: 8px; color: #5C6B74; letter-spacing: 0.05em; }
+  .annot-grad { color: #3a4a52; }
+
+  /* Silent frame */
+  .canvas-silent { background: #111; display: flex; align-items: center; justify-content: center; }
+  .silent-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #222; }
+
+  /* Spec table below each card */
+  .frame-spec { padding: 14px 16px; font-size: 11px; line-height: 1.8; color: #555; border-top: 1px solid #1a1a1a; }
+  .spec-row { display: flex; gap: 8px; }
+  .spec-key { color: #5C6B74; min-width: 90px; flex-shrink: 0; }
+  .spec-val { color: #888; }
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     SERIES HEADER — replace all {{PLACEHOLDER}} values
+     ===================================================================== -->
+<div class="series-header">
+  <div class="series-label">Concept Template · FrameForge</div>
+  <div class="series-title">{{SERIES_TITLE}}</div>
+  <div class="series-meta">
+    {{PLATFORM_META}}<br>
+    {{STYLE_META}}
+  </div>
+  <div class="palette-row">
+    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_1_HEX}}"></span>{{COLOR_1_HEX}} {{COLOR_1_ROLE}}</div>
+    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_2_HEX}}"></span>{{COLOR_2_HEX}} {{COLOR_2_ROLE}}</div>
+    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_3_HEX}}"></span>{{COLOR_3_HEX}} {{COLOR_3_ROLE}}</div>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- =================================================================
+       FRAME 01 — TEXT FRAME (eyebrow + headline + caption)
+       Replace: frame id, status, gradient stops, layer content, spec rows
+       ================================================================= -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_01_ID}}</span>
+      <span class="frame-status">{{FRAME_01_STATUS}}</span>
+    </div>
+    <div class="canvas">
+      <!-- Gradient: adjust height to match gradient start %, rgba opacity to to_opacity -->
+      <div class="grad-bottom" style="height:60%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.65) 100%)"></div>
+      <!-- Zone boundary: top value = gradient start % -->
+      <div class="zone-line-h" style="top:40%"></div>
+      <div class="annot annot-grad" style="top:41%;left:4%">gradient starts 40%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.65</div>
+      <!-- Eyebrow top-left -->
+      <div class="layer-eyebrow-tl">{{EYEBROW_COPY}}</div>
+      <!-- Headline bottom-left: font-size ≈ size_pct×3.45px; bottom = offset_y_pct% -->
+      <div class="layer-headline-bl" style="font-size:38px;bottom:17%;">{{HEADLINE_COPY}}</div>
+      <!-- Caption bottom-left: bottom = offset_y_pct% (must be below headline) -->
+      <div class="layer-caption-bl" style="bottom:6%;">{{CAPTION_COPY}}</div>
+      <div class="annot" style="top:3%;right:4%">{{HEADLINE_SIZE_PCT}} · Display / {{CAPTION_SIZE_PCT}} · Sans</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@40% → 0.65@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{EYEBROW_FONT}} · size_pct {{EYEBROW_SIZE_PCT}} · top-left · offset +7</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -17</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{CAPTION_FONT}} · size_pct {{CAPTION_SIZE_PCT}} · bottom-left · offset -6</span></div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       FRAME 02 — SILENT FRAME (no overlay, no text, no shapes)
+       ================================================================= -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_02_ID}}</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — no intervention</span></div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       FRAME 03 — HEADLINE ONLY, TOP ZONE (to-top gradient)
+       ================================================================= -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_03_ID}}</span>
+      <span class="frame-status">Headline only</span>
+    </div>
+    <div class="canvas">
+      <!-- to-top gradient: adjust height to match gradient end %, rgba opacity to to_opacity -->
+      <div class="grad-top" style="height:55%;background:linear-gradient(to top,transparent 0%,rgba(92,107,116,0.55) 100%)"></div>
+      <div class="zone-line-h" style="top:60%"></div>
+      <div class="annot annot-grad" style="top:1%;left:4%">to_opacity 0.55</div>
+      <div class="annot annot-grad" style="top:61%;left:4%">gradient ends 60%</div>
+      <!-- Headline top-left: font-size ≈ size_pct×3.45px -->
+      <div class="layer-headline-tl" style="font-size:29px;">{{HEADLINE_COPY}}</div>
+      <div class="annot" style="bottom:4%;right:4%">{{HEADLINE_SIZE_PCT}} · Display</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-top · 0.0@60% → 0.55@0%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · top-left · offset +7</span></div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       FRAME 04 — HEADLINE + CAPTION, BOTTOM ZONE
+       ================================================================= -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_04_ID}}</span>
+      <span class="frame-status">Headline + caption</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:65%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.65) 100%)"></div>
+      <div class="zone-line-h" style="top:35%"></div>
+      <div class="annot annot-grad" style="top:36%;left:4%">gradient starts 35%</div>
+      <div class="layer-headline-bl" style="font-size:29px;bottom:21%;">{{HEADLINE_COPY}}</div>
+      <div class="layer-caption-bl" style="bottom:6%;">{{CAPTION_COPY}}</div>
+      <div class="annot" style="top:3%;right:4%">{{HEADLINE_SIZE_PCT}} · Display / {{CAPTION_SIZE_PCT}} · Sans</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@35% → 0.65@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -21</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{CAPTION_FONT}} · size_pct {{CAPTION_SIZE_PCT}} · bottom-left · offset -6</span></div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       FRAME 05 — HEADLINE ONLY, BOTTOM ZONE
+       ================================================================= -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_05_ID}}</span>
+      <span class="frame-status">Headline only</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:55%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.68) 100%)"></div>
+      <div class="zone-line-h" style="top:45%"></div>
+      <div class="annot annot-grad" style="top:46%;left:4%">gradient starts 45%</div>
+      <div class="layer-headline-bl" style="font-size:32px;bottom:7%;">{{HEADLINE_COPY}}</div>
+      <div class="annot" style="top:3%;right:4%">{{HEADLINE_SIZE_PCT}} · Display</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@45% → 0.68@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -7</span></div>
+    </div>
+  </div>
+
+  <!-- =================================================================
+       FRAME 06 — EYEBROW + HEADLINE (top eyebrow + bottom headline)
+       ================================================================= -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_06_ID}}</span>
+      <span class="frame-status">Eyebrow + headline</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom"></div>
+      <div class="zone-line-h" style="top:40%"></div>
+      <div class="annot annot-grad" style="top:41%;left:4%">gradient starts 40%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.60</div>
+      <!-- Eyebrow top-right -->
+      <div class="layer-eyebrow-tr">{{EYEBROW_COPY}}</div>
+      <div class="layer-headline-bl" style="font-size:32px;bottom:7%;">{{HEADLINE_COPY}}</div>
+      <div class="annot" style="top:3%;left:4%">{{HEADLINE_SIZE_PCT}} · Display</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@40% → 0.60@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{EYEBROW_FONT}} · size_pct {{EYEBROW_SIZE_PCT}} · top-right · offset -6,7</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -7</span></div>
+    </div>
+  </div>
+
+  <!--
+    Add more frame cards by duplicating the closest matching pattern above.
+    Choose the block that matches your frame's treatment type:
+      - Silent frame                  → copy FRAME 02 block
+      - Headline only (bottom)        → copy FRAME 05 block
+      - Headline only (top, to-top)   → copy FRAME 03 block
+      - Headline + caption (bottom)   → copy FRAME 04 block
+      - Eyebrow + headline            → copy FRAME 06 block
+      - Full text (eyebrow+hl+caption)→ copy FRAME 01 block
+
+    Update the frame id, status, gradient stops, layer content, and spec rows.
+  -->
+
+</div>
+</body>
+</html>

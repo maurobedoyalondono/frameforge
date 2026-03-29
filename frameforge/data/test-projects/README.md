@@ -42,6 +42,8 @@ FrameForge can generate image sheets directly: use the **Export → Thumbnail Sh
 ```
 test-projects/
 ├── README.md                        ← this file
+├── templates/
+│   └── concept-template.html        ← sample template for Step 5 (copy and fill placeholders)
 └── my-project/
     ├── inputs/                      ← image sheet(s) for AI concept work
     │   └── image-sheet.jpg          ← thumbnail grid of all source photos
@@ -172,15 +174,26 @@ Revise any string that fails a check. Replace — do not flag and defer. Only pr
 
 Generate a single self-contained HTML file showing all approved frames as a layout brief card.
 
-Model it on `frameforge/img/sample-template.png` and `sample-template4.png`:
-- One card per frame showing the canvas at correct aspect ratio
-- Zone annotations: image area, text zone, gradient band
-- Typography scale: headline / subhead / body sizes in px
-- Decorative rules or shapes with opacity noted
-- Exact text content for every layer on every frame
-- Series title, platform, and frame count at the top
+**Use the sample template as your starting point:** `test-projects/templates/concept-template.html`. Copy it to `my-project/concept-template.html` and replace every `{{PLACEHOLDER}}` with the actual approved values. The template provides the full CSS, frame card structure, gradient helpers, layer classes, and inline comments explaining every section. Do not reinvent the structure — adapt it.
 
-The HTML must be fully self-contained (inline CSS, no external dependencies). Save as `my-project/concept-template.html`.
+The template includes six frame patterns:
+- Silent frame
+- Headline only (bottom zone, to-bottom gradient)
+- Headline only (top zone, to-top gradient)
+- Headline + caption (bottom zone)
+- Eyebrow + headline
+- Full text (eyebrow + headline + caption)
+
+Duplicate the closest matching pattern for any additional frames not covered by the template.
+
+The finished file must show:
+- One card per frame at correct 4:5 aspect ratio
+- Zone boundary hairlines and gradient band annotations
+- Exact text content for every layer on every frame
+- Palette swatches and series metadata at the top
+- Spec rows below each card (font, size_pct, zone, offset)
+
+Save as `my-project/concept-template.html`.
 
 Also save `my-project/concept-template.md` — a plain-text markdown version of the approved concept. Include: series title and platform, color palette (hex + role), type system (families + size scale), application rules, and for each frame: frame-id, `image_src` label, thumbnail sheet position, silent/text status, and exact proposed text strings. **No placeholders** — every field must contain the actual approved value. This is the reference document for Step 8 and for any future session picking up the project. See `amazon/concept-template.md` as the reference for structure and level of detail.
 
@@ -190,7 +203,7 @@ Also save `my-project/concept-template.md` — a plain-text markdown version of 
 
 ## Step 5b — Analyze per-frame color
 
-Before generating the JSON, dispatch the `frameforge-color-advisor` sub-agent (`.claude/skills/frameforge-color-advisor/SKILL.md`). This agent reads each frame's raw photograph, looks at the actual text zone, and determines whether the approved palette colors are legible there — or whether per-frame overrides are needed.
+Before generating the JSON, dispatch the `frameforge-color-advisor` sub-agent (`.claude/skills/frameforge-color-advisor/SKILL.md`). This agent reads the thumbnail sheets from `inputs/` — not raw images — looks at each frame's text zone in the thumbnail, and determines whether the approved palette colors are legible there — or whether per-frame overrides are needed.
 
 Fill these placeholders when dispatching:
 
@@ -236,6 +249,19 @@ Every row must be filled with the actual raw filename read from the thumbnail sh
 ## Step 7 — Load into FrameForge
 
 **Before loading any images, verify that `frame-image-mapping.md` is complete** — every row must have a raw filename. If any row is blank, open the relevant thumbnail sheet, read the label under that position, and fill it in now. Do not proceed until the file is complete. This is the step where the mapping is established; it cannot be recovered later without reopening the thumbnail sheets.
+
+### Prepare label-named image copies (required for agent-preview)
+
+`agent-preview.html` resolves images by constructing a URL from the `image_src` label + `.jpg`. It does not accept injected File objects. For it to load images, a copy of each raw file must exist in `images/` under the label name:
+
+```bash
+# Run from my-project/images/
+cp CC2A1369.jpg wide-canyon-overview.jpg
+cp CC2A1463.jpg eroded-channels-closeup.jpg
+# ... one copy per frame
+```
+
+The raw files stay in place (they are the canonical source). The label-named copies are what `agent-preview.html` and the art director use. Both names coexist in `images/`.
 
 ### Without Playwright
 

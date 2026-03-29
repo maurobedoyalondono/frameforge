@@ -22,8 +22,9 @@
 <body data-status="loading">
   <canvas id="preview"></canvas>
   <script type="module">
-    import { Renderer } from './modules/renderer.js';
-    import { Project }  from './modules/project.js';
+    import { Renderer }          from './modules/renderer.js';
+    import { Project }           from './modules/project.js';
+    import { loadProjectFonts }  from './modules/fonts.js';
 
     // ── Image cache: srcName → HTMLImageElement ──────────────────────────────
     const imageCache = new Map();
@@ -117,6 +118,9 @@
       // Load into Project (imageElements starts empty — no localStorage needed)
       project = new Project();
       await project.load(data);
+
+      // Await all project fonts before rendering so ctx.measureText uses real metrics
+      await Promise.allSettled([...loadProjectFonts(data).values()]);
 
       // Find target frame
       const idx = project.data.frames.findIndex(f => f.id === frameId);

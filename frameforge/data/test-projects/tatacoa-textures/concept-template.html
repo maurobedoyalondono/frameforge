@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Tatacoa Textures — Concept Template</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #E0D8CE; font-family: 'Source Sans 3', sans-serif; padding: 48px; }
+
+  .series-header { margin-bottom: 40px; border-bottom: 1px solid #1e1e1e; padding-bottom: 24px; }
+  .series-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #5C6B74; margin-bottom: 6px; }
+  .series-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #E0D8CE; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .series-meta { font-size: 12px; color: #5C6B74; line-height: 1.8; }
+  .palette-row { display: flex; gap: 16px; margin-top: 10px; align-items: center; }
+  .swatch { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #888; }
+  .swatch-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 380px); gap: 32px; }
+
+  .frame-card { background: #111; border: 1px solid #1e1e1e; }
+  .frame-card-header { padding: 12px 16px; border-bottom: 1px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; }
+  .frame-id { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #5C6B74; }
+  .frame-status { font-size: 10px; color: #444; }
+
+  .canvas { width: 380px; height: 475px; background: #1a1212; position: relative; overflow: hidden; }
+
+  .grad-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(92,107,116,0.65) 100%);
+  }
+  .grad-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 55%;
+    background: linear-gradient(to top, transparent 0%, rgba(92,107,116,0.55) 100%);
+  }
+
+  .zone-line-h { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.07); }
+
+  .layer-eyebrow-tl { position: absolute; top: 7%; left: 6%; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #E0D8CE; opacity: 0.85; }
+  .layer-eyebrow-tr { position: absolute; top: 7%; right: 6%; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #E0D8CE; opacity: 0.85; text-align: right; }
+  .layer-headline-tl { position: absolute; top: 11%; left: 6%; font-family: 'Bebas Neue', sans-serif; color: #E0D8CE; letter-spacing: 0.02em; line-height: 1.0; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .layer-headline-bl { position: absolute; bottom: 6%; left: 6%; font-family: 'Bebas Neue', sans-serif; color: #E0D8CE; letter-spacing: 0.02em; line-height: 1.0; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .layer-caption-bl { position: absolute; bottom: 6%; left: 6%; font-size: 7px; color: #E0D8CE; opacity: 0.9; line-height: 1.5; max-width: 82%; }
+
+  .annot { position: absolute; font-size: 8px; color: #5C6B74; letter-spacing: 0.05em; }
+  .annot-grad { color: #3a4a52; }
+
+  .canvas-silent { background: #111; display: flex; align-items: center; justify-content: center; }
+  .silent-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #222; }
+
+  .frame-spec { padding: 14px 16px; font-size: 11px; line-height: 1.8; color: #555; border-top: 1px solid #1a1a1a; }
+  .spec-row { display: flex; gap: 8px; }
+  .spec-key { color: #5C6B74; min-width: 90px; flex-shrink: 0; }
+  .spec-val { color: #888; }
+</style>
+</head>
+<body>
+
+<div class="series-header">
+  <div class="series-label">Concept Template · FrameForge</div>
+  <div class="series-title">TATACOA TEXTURES</div>
+  <div class="series-meta">
+    Instagram Portrait 4:5 · 1080 × 1350 px · 72 DPI · 8 frames · Scale factor 2<br>
+    Style: Stark documentary · Bebas Neue + Source Sans 3
+  </div>
+  <div class="palette-row">
+    <div class="swatch"><span class="swatch-dot" style="background:#5C6B74"></span>#5C6B74 Overlay</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#E0D8CE"></span>#E0D8CE Text</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#B85530"></span>#B85530 Accent (shapes only)</div>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- FRAME 01 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-01 · wide-canyon-overview · CC2A1369.jpg</span>
+      <span class="frame-status">Full text</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom"></div>
+      <div class="zone-line-h" style="top:40%"></div>
+      <div class="annot annot-grad" style="top:41%;left:4%">gradient starts 40%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.65</div>
+      <div class="layer-eyebrow-tl">HUILA · COLOMBIA</div>
+      <div class="layer-headline-bl" style="font-size:38px;bottom:17%;">TATACOA</div>
+      <div class="layer-caption-bl" style="bottom:6%;">El segundo mayor desierto de Colombia.<br>Doce millones de años de historia geológica.</div>
+      <div class="annot" style="top:3%;right:4%">11 · Bebas / 2.5 · SSP</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@40% → 0.65@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">Bebas Neue · size_pct 11 · bottom-left · -17</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">Source Sans 3 · size_pct 2.5 · bottom-left · -6</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 02 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-02 · eroded-channels-closeup · CC2A1463.jpg</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — raw surface, no intervention</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 03 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-03 · columnar-formations · CC2A1495.jpg</span>
+      <span class="frame-status">Headline only</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-top"></div>
+      <div class="zone-line-h" style="top:60%"></div>
+      <div class="annot annot-grad" style="top:1%;left:4%">to_opacity 0.55</div>
+      <div class="annot annot-grad" style="top:61%;left:4%">gradient ends 60%</div>
+      <div class="layer-headline-tl" style="font-size:29px;">SEDIMENTOS<br>DEL MIOCENO</div>
+      <div class="annot" style="bottom:4%;right:4%">8.5 · Bebas</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-top · 0.0@60% → 0.55@0%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">Bebas Neue · size_pct 8.5 · top-left · +7</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 04 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-04 · mesa-formation · CC2A1498.jpg</span>
+      <span class="frame-status">Silent (eyebrow conditional)</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only. Art director may add eyebrow TATACOA · HUILA (top-right) only if clean zone confirms.</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 05 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-05 · cacti-canyon-wall · CC2A1414.jpg</span>
+      <span class="frame-status">Headline + caption</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:65%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.65) 100%)"></div>
+      <div class="zone-line-h" style="top:35%"></div>
+      <div class="annot annot-grad" style="top:36%;left:4%">gradient starts 35%</div>
+      <div class="layer-headline-bl" style="font-size:29px;bottom:21%;">FLORA DEL DESIERTO</div>
+      <div class="layer-caption-bl" style="bottom:6%;">El melocactus y los cactus columnares habitan las paredes del cañón, sobreviviendo meses sin lluvia.</div>
+      <div class="annot" style="top:3%;right:4%">8.5 · Bebas / 2.5 · SSP</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@35% → 0.65@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">Bebas Neue · size_pct 8.5 · bottom-left · -21</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">Source Sans 3 · size_pct 2.5 · bottom-left · -6</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 06 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-06 · barrel-cactus-bloom · CC2A1403.jpg</span>
+      <span class="frame-status">Headline only</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:55%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.68) 100%)"></div>
+      <div class="zone-line-h" style="top:45%"></div>
+      <div class="annot annot-grad" style="top:46%;left:4%">gradient starts 45%</div>
+      <div class="layer-headline-bl" style="font-size:32px;bottom:7%;">MELOCACTUS</div>
+      <div class="annot" style="top:3%;right:4%">9.5 · Bebas</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@45% → 0.68@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">Bebas Neue · size_pct 9.5 · bottom-left · -7</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 07 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-07 · burrowing-owls · CC2A1585.jpg</span>
+      <span class="frame-status">Headline + caption</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:50%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.65) 100%)"></div>
+      <div class="zone-line-h" style="top:50%"></div>
+      <div class="annot annot-grad" style="top:51%;left:4%">gradient starts 50%</div>
+      <div class="layer-headline-bl" style="font-size:25px;bottom:24%;">ATHENE CUNICULARIA</div>
+      <div class="layer-caption-bl" style="bottom:6%;">El mochuelo excavador anida en las orillas erosionadas de la Tatacoa. Su camuflaje sigue la misma paleta que el suelo del desierto: tierra quemada, ceniza y sombra.</div>
+      <div class="annot" style="top:3%;right:4%">7.5 · Bebas / 2.5 · SSP</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@50% → 0.65@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">Bebas Neue · size_pct 7.5 · bottom-left · -24</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">Source Sans 3 · size_pct 2.5 · bottom-left · -6</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 08 -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-08 · desert-road · CC2A1683.jpg</span>
+      <span class="frame-status">Eyebrow + headline</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom"></div>
+      <div class="zone-line-h" style="top:40%"></div>
+      <div class="annot annot-grad" style="top:41%;left:4%">gradient starts 40%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.60</div>
+      <div class="layer-eyebrow-tr">NEIVA · HUILA</div>
+      <div class="layer-headline-bl" style="font-size:32px;bottom:7%;">CAMINO DEL DESIERTO</div>
+      <div class="annot" style="top:3%;left:4%">9.5 · Bebas</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@40% → 0.60@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">Source Sans 3 · size_pct 1.8 · top-right · -6,7</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">Bebas Neue · size_pct 9.5 · bottom-left · -7</span></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
