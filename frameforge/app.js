@@ -453,6 +453,18 @@ async function init() {
     renderCurrentFrame();
   };
 
+  layersPanel.onLayerVisibilityAll = (makeVisible) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    if (!frame?.layers) return;
+    for (const layer of frame.layers) {
+      layer.visible = makeVisible ? undefined : false;
+    }
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(renderer.selectedLayerId);
+    project.save();
+    renderCurrentFrame();
+  };
+
   layersPanel.onLayerDelete = (layerId) => {
     const frame = project.data?.frames?.[project.activeFrameIndex];
     if (!frame) return;

@@ -328,70 +328,9 @@ This is where the work becomes what it is. Every previous step — concept, cura
 
 Not: did I follow the brief. Not: is the opacity in range. Those are tools, not the goal. The goal is an image that flows.
 
-### Art Director Agent — one frame at a time
+**With Playwright (Claude Code):** Use the `frameforge-art-orchestrator` skill (`.claude/skills/frameforge-art-orchestrator/SKILL.md`). The skill defines the full per-frame workflow: art director, copy review, and human approval gate — one frame at a time.
 
-**With Playwright (Claude Code):** Use the `frameforge-art-director` skill (`.claude/skills/frameforge-art-director/SKILL.md`). Dispatch one subagent per frame. The skill defines the full per-frame workflow:
-
-1. **Art Director** renders the frame, looks at the photograph, makes visual decisions, proposes all text strings
-2. **Copy Reviewer** reviews every proposed string — grammar, factual accuracy, narrative fit against the concept template, register. Art director may not write any text to the JSON until the reviewer approves
-3. **Art Director** writes approved copy to the JSON, finalizes the visual design, saves the screenshot (canvas element only — never full page)
-4. **Human approval** — present screenshot to user and wait. Do not dispatch the next frame until the user says so
-
-**Never batch-screenshot all frames and move on.** Step 8 is a creative process, not a capture job. Each frame gets a full creative + editorial review cycle before moving on.
-
-#### What the copy reviewer catches
-
-The copy reviewer reads the concept template before reviewing any string. This means it enforces:
-- **No-text frame rules** — if the concept marks a frame as silent (`sin texto`), text does not belong there regardless of what the JSON draft contains
-- **Factual accuracy** — superlatives, measurements, species names, place names must be verifiable and correctly scoped
-- **Series consistency** — a claim made in one frame (e.g. "the world's largest rainforest") cannot be duplicated in another frame where it doesn't apply
-- **Editorial register** — colloquial or informal language is flagged and corrected to match the series voice
-
-#### Screenshots
-
-Always capture the canvas element only — never the full browser window. Use `browser_snapshot` to get the canvas ref, then `browser_take_screenshot` with `element: "canvas"` and the ref, `type: "jpeg"`. Full-page screenshots are too large and cause API errors.
-
-### The shape library is yours
-
-FrameForge ships a full library of shapes — lines, rectangles, circles, organic forms, graphic elements. There is no limit on using them. A shape is not decoration; it is a compositional instrument. Use as many as the image demands, in any combination, at any scale or opacity. Stack them, layer them, use one or twelve. The only question is whether the result works as an image. If it does, it is correct.
-
-### Technical setup
-
-#### localStorage quota limitation
-
-FrameForge persists images in localStorage (~5 MB). Large JPEGs exceed this after the first 2–3 images. The rest exist in memory only and are lost on frame navigation.
-
-**With Playwright:** re-inject all images before navigating to each frame. Combine injection + navigation + render wait in one `browser_evaluate`:
-```javascript
-async () => {
-  const images = [ /* same label → path array as above */ ];
-  const files = await Promise.all(images.map(async ([name, path]) => {
-    const blob = await fetch(path).then(r => r.blob());
-    return new File([blob], name, { type: 'image/jpeg' });
-  }));
-  const dt = new DataTransfer();
-  files.forEach(f => dt.items.add(f));
-  const input = document.querySelector('#input-images');
-  Object.defineProperty(input, 'files', { value: dt.files, configurable: true });
-  input.dispatchEvent(new Event('change', { bubbles: true }));
-  await new Promise(resolve => {
-    const check = () => {
-      if (document.querySelectorAll('[class*="tray"] [draggable]').length >= images.length) {
-        resolve(); return;
-      }
-      setTimeout(check, 200);
-    };
-    check();
-    setTimeout(resolve, 6000);
-  });
-  document.querySelector('[role="listbox"]').children[N].click(); // 0-indexed
-  await new Promise(r => setTimeout(r, 800));
-  return 'ready';
-}
-```
-Immediately call `browser_take_screenshot` — save to `screenshots/frame-0N-v1.jpg`. Reloading JSON always clears images; re-inject immediately after any JSON reload.
-
-**Without Playwright:** user re-loads the updated JSON and re-shares screenshots manually after each iteration.
+**Without Playwright:** Generate the concept HTML and JSON, then wait for the user to load them manually into FrameForge and share screenshots for iteration.
 
 ### Looking at each frame
 
@@ -405,11 +344,7 @@ Ask:
 - **Does the frame carry its silence?** Some images do more with less. A clean frame next to a dense one creates rhythm. Use that.
 - **Does it sit in the series?** Look at adjacent frames together. The series should flow — there should be a visual conversation between frames, not a collection of unrelated cards.
 
-If something feels wrong, trust that. Diagnose it by looking, not by cross-referencing rules. Adjust opacity, reposition, resize, change weight — whatever the image is asking for. Then re-inject and look again.
-
-The brief and the manual exist to prevent specific failure modes. They are not a substitute for judgment. When the image looks right, it is right. When it doesn't, no amount of rule-compliance will fix it.
-
-Edit JSON → re-inject → screenshot affected frames → save as `frame-0N-v2.jpg`.
+If something feels wrong, trust that. Diagnose it by looking, not by cross-referencing rules. When the image looks right, it is right.
 
 ---
 

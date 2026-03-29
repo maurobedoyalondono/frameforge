@@ -5,6 +5,7 @@ export class LayersPanel {
     this._selectedId = null;
     this.onLayerSelect           = null; // (layerId) => void
     this.onLayerVisibilityToggle = null; // (layerId) => void
+    this.onLayerVisibilityAll    = null; // (makeVisible: boolean) => void
     this.onLayerDelete           = null; // (layerId) => void
     this._build();
   }
@@ -13,10 +14,22 @@ export class LayersPanel {
     this._el.innerHTML = `
       <div class="lp-header">
         <span class="lp-title">Layers</span>
+        <div class="lp-header-actions">
+          <button class="lp-btn lp-btn-all" data-action="show-all" title="Show all layers">👁</button>
+          <button class="lp-btn lp-btn-all" data-action="hide-all" title="Hide all layers">⊘</button>
+        </div>
       </div>
       <div class="lp-list"></div>
     `;
     this._listEl = this._el.querySelector('.lp-list');
+
+    // Header actions (show-all / hide-all)
+    this._el.querySelector('.lp-header').addEventListener('click', e => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      if (btn.dataset.action === 'show-all') { this.onLayerVisibilityAll?.(true);  return; }
+      if (btn.dataset.action === 'hide-all') { this.onLayerVisibilityAll?.(false); return; }
+    });
 
     this._listEl.addEventListener('click', e => {
       const row = e.target.closest('[data-layer-id]');
