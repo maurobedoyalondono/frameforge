@@ -110,6 +110,7 @@ export class Renderer {
    * @param {number} [opts.displayWidth]  — CSS/display width override (for preview)
    * @param {number} [opts.displayHeight] — CSS/display height override (for preview)
    * @param {boolean} [opts.safeZone] — override showSafeZone for this render
+   * @param {boolean} [opts.forExport=false] — skip all canvas overlays (selection indicator, layer bounds)
    * @returns {{ ok: boolean, error?: string }}
    */
   renderFrame(canvas, frameIndex, project, opts = {}) {
@@ -125,6 +126,7 @@ export class Renderer {
 
     const exp    = project.exportConfig;
     const scaleFactor = opts.scaleFactor ?? 1;
+    const forExport   = opts.forExport   ?? false;
     const canvasW = (exp.width_px  ?? 1080) * scaleFactor;
     const canvasH = (exp.height_px ?? 1350) * scaleFactor;
 
@@ -177,7 +179,7 @@ export class Renderer {
       }
 
       // Layer bounds outlines (debug / art-direction aid)
-      if (this.showLayerBounds) {
+      if (!forExport && this.showLayerBounds) {
         this._drawLayerOutlines(ctx, frame, effW, effH, project);
       }
 
@@ -194,35 +196,39 @@ export class Renderer {
       }
 
       // Selection indicator
-      if (this.selectedLayerId) {
+      // image/overlay: only shown in layers mode; text/shape: always shown when selected
+      if (!forExport && this.selectedLayerId) {
         const selLayer = (frame.layers ?? []).find(l => l.id === this.selectedLayerId);
         if (selLayer) {
-          try {
-            const bounds = computeLayerBounds(ctx, selLayer, effW, effH, project);
-            if (bounds) {
-              const pad = effW * 0.008;
-              ctx.save();
-              ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
-              ctx.lineWidth   = Math.max(1, effW / 600);
-              ctx.setLineDash([effW / 70, effW / 110]);
-              ctx.strokeRect(
-                bounds.left   - pad,
-                bounds.top    - pad,
-                (bounds.right  - bounds.left) + pad * 2,
-                (bounds.bottom - bounds.top)  + pad * 2
-              );
-              // Type badge for full-frame layers so the selected type is always visible
-              if (selLayer.type === 'image' || selLayer.type === 'overlay') {
-                const label    = selLayer.type === 'image' ? 'IMG' : 'OVR';
-                const fontSize = Math.max(10, effW * 0.018);
-                ctx.setLineDash([]);
-                ctx.font      = `bold ${fontSize}px sans-serif`;
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-                ctx.fillText(label, bounds.left + pad * 2 + 4, bounds.top + pad * 2 + fontSize);
+          const isFullFrame = selLayer.type === 'image' || selLayer.type === 'overlay';
+          if (!isFullFrame || this.showLayerBounds) {
+            try {
+              const bounds = computeLayerBounds(ctx, selLayer, effW, effH, project);
+              if (bounds) {
+                const pad = effW * 0.008;
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+                ctx.lineWidth   = Math.max(1, effW / 600);
+                ctx.setLineDash([effW / 70, effW / 110]);
+                ctx.strokeRect(
+                  bounds.left   - pad,
+                  bounds.top    - pad,
+                  (bounds.right  - bounds.left) + pad * 2,
+                  (bounds.bottom - bounds.top)  + pad * 2
+                );
+                // Type badge for full-frame layers (only reached when showLayerBounds is true)
+                if (isFullFrame) {
+                  const label    = selLayer.type === 'image' ? 'IMG' : 'OVR';
+                  const fontSize = Math.max(10, effW * 0.018);
+                  ctx.setLineDash([]);
+                  ctx.font      = `bold ${fontSize}px sans-serif`;
+                  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+                  ctx.fillText(label, bounds.left + pad * 2 + 4, bounds.top + pad * 2 + fontSize);
+                }
+                ctx.restore();
               }
-              ctx.restore();
-            }
-          } catch { /* ignore — selection indicator is cosmetic */ }
+            } catch { /* ignore — selection indicator is cosmetic */ }
+          }
         }
       }
 

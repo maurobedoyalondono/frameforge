@@ -60,6 +60,7 @@ export async function exportFrame(frameIndex, project, onProgress) {
 
   const result = renderer.renderFrame(canvas, frameIndex, project, {
     scaleFactor,
+    forExport: true,
   });
 
   if (!result.ok) {
@@ -186,7 +187,7 @@ export async function getFrameDataURL(frameIndex, project) {
   canvas.width  = (exp.width_px  ?? 1080) * scaleFactor;
   canvas.height = (exp.height_px ?? 1350) * scaleFactor;
 
-  const result = renderer.renderFrame(canvas, frameIndex, project, { scaleFactor });
+  const result = renderer.renderFrame(canvas, frameIndex, project, { scaleFactor, forExport: true });
   if (!result.ok) return null;
 
   return canvas.toDataURL('image/png');
