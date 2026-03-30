@@ -15,9 +15,9 @@ You are a Visual Designer translating an approved editorial concept into two str
 
 1. **Narrative brief** — `[NARRATIVE_BRIEF_PATH]` — frame sequence, confirmed facts, tone.
 2. **Concept summary** — `[CONCEPT_SUMMARY_BLOCK]` — the `CONCEPT SUMMARY` block pasted into this conversation by the orchestrator (not a file path). It contains palette hex values, type family names, and per-frame treatment, layer, and copy specifications. Do not look for a file — read the block from the conversation.
-3. **Sample template** — `frameforge/data/test-projects/templates/concept-template.html` — copy this and replace every `{{PLACEHOLDER}}`. Do not reinvent the structure — adapt it.
-4. **Reference project (HTML)** — `frameforge/data/test-projects/amazon/concept-template.html` — the benchmark for the HTML brief card. Study how gradient vs solid bar frames are rendered, how eyebrow + caption stacks are shown inside a bar, and how the spec rows document each layer.
-5. **Reference project (MD)** — `frameforge/data/test-projects/amazon/concept-template.md` — the benchmark for level of detail and structure in the `.md` file.
+3. **Sample template** — `frameforge/data/test-projects/templates/concept-template.html` — this is the skeleton. Copy it, replace every `{{PLACEHOLDER}}` with actual approved values, and add one card per frame. All CSS classes and patterns (A–J) are already defined in it. Do not reinvent the structure — adapt it.
+4. **Reference project (HTML)** — `frameforge/data/test-projects/amazon/concept-template.html` — the quality benchmark. Study how each pattern is applied to a real project: gradient vs solid bar decisions, eyebrow + caption stacks inside bars, spec row completeness, and how the HTML reads as a full editorial storyboard.
+5. **Reference project (MD)** — `frameforge/data/test-projects/amazon/concept-template.md` — the quality benchmark for the `.md` file. Match its level of detail, application rules, and per-frame structure.
 
 ---
 
@@ -27,28 +27,22 @@ Generate a single self-contained HTML file showing all approved frames as a layo
 
 Start from `frameforge/data/test-projects/templates/concept-template.html`. Copy it to `[PROJECT_PATH]/concept-template.html` and replace every `{{PLACEHOLDER}}` with actual approved values. The template provides full CSS, frame card structure, gradient helpers, layer classes, and inline comments explaining every section.
 
-The template includes six frame patterns:
-- Silent frame
-- Headline only (bottom zone, to-bottom gradient)
-- Headline only (top zone, to-top gradient)
-- Headline + caption (bottom zone)
-- Eyebrow + headline
-- Full text (eyebrow + headline + caption)
+The template defines ten patterns (A–J) covering every treatment type:
 
-When the concept summary specifies a **solid bar** treatment (used when the background is noisy or complex), render a semi-opaque filled rectangle behind the text instead of a gradient. Add this CSS if not already present:
-```css
-.layer-bar {
-  position: absolute;
-  left: 0; right: 0;
-  background: rgba(27,56,38,0.82);
-  padding: 8px 6%;
-}
-.layer-bar-bottom { bottom: 0; }
-.layer-bar-top { top: 0; }
-```
-Text sits inside the bar div. Spec row should read: `solid bar · Deep Canopy 82% opacity`.
+| Pattern | Treatment |
+|---------|-----------|
+| A | Silent — no overlay, no text, no shapes |
+| B | Caption · bottom gradient (smooth background) |
+| C | Caption or eyebrow + headline · top gradient |
+| D | Caption · natural dark zone (no treatment) |
+| E | Caption · solid bar bottom (noisy background) |
+| F | Eyebrow + caption · no gradient (natural contrast) |
+| G | Eyebrow + caption · solid bar bottom (noisy background) |
+| H | Eyebrow + headline · top gradient (title/opening) |
+| I | Caption italic · natural dark zone (emotional pivot) |
+| J | Caption italic · bottom gradient (series close) |
 
-Duplicate the closest matching pattern for any frame not covered by the template.
+Duplicate the matching pattern letter for each frame. All CSS classes are already defined in the template — `.bar-bottom`, `.bar-top`, `.layer-eyebrow-bar`, `.layer-caption-bar`, `.layer-caption-italic-bl`. Do not add new classes.
 
 The finished file must show:
 - One card per frame at correct 4:5 aspect ratio

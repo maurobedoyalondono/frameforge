@@ -1,81 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>{{SERIES_TITLE}} — Concept Template</title>
+<html lang="{{LANG}}">
 <!--
   CONCEPT TEMPLATE — FrameForge Layout Brief
   ==========================================
-  This file is a sample. Copy it to your project folder, rename it
-  concept-template.html, and replace every {{PLACEHOLDER}} with the
-  actual approved values from the concept brief.
+  USAGE: Copy this file to your project folder as concept-template.html.
+  Replace every {{PLACEHOLDER}} with the actual approved values.
+  See the amazon project for a complete worked example:
+    frameforge/data/test-projects/amazon/concept-template.html
 
-  Placeholder reference
+  PLACEHOLDER REFERENCE
   ---------------------
-  {{SERIES_TITLE}}        Series name in all caps (e.g. TATACOA TEXTURES)
-  {{PLATFORM_META}}       Platform description (e.g. Instagram Portrait 4:5 · 1080 × 1350 px · 72 DPI · N frames)
-  {{STYLE_META}}          Style line (e.g. Stark documentary · Bebas Neue + Source Sans 3)
-  {{COLOR_1_HEX}}         Primary overlay color hex (e.g. #5C6B74)
-  {{COLOR_1_ROLE}}        Role label (e.g. Overlay)
-  {{COLOR_2_HEX}}         Primary text color hex (e.g. #E0D8CE)
-  {{COLOR_2_ROLE}}        Role label (e.g. Text)
-  {{COLOR_3_HEX}}         Accent color hex (e.g. #B85530)
-  {{COLOR_3_ROLE}}        Role label (e.g. Accent — shapes only)
-  {{FRAME_N_ID}}          Frame identifier (e.g. frame-01 · wide-canyon-overview · CC2A1369.jpg)
-  {{FRAME_N_STATUS}}      Treatment label (e.g. Full text / Headline only / Silent)
+  {{LANG}}                Language code (e.g. es, en, pt)
+  {{SERIES_TITLE}}        Series title (e.g. Amazonía)
+  {{PLATFORM_META}}       Platform line (e.g. Instagram Portrait 4:5 · 1080 × 1350 px · 72 DPI · scale_factor 2 · N frames)
+  {{STYLE_META}}          Style line (e.g. Warm lush editorial · Fraunces + DM Sans)
+  {{FONT_DISPLAY}}        Display font Google Fonts name (e.g. Fraunces)
+  {{FONT_SANS}}           Sans-serif font Google Fonts name (e.g. DM Sans)
+  {{FONT_DISPLAY_IMPORT}} URL-encoded name for Google Fonts import (e.g. Fraunces:ital,wght@0,300;1,300)
+  {{FONT_SANS_IMPORT}}    URL-encoded name for Google Fonts import (e.g. DM+Sans:wght@400;500)
+  {{COLOR_PRIMARY_HEX}}   Primary overlay color hex (e.g. #1B3826) — used for gradients and solid bars
+  {{COLOR_PRIMARY_ROLE}}  Role label (e.g. Deep Canopy — overlays &amp; bars)
+  {{COLOR_ACCENT_HEX}}    Accent color hex (e.g. #C4782A) — used for eyebrows only
+  {{COLOR_ACCENT_ROLE}}   Role label (e.g. River Amber — eyebrows)
+  {{COLOR_SECONDARY_HEX}} Secondary color hex (e.g. #7B9E87) — optional third palette entry
+  {{COLOR_SECONDARY_ROLE}} Role label
+  {{TEXT_COLOR}}          Text color hex (e.g. #F5EFE0)
 
-  Canvas classes
-  --------------
-  .canvas              Standard 4:5 frame with image placeholder background
-  .canvas-silent       Silent frame — centered "No overlay · No text · No shapes" label
+  FRAME PLACEHOLDERS (per frame)
+  {{FRAME_N_ID}}          Frame identifier line (e.g. frame-01 · aerial-amazon-river)
+  {{FRAME_N_STATUS}}      Treatment label (e.g. Eyebrow + headline · top zone)
+  {{FRAME_N_EYEBROW}}     Eyebrow copy string (omit layer if no eyebrow)
+  {{FRAME_N_HEADLINE}}    Headline copy string (omit layer if no headline)
+  {{FRAME_N_CAPTION}}     Caption copy string (omit layer if no caption)
 
-  Gradient helpers
-  ----------------
-  .grad-bottom         to-bottom gradient band (default height 60%, opacity ~0.65)
-  .grad-top            to-top gradient band (default height 55%, opacity ~0.55)
+  FRAME PATTERNS — duplicate the matching block for each frame
+  -----------------------------------------------------------
+  Pattern A  Silent frame
+  Pattern B  Caption · bottom gradient (smooth background)
+  Pattern C  Caption · top gradient (smooth background)
+  Pattern D  Caption · natural dark zone (no treatment)
+  Pattern E  Caption · solid bar bottom (noisy/complex background)
+  Pattern F  Eyebrow + caption · no gradient (natural contrast)
+  Pattern G  Eyebrow + caption · solid bar bottom (noisy/complex background)
+  Pattern H  Eyebrow + headline · top gradient
+  Pattern I  Caption italic · natural dark zone (emotional pivot/close)
+  Pattern J  Caption italic · bottom gradient (series close)
 
-  Adjust inline styles on .grad-bottom / .grad-top to match the approved gradient stops:
-    height: percentage of frame covered by gradient
-    background rgba opacity: to_opacity from the brief
+  TREATMENT DECISION GUIDE
+  ------------------------
+  Read the background at the text zone before choosing a treatment:
+    Naturally dark or uniformly toned zone  →  Pattern D or F (no treatment)
+    Smooth tonal transition (sky, bokeh)    →  Pattern B, C, or H (gradient)
+    Noisy, textured, or complex background  →  Pattern E or G (solid bar)
+  Never default to gradient. Gradient loses to noise — solid bar eliminates it.
 
-  Text layer classes (position the layer using inline top/bottom/left/right)
-  --------------------------------------------------------------------------
-  .layer-eyebrow-tl    Eyebrow — top-left
-  .layer-eyebrow-tr    Eyebrow — top-right
-  .layer-headline-tl   Display headline — top-left (size via inline font-size)
-  .layer-headline-bl   Display headline — bottom-left (size via inline font-size)
-  .layer-caption-bl    Caption body — bottom-left
+  COPY GUIDE
+  ----------
+  All copy must be quick facts — specific, verifiable, interesting.
+  Not poems. Not labels.
+    Wrong: "HOATZÍN"                    (label — identifies but doesn't inform)
+    Wrong: "Vive como en el Cretácico." (poem — evokes vaguely, no specific fact)
+    Right: "Sus crías nacen con garras en las alas." (fact — specific and invisible in the image)
 
-  Annotation helpers
-  ------------------
-  .annot               Small annotation label (white-ish)
-  .annot-grad          Gradient annotation (muted)
-  .zone-line-h         Horizontal hairline marking a zone boundary
+  Wildlife frames: eyebrow = species name + caption = most interesting biological fact.
+  Environment/journey frames: one fact the viewer could not know from the image.
+  Silence: cinematically complete images; frames where preceding text has done the work.
 
-  Font size approximation
-  -----------------------
-  FrameForge size_pct maps to canvas-relative px. At canvas width 380px:
-    size_pct 11  ≈ 42px  (large display headline)
-    size_pct 9.5 ≈ 36px
-    size_pct 8.5 ≈ 32px
-    size_pct 7.5 ≈ 28px
-    size_pct 2.5 ≈  9px  (caption)
-    size_pct 1.8 ≈  7px  (eyebrow)
-  These are visual approximations for the brief card only.
+  FONT SIZE APPROXIMATION (canvas width 380px)
+  --------------------------------------------
+  size_pct 9.5 ≈ 36px  (display headline)
+  size_pct 3.0 ≈ 11px  (italic caption, series close)
+  size_pct 2.5 ≈  9px  (caption)
+  size_pct 1.8 ≈  7px  (eyebrow)
 -->
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-<!--
-  Replace the Google Fonts import above with the actual font families
-  approved in the concept brief. Both must be valid Google Fonts names.
--->
+<head>
+<meta charset="UTF-8">
+<title>{{SERIES_TITLE}} — Concept Template</title>
+<link href="https://fonts.googleapis.com/css2?family={{FONT_DISPLAY_IMPORT}}&family={{FONT_SANS_IMPORT}}&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0a0a0a; color: #E0D8CE; font-family: 'Source Sans 3', sans-serif; padding: 48px; }
+  body { background: #0a0a0a; color: {{TEXT_COLOR}}; font-family: '{{FONT_SANS}}', sans-serif; padding: 48px; }
 
   .series-header { margin-bottom: 40px; border-bottom: 1px solid #1e1e1e; padding-bottom: 24px; }
-  .series-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #5C6B74; margin-bottom: 6px; }
-  .series-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #E0D8CE; letter-spacing: 0.05em; margin-bottom: 10px; }
-  .series-meta { font-size: 12px; color: #5C6B74; line-height: 1.8; }
+  .series-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: {{COLOR_SECONDARY_HEX}}; margin-bottom: 6px; }
+  .series-title { font-family: '{{FONT_DISPLAY}}', serif; font-weight: 300; font-size: 36px; color: {{TEXT_COLOR}}; letter-spacing: 0.02em; margin-bottom: 10px; }
+  .series-meta { font-size: 12px; color: {{COLOR_SECONDARY_HEX}}; line-height: 1.8; }
   .palette-row { display: flex; gap: 16px; margin-top: 10px; align-items: center; }
   .swatch { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #888; }
   .swatch-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
@@ -84,35 +93,84 @@
 
   .frame-card { background: #111; border: 1px solid #1e1e1e; }
   .frame-card-header { padding: 12px 16px; border-bottom: 1px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; }
-  .frame-id { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #5C6B74; }
+  .frame-id { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: {{COLOR_SECONDARY_HEX}}; }
   .frame-status { font-size: 10px; color: #444; }
 
   /* Canvas: 380×475 = 4:5 aspect ratio at display scale */
   .canvas { width: 380px; height: 475px; background: #1a1a1a; position: relative; overflow: hidden; }
 
-  /* Gradient overlays — adjust height and rgba opacity per frame */
-  .grad-bottom {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
-    background: linear-gradient(to bottom, transparent 0%, rgba(92,107,116,0.65) 100%);
+  /* Gradient overlays — adjust height and rgba opacity per frame to match brief stops */
+  .grad-bottom { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.65) 100%); }
+  .grad-top    { position: absolute; top: 0;    left: 0; right: 0; background: linear-gradient(to top,    transparent 0%, rgba(0,0,0,0.50) 100%); }
+  /* Override rgba with {{COLOR_PRIMARY_HEX}} converted to rgb for each project */
+
+  /* Solid bar — used when background is noisy or complex; gradient loses to texture */
+  .bar-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.82); /* replace 0,0,0 with {{COLOR_PRIMARY_HEX}} rgb values */
+    padding: 10px 6% 8px;
+    display: flex; flex-direction: column; gap: 3px;
   }
-  .grad-top {
-    position: absolute; top: 0; left: 0; right: 0; height: 55%;
-    background: linear-gradient(to top, transparent 0%, rgba(92,107,116,0.55) 100%);
+  .bar-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.82);
+    padding: 8px 6% 10px;
+    display: flex; flex-direction: column; gap: 3px;
   }
 
   /* Zone boundary hairline */
   .zone-line-h { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.07); }
 
-  /* Text layers — position via inline top/bottom/left/right */
-  .layer-eyebrow-tl { position: absolute; top: 7%; left: 6%; font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase; color: #E0D8CE; opacity: 0.85; }
-  .layer-eyebrow-tr { position: absolute; top: 7%; right: 6%; font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase; color: #E0D8CE; opacity: 0.85; text-align: right; }
-  .layer-headline-tl { position: absolute; top: 11%; left: 6%; font-family: 'Bebas Neue', sans-serif; color: #E0D8CE; letter-spacing: 0.02em; line-height: 1.0; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-  .layer-headline-bl { position: absolute; bottom: 6%; left: 6%; font-family: 'Bebas Neue', sans-serif; color: #E0D8CE; letter-spacing: 0.02em; line-height: 1.0; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-  .layer-caption-bl { position: absolute; bottom: 6%; left: 6%; font-size: 7px; color: #E0D8CE; opacity: 0.9; line-height: 1.5; max-width: 82%; }
+  /* Eyebrow — accent color, always uppercase, used for species names and act markers */
+  .layer-eyebrow-tl {
+    position: absolute; top: 7%; left: 6%;
+    font-family: '{{FONT_SANS}}', sans-serif; font-size: 7px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: {{COLOR_ACCENT_HEX}}; opacity: 0.95;
+  }
+  /* Eyebrow inside a solid bar */
+  .layer-eyebrow-bar {
+    font-family: '{{FONT_SANS}}', sans-serif; font-size: 7px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: {{COLOR_ACCENT_HEX}}; opacity: 0.95;
+  }
 
-  /* Annotations */
-  .annot { position: absolute; font-size: 8px; color: #5C6B74; letter-spacing: 0.05em; }
-  .annot-grad { color: #3a4a52; }
+  /* Display headline — top-left or bottom-left */
+  .layer-headline-tl {
+    position: absolute; top: 11%; left: 6%;
+    font-family: '{{FONT_DISPLAY}}', serif; font-weight: 300;
+    color: {{TEXT_COLOR}}; letter-spacing: 0.01em; line-height: 1.0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .layer-headline-bl {
+    position: absolute; bottom: 6%; left: 6%;
+    font-family: '{{FONT_DISPLAY}}', serif; font-weight: 300;
+    color: {{TEXT_COLOR}}; letter-spacing: 0.01em; line-height: 1.0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  /* Caption — standard weight */
+  .layer-caption-bl {
+    position: absolute; bottom: 6%; left: 6%;
+    font-family: '{{FONT_SANS}}', sans-serif; font-size: 8px;
+    color: {{TEXT_COLOR}}; opacity: 0.9; line-height: 1.5; max-width: 82%;
+  }
+  /* Caption inside a solid bar */
+  .layer-caption-bar {
+    font-family: '{{FONT_SANS}}', sans-serif; font-size: 8px;
+    color: {{TEXT_COLOR}}; opacity: 0.9; line-height: 1.5;
+  }
+  /* Caption italic — display face, reserved for emotional pivots and series close */
+  .layer-caption-italic-bl {
+    position: absolute; bottom: 6%; left: 6%;
+    font-family: '{{FONT_DISPLAY}}', serif; font-style: italic; font-weight: 300; font-size: 9px;
+    color: {{TEXT_COLOR}}; opacity: 0.92; line-height: 1.5; max-width: 82%;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+
+  /* Annotations — layout notes visible in the brief card only */
+  .annot { position: absolute; font-size: 8px; color: #7B9E87; letter-spacing: 0.05em; }
+  .annot-grad { color: #2a4a35; }
 
   /* Silent frame */
   .canvas-silent { background: #111; display: flex; align-items: center; justify-content: center; }
@@ -121,15 +179,13 @@
   /* Spec table below each card */
   .frame-spec { padding: 14px 16px; font-size: 11px; line-height: 1.8; color: #555; border-top: 1px solid #1a1a1a; }
   .spec-row { display: flex; gap: 8px; }
-  .spec-key { color: #5C6B74; min-width: 90px; flex-shrink: 0; }
+  .spec-key { color: {{COLOR_SECONDARY_HEX}}; min-width: 90px; flex-shrink: 0; }
   .spec-val { color: #888; }
 </style>
 </head>
 <body>
 
-<!-- =====================================================================
-     SERIES HEADER — replace all {{PLACEHOLDER}} values
-     ===================================================================== -->
+<!-- SERIES HEADER -->
 <div class="series-header">
   <div class="series-label">Concept Template · FrameForge</div>
   <div class="series-title">{{SERIES_TITLE}}</div>
@@ -138,166 +194,273 @@
     {{STYLE_META}}
   </div>
   <div class="palette-row">
-    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_1_HEX}}"></span>{{COLOR_1_HEX}} {{COLOR_1_ROLE}}</div>
-    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_2_HEX}}"></span>{{COLOR_2_HEX}} {{COLOR_2_ROLE}}</div>
-    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_3_HEX}}"></span>{{COLOR_3_HEX}} {{COLOR_3_ROLE}}</div>
+    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_PRIMARY_HEX}}"></span>{{COLOR_PRIMARY_HEX}} {{COLOR_PRIMARY_ROLE}}</div>
+    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_ACCENT_HEX}}"></span>{{COLOR_ACCENT_HEX}} {{COLOR_ACCENT_ROLE}}</div>
+    <div class="swatch"><span class="swatch-dot" style="background:{{COLOR_SECONDARY_HEX}}"></span>{{COLOR_SECONDARY_HEX}} {{COLOR_SECONDARY_ROLE}}</div>
   </div>
 </div>
 
 <div class="grid">
 
-  <!-- =================================================================
-       FRAME 01 — TEXT FRAME (eyebrow + headline + caption)
-       Replace: frame id, status, gradient stops, layer content, spec rows
-       ================================================================= -->
+  <!-- =====================================================================
+       PATTERN A — Silent frame
+       Use for: cinematically complete images; frames where prior text has
+       done the work; emotional pauses; act-closing images.
+       ===================================================================== -->
   <div class="frame-card">
     <div class="frame-card-header">
-      <span class="frame-id">{{FRAME_01_ID}}</span>
-      <span class="frame-status">{{FRAME_01_STATUS}}</span>
-    </div>
-    <div class="canvas">
-      <!-- Gradient: adjust height to match gradient start %, rgba opacity to to_opacity -->
-      <div class="grad-bottom" style="height:60%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.65) 100%)"></div>
-      <!-- Zone boundary: top value = gradient start % -->
-      <div class="zone-line-h" style="top:40%"></div>
-      <div class="annot annot-grad" style="top:41%;left:4%">gradient starts 40%</div>
-      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.65</div>
-      <!-- Eyebrow top-left -->
-      <div class="layer-eyebrow-tl">{{EYEBROW_COPY}}</div>
-      <!-- Headline bottom-left: font-size ≈ size_pct×3.45px; bottom = offset_y_pct% -->
-      <div class="layer-headline-bl" style="font-size:38px;bottom:17%;">{{HEADLINE_COPY}}</div>
-      <!-- Caption bottom-left: bottom = offset_y_pct% (must be below headline) -->
-      <div class="layer-caption-bl" style="bottom:6%;">{{CAPTION_COPY}}</div>
-      <div class="annot" style="top:3%;right:4%">{{HEADLINE_SIZE_PCT}} · Display / {{CAPTION_SIZE_PCT}} · Sans</div>
-    </div>
-    <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@40% → 0.65@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{EYEBROW_FONT}} · size_pct {{EYEBROW_SIZE_PCT}} · top-left · offset +7</span></div>
-      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -17</span></div>
-      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{CAPTION_FONT}} · size_pct {{CAPTION_SIZE_PCT}} · bottom-left · offset -6</span></div>
-    </div>
-  </div>
-
-  <!-- =================================================================
-       FRAME 02 — SILENT FRAME (no overlay, no text, no shapes)
-       ================================================================= -->
-  <div class="frame-card">
-    <div class="frame-card-header">
-      <span class="frame-id">{{FRAME_02_ID}}</span>
+      <span class="frame-id">{{FRAME_N_ID}}</span>
       <span class="frame-status">Silent</span>
     </div>
     <div class="canvas canvas-silent">
       <span class="silent-label">No overlay · No text · No shapes</span>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — no intervention</span></div>
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — [state why silence is correct: cinematically complete / act close / joy needs no annotation / etc.]</span></div>
     </div>
   </div>
 
-  <!-- =================================================================
-       FRAME 03 — HEADLINE ONLY, TOP ZONE (to-top gradient)
-       ================================================================= -->
+  <!-- =====================================================================
+       PATTERN B — Caption · bottom gradient
+       Use for: smooth or aerial backgrounds where a gradient can transition
+       cleanly. Good for establishing shots, aerial frames, soft bokeh.
+       ===================================================================== -->
   <div class="frame-card">
     <div class="frame-card-header">
-      <span class="frame-id">{{FRAME_03_ID}}</span>
-      <span class="frame-status">Headline only</span>
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Caption · bottom zone</span>
     </div>
     <div class="canvas">
-      <!-- to-top gradient: adjust height to match gradient end %, rgba opacity to to_opacity -->
-      <div class="grad-top" style="height:55%;background:linear-gradient(to top,transparent 0%,rgba(92,107,116,0.55) 100%)"></div>
-      <div class="zone-line-h" style="top:60%"></div>
-      <div class="annot annot-grad" style="top:1%;left:4%">to_opacity 0.55</div>
-      <div class="annot annot-grad" style="top:61%;left:4%">gradient ends 60%</div>
-      <!-- Headline top-left: font-size ≈ size_pct×3.45px -->
-      <div class="layer-headline-tl" style="font-size:29px;">{{HEADLINE_COPY}}</div>
-      <div class="annot" style="bottom:4%;right:4%">{{HEADLINE_SIZE_PCT}} · Display</div>
+      <!-- Adjust height to match gradient start %, rgba to to_opacity. Use {{COLOR_PRIMARY_HEX}} rgb values. -->
+      <div class="grad-bottom" style="height:22%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.55) 100%)"></div>
+      <div class="zone-line-h" style="top:78%"></div>
+      <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.55</div>
+      <div class="layer-caption-bl">{{FRAME_N_CAPTION}}</div>
+      <div class="annot" style="top:3%;right:4%">2.5 · {{FONT_SANS}}</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-top · 0.0@60% → 0.55@0%</span></div>
-      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · top-left · offset +7</span></div>
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@78% → 0.55@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
-  <!-- =================================================================
-       FRAME 04 — HEADLINE + CAPTION, BOTTOM ZONE
-       ================================================================= -->
+  <!-- =====================================================================
+       PATTERN C — Caption · top gradient
+       Use for: smooth backgrounds with a clean upper zone (open sky,
+       gradual light). Title frames or act-opening establishing shots.
+       ===================================================================== -->
   <div class="frame-card">
     <div class="frame-card-header">
-      <span class="frame-id">{{FRAME_04_ID}}</span>
-      <span class="frame-status">Headline + caption</span>
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Caption · top zone</span>
     </div>
     <div class="canvas">
-      <div class="grad-bottom" style="height:65%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.65) 100%)"></div>
-      <div class="zone-line-h" style="top:35%"></div>
-      <div class="annot annot-grad" style="top:36%;left:4%">gradient starts 35%</div>
-      <div class="layer-headline-bl" style="font-size:29px;bottom:21%;">{{HEADLINE_COPY}}</div>
-      <div class="layer-caption-bl" style="bottom:6%;">{{CAPTION_COPY}}</div>
-      <div class="annot" style="top:3%;right:4%">{{HEADLINE_SIZE_PCT}} · Display / {{CAPTION_SIZE_PCT}} · Sans</div>
+      <div class="grad-top" style="height:35%;background:linear-gradient(to top,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
+      <div class="zone-line-h" style="top:65%"></div>
+      <div class="annot annot-grad" style="top:1%;left:4%">to_opacity 0.50</div>
+      <div class="annot annot-grad" style="top:66%;left:4%">gradient ends 65%</div>
+      <div class="layer-eyebrow-tl">{{FRAME_N_EYEBROW}}</div>
+      <div class="layer-headline-tl" style="font-size:36px;">{{FRAME_N_HEADLINE}}</div>
+      <div class="annot" style="bottom:4%;right:4%">9.5 · {{FONT_DISPLAY}} / 1.8 · {{FONT_SANS}}</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@35% → 0.65@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -21</span></div>
-      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{CAPTION_FONT}} · size_pct {{CAPTION_SIZE_PCT}} · bottom-left · offset -6</span></div>
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-top · 0.0@65% → 0.50@0%</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color {{COLOR_ACCENT_HEX}}</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{FONT_DISPLAY}} wt 300 · size_pct 9.5 · top-left · offset_x 6, offset_y 11</span></div>
     </div>
   </div>
 
-  <!-- =================================================================
-       FRAME 05 — HEADLINE ONLY, BOTTOM ZONE
-       ================================================================= -->
+  <!-- =====================================================================
+       PATTERN D — Caption · natural dark zone (no treatment)
+       Use for: frames where the text zone is already dark enough — deep
+       shadow, canoe interior, dark river water, dense canopy edge.
+       No gradient, no bar. The image provides the contrast.
+       ===================================================================== -->
   <div class="frame-card">
     <div class="frame-card-header">
-      <span class="frame-id">{{FRAME_05_ID}}</span>
-      <span class="frame-status">Headline only</span>
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Caption · natural dark zone</span>
     </div>
     <div class="canvas">
-      <div class="grad-bottom" style="height:55%;background:linear-gradient(to bottom,transparent 0%,rgba(92,107,116,0.68) 100%)"></div>
-      <div class="zone-line-h" style="top:45%"></div>
-      <div class="annot annot-grad" style="top:46%;left:4%">gradient starts 45%</div>
-      <div class="layer-headline-bl" style="font-size:32px;bottom:7%;">{{HEADLINE_COPY}}</div>
-      <div class="annot" style="top:3%;right:4%">{{HEADLINE_SIZE_PCT}} · Display</div>
+      <!-- No treatment — [state what provides the natural contrast] -->
+      <div class="layer-caption-bl">{{FRAME_N_CAPTION}}</div>
+      <div class="annot" style="top:3%;right:4%">2.5 · {{FONT_SANS}}</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — [natural contrast source]</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@45% → 0.68@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -7</span></div>
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — [natural contrast source]</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
-  <!-- =================================================================
-       FRAME 06 — EYEBROW + HEADLINE (top eyebrow + bottom headline)
-       ================================================================= -->
+  <!-- =====================================================================
+       PATTERN E — Caption · solid bar bottom
+       Use for: noisy, textured, or complex backgrounds where a gradient
+       would be defeated by surface detail — water, foliage, architecture.
+       The bar eliminates the background entirely in the text zone.
+       ===================================================================== -->
   <div class="frame-card">
     <div class="frame-card-header">
-      <span class="frame-id">{{FRAME_06_ID}}</span>
-      <span class="frame-status">Eyebrow + headline</span>
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Caption · solid bar bottom</span>
     </div>
     <div class="canvas">
-      <div class="grad-bottom"></div>
-      <div class="zone-line-h" style="top:40%"></div>
-      <div class="annot annot-grad" style="top:41%;left:4%">gradient starts 40%</div>
-      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.60</div>
-      <!-- Eyebrow top-right -->
-      <div class="layer-eyebrow-tr">{{EYEBROW_COPY}}</div>
-      <div class="layer-headline-bl" style="font-size:32px;bottom:7%;">{{HEADLINE_COPY}}</div>
-      <div class="annot" style="top:3%;left:4%">{{HEADLINE_SIZE_PCT}} · Display</div>
+      <!-- Solid bar — [state why: textured water / dense foliage / complex scene / etc.] -->
+      <div class="bar-bottom" style="background:rgba(27,56,38,0.82)">
+        <span class="layer-caption-bar">{{FRAME_N_CAPTION}}</span>
+      </div>
+      <div class="annot" style="top:3%;right:4%">2.5 · {{FONT_SANS}}</div>
+      <div class="annot annot-grad" style="top:3%;left:4%">solid bar — [reason]</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@40% → 0.60@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{EYEBROW_FONT}} · size_pct {{EYEBROW_SIZE_PCT}} · top-right · offset -6,7</span></div>
-      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{HEADLINE_FONT}} · size_pct {{HEADLINE_SIZE_PCT}} · bottom-left · offset -7</span></div>
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Solid bar · {{COLOR_PRIMARY_HEX}} 82% opacity · bottom</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 2.5 · bottom bar · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       PATTERN F — Eyebrow + caption · no gradient (natural contrast)
+       Use for: wildlife portraits with naturally dark backgrounds — dark
+       jungle, shadow areas, deep foliage. Eyebrow identifies species;
+       caption delivers the most interesting biological fact.
+       ===================================================================== -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Eyebrow + caption · no gradient</span>
+    </div>
+    <div class="canvas">
+      <!-- No treatment — [state what provides natural contrast] -->
+      <div class="layer-eyebrow-tl">{{FRAME_N_EYEBROW}}</div>
+      <div class="layer-caption-bl">{{FRAME_N_CAPTION}}</div>
+      <div class="annot" style="top:3%;right:4%">1.8 · {{FONT_SANS}} / 2.5 · {{FONT_SANS}}</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — [natural contrast source]</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — [natural contrast source]</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color {{COLOR_ACCENT_HEX}}</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       PATTERN G — Eyebrow + caption · solid bar bottom
+       Use for: wildlife frames where the background is noisy or bright —
+       out-of-focus foliage with bright patches, complex canopy.
+       Bar keeps both species name and fact legible regardless of background.
+       ===================================================================== -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Eyebrow + caption · solid bar bottom</span>
+    </div>
+    <div class="canvas">
+      <!-- Solid bar — [state why: bright foliage / complex background / etc.] -->
+      <div class="bar-bottom" style="background:rgba(27,56,38,0.82)">
+        <span class="layer-eyebrow-bar">{{FRAME_N_EYEBROW}}</span>
+        <span class="layer-caption-bar">{{FRAME_N_CAPTION}}</span>
+      </div>
+      <div class="annot" style="top:3%;right:4%">1.8 · {{FONT_SANS}} / 2.5 · {{FONT_SANS}}</div>
+      <div class="annot annot-grad" style="top:3%;left:4%">solid bar — [reason]</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Solid bar · {{COLOR_PRIMARY_HEX}} 82% opacity · bottom</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 1.8 · bottom bar · color {{COLOR_ACCENT_HEX}}</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 2.5 · bottom bar</span></div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       PATTERN H — Eyebrow + headline · top gradient
+       Use for: title/opening frames with a clean upper zone. The eyebrow
+       carries location/project context; the headline is the series name.
+       ===================================================================== -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Eyebrow + headline · top zone</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-top" style="height:35%;background:linear-gradient(to top,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
+      <div class="zone-line-h" style="top:65%"></div>
+      <div class="annot annot-grad" style="top:1%;left:4%">to_opacity 0.50</div>
+      <div class="annot annot-grad" style="top:66%;left:4%">gradient ends 65%</div>
+      <div class="layer-eyebrow-tl">{{FRAME_N_EYEBROW}}</div>
+      <div class="layer-headline-tl" style="font-size:36px;">{{FRAME_N_HEADLINE}}</div>
+      <div class="annot" style="bottom:4%;right:4%">9.5 · {{FONT_DISPLAY}} / 1.8 · {{FONT_SANS}}</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-top · 0.0@65% → 0.50@0%</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">{{FONT_SANS}} wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color {{COLOR_ACCENT_HEX}}</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">{{FONT_DISPLAY}} wt 300 · size_pct 9.5 · top-left · offset_x 6, offset_y 11</span></div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       PATTERN I — Caption italic · natural dark zone
+       Use for: emotional pivot frames (act transitions, human moments) where
+       the display face in italic signals a register shift. No gradient needed
+       when the background provides natural contrast (dark water, shadow).
+       ===================================================================== -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Caption italic · natural dark zone</span>
+    </div>
+    <div class="canvas">
+      <!-- No treatment — [state what provides the natural contrast] -->
+      <div class="layer-caption-italic-bl">{{FRAME_N_CAPTION}}</div>
+      <div class="annot" style="top:3%;right:4%">2.5 · {{FONT_DISPLAY}} italic</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — [natural contrast source]</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — [natural contrast source]</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{FONT_DISPLAY}} italic wt 300 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       PATTERN J — Caption italic · bottom gradient (series close)
+       Use for: the closing frame where a direct address or invitation needs
+       to float over a mid-tone background. Larger size_pct (3.0) for close.
+       ===================================================================== -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">{{FRAME_N_ID}}</span>
+      <span class="frame-status">Caption italic · bottom zone (series close)</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:28%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.55) 100%)"></div>
+      <div class="zone-line-h" style="top:72%"></div>
+      <div class="annot annot-grad" style="top:73%;left:4%">gradient starts 72%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.55</div>
+      <div class="layer-caption-italic-bl" style="font-size:11px;">{{FRAME_N_CAPTION}}</div>
+      <div class="annot" style="top:3%;right:4%">3.0 · {{FONT_DISPLAY}} italic</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@72% → 0.55@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">{{FONT_DISPLAY}} italic wt 300 · size_pct 3.0 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
   <!--
-    Add more frame cards by duplicating the closest matching pattern above.
-    Choose the block that matches your frame's treatment type:
-      - Silent frame                  → copy FRAME 02 block
-      - Headline only (bottom)        → copy FRAME 05 block
-      - Headline only (top, to-top)   → copy FRAME 03 block
-      - Headline + caption (bottom)   → copy FRAME 04 block
-      - Eyebrow + headline            → copy FRAME 06 block
-      - Full text (eyebrow+hl+caption)→ copy FRAME 01 block
+    ADDING MORE FRAMES
+    ------------------
+    Duplicate the pattern that matches your frame's treatment type:
+      Pattern A  Silent
+      Pattern B  Caption · bottom gradient
+      Pattern C  Caption (or eyebrow + headline) · top gradient
+      Pattern D  Caption · natural dark zone (no treatment)
+      Pattern E  Caption · solid bar bottom
+      Pattern F  Eyebrow + caption · no gradient
+      Pattern G  Eyebrow + caption · solid bar bottom
+      Pattern H  Eyebrow + headline · top gradient
+      Pattern I  Caption italic · natural dark zone
+      Pattern J  Caption italic · bottom gradient (series close)
 
-    Update the frame id, status, gradient stops, layer content, and spec rows.
+    Update: frame id, frame status, gradient stops / bar opacity,
+    layer content, annotation text, spec rows.
   -->
 
 </div>
