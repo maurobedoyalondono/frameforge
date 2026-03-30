@@ -34,7 +34,9 @@ The raw files stay in place. Both names coexist in `[IMAGES_PATH]`.
 
 ---
 
-## Step 3: Inject JSON
+## Step 3: Inject JSON (`[PROJECT_JSON_PATH]`)
+
+Before executing, replace every `[PLACEHOLDER]` token in the code below with its actual value.
 
 ```javascript
 async () => {
@@ -55,6 +57,8 @@ async () => {
 ## Step 4: Inject images
 
 Build the images array from `[FRAME_IMAGE_MAPPING_PATH]` — one entry per frame. Name each `File` with the `image_src` label (no extension) — FrameForge matches images by `file.name`:
+
+Before executing: read every row of `[FRAME_IMAGE_MAPPING_PATH]` and write out the complete `images` array — one `['label', 'path']` entry per frame, with both the `image_src` label and the full server path constructed from `[PROJECT_NAME]`. Only then execute the completed code. Also replace `[PROJECT_NAME]` in the comment-example path with the actual project name.
 
 ```javascript
 async () => {
@@ -78,6 +82,8 @@ async () => {
 ---
 
 ## Step 5: Wait for ready
+
+Before executing: replace `[FRAME_COUNT]` with a bare integer — the total number of frames in the project JSON. Do not leave the bracket syntax in place; it is not valid JavaScript.
 
 ```javascript
 () => new Promise((resolve) => {
