@@ -41,6 +41,24 @@ For each: why it fits the subject matter and mood — not aesthetic preference a
 
 ---
 
+## Story arc — map before per-frame work
+
+Before writing any individual brief, answer these questions about the series as a whole:
+
+1. **What are the structural text moments?** Every series has a spine — the title frame, act transitions, key narrative claims, the closing. Identify these first. These frames earn text regardless of image strength.
+
+2. **What needs to be named?** Naming is storytelling. A viewer who doesn't know what a howler monkey is gains something by being told. A viewer who doesn't know which river system they're looking at gains something by being told. Species, locations, acts, ecological context — these are not captions, they are orientation. Identify which subjects across the series the viewer needs introduced.
+
+3. **What does the series explain?** A story explains things. It delivers context the viewer cannot read from the image alone: how long someone was there, what the river means to the people who live on it, that this creature has survived for 60 million years. Where the narrative brief contains a fact or claim that would deepen a frame, use it.
+
+4. **Where does silence serve the story?** Silence is not the default — it is a deliberate treatment. It is correct for: cinematically complete images where text can only diminish; emotional pauses where the composition is the statement; transitional breath frames between acts. Silence must be chosen, not defaulted to. State why.
+
+Map the text spine across the full sequence before writing any individual brief. Each text decision should serve the whole, not just the frame it sits on.
+
+**Language:** Use the language that fits the project's geography and audience — the photographer's country, the location, the series' cultural context. If a location tag, species name, or act label is more authentic in the local language, use it. Maintain consistency within categories (e.g., all species names in the same language; all location tags in the same language).
+
+---
+
 ## Per-frame editorial brief
 
 Work through every frame in the approved sequence from the narrative brief. For each frame, present each sub-section as a separate labeled block with its heading as written. Do not merge sections. Follow this order:
@@ -52,17 +70,18 @@ Work through every frame in the approved sequence from the narrative brief. For 
 - **Eye path:** where the eye enters, travels, and rests
 - **Working zones:** the **strongest zone** (do not interfere here) and the **quietest zone** (candidate area for layered elements)
 
-**Text-free gate:** If this frame carries no text, stop here — no overlay elements of any kind are placed (no gradient, no shape, no line). Only continue to Layer intent if at least one text layer is justified.
+**Story role and text decision:** State what narrative role this frame plays in the sequence — is it opening an act, naming a subject, delivering the series thesis, creating emotional contrast, sustaining atmosphere? Based on that role, decide whether text deepens this frame's contribution or silence serves it better. State the reason either way. Do not default to silence — both choices require justification.
 
 **Strongest-zone boundary:** No element — gradient, shape, line, or text — may cover or compete with the strongest zone. Hard constraint, not a guideline.
 
 ### Layer intent *(one block per proposed element — text, shape, line, gradient)*
 
-- **Role:** compositional or narrative job — anchor, guide, inform, evoke, separate, punctuate
+*(Skip this section only if silence is the deliberate, stated choice for this frame.)*
+
+- **Role:** what this element does for the story — names a subject, marks an act, delivers a claim, anchors the series identity, signals a transition
 - **Position:** why this exact location, stated relative to the quietest zone only — never the strongest zone
 - **Weight:** opacity, scale, and contrast relative to the image beneath — does it sit *on* the photo or *emerge from* it
-- **Enhancement:** what the composition gains — not what the element says, but how it deepens the reading of the photo
-- **Survival test:** what does the viewer lose without this element? If the answer is nothing, cut the element.
+- **Story contribution:** how this element advances the series narrative — what the viewer knows or feels after reading it that they didn't before. If it adds nothing to the story, cut it.
 - **Copy** *(text layers only):* the exact proposed text — written in full, reviewed, publication-ready. No placeholders or draft copy.
 
 ### Composition check
