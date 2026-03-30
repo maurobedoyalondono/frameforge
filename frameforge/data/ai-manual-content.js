@@ -353,6 +353,8 @@ Every shape must earn its place. Only add a shape when it serves a clear visual 
 | Geometric accent | \`triangle\`, \`polygon\` | Star or diamond accent in a corner |
 | Angled energy | \`line\` with \`angle_deg\` | Diagonal slash for bold/documentary |
 | Location identity / scene depth | \`image_mask\` | Frailejón silhouette at frame bottom, mountain range horizon |
+| Text readability backing | \`rectangle\`, \`circle\` | Solid bar at photo bottom; circle badge behind a stat |
+| Compositional anchor / design statement | \`rectangle\`, \`circle\` | Bold color block on a flat or static composition |
 | Multi-point stroke / terrain | \`polyline\` | Winding road suggestion, angular ridgeline |
 | Organic curve / compositional guide | \`path\` | Sweeping arc, curved river, framing loop |
 
@@ -445,7 +447,7 @@ Numbers and measurements in stats blocks (and in any text layer) must be written
 Overlays serve two purposes: **readability** (text over photos needs contrast) and **mood** (color grading, consistency across frames). Every frame with text must have at least one overlay.
 
 ### Layer order
-Always: image → overlay(s) → shapes → text. Overlays go above the photo and below everything else.
+Always: image → overlay(s) → solid blocks → shapes → text. Overlays go above the photo; solid blocks sit above overlays; decorative shapes and text sit above solid blocks.
 
 ### When to use which overlay type
 
@@ -495,6 +497,76 @@ Do not over-darken dark photos — they lose depth. A light overlay on a dark ph
 
 ### Vary overlays per frame
 Overlay opacity and gradient stops may differ per frame based on the photo's brightness and mood. The overlay color and blend mode should stay consistent across the series for visual cohesion.
+
+---
+
+## Solid Blocks
+
+Solid blocks are \`shape\` layers used at high opacity. They serve two equal roles.
+
+**Legibility:** When the text zone has heavy texture, repeating pattern, or competing hues, a gradient overlay produces uneven contrast. A solid block gives text a flat surface to read against, eliminating the problem entirely.
+
+**Aesthetic:** Solid geometric forms are a first-class design tool. A bold color block, a white circle breaking a monotone composition, a black bar anchoring the frame — these are editorial design statements. They add visual energy, structure, and character to compositions that would otherwise read as flat or static.
+
+Neither role is a fallback. Both are legitimate reasons to add a solid block.
+
+### When to use a solid block
+
+- Text zone has heavy texture, repeating pattern, or color variation that makes a gradient insufficient
+- The photo color at the text zone fights any overlay tint regardless of opacity
+- The composition reads as flat or static — a strong geometric form would inject visual energy
+- You want a deliberate editorial frame: bold black bar, color band, graphic circle
+
+### Presets
+
+**Bar — bottom cover (most common):**
+\`\`\`json
+{
+  "id": "solid-bar",
+  "type": "shape",
+  "shape": "rectangle",
+  "position": { "x_pct": 50, "y_pct": 87 },
+  "dimensions": { "width_pct": 100, "height_pct": 26 },
+  "fill_color": "#000000",
+  "fill_opacity": 0.85
+}
+\`\`\`
+Text layers that sit on the bar go above it in the layer stack (appear later in the \`layers\` array). No gradient overlay is needed for that zone.
+
+**Square badge:**
+\`\`\`json
+{
+  "id": "solid-badge",
+  "type": "shape",
+  "shape": "rectangle",
+  "position": { "x_pct": 50, "y_pct": 50 },
+  "dimensions": { "width_pct": 25, "height_pct": 25 },
+  "fill_color": "#000000",
+  "fill_opacity": 0.85
+}
+\`\`\`
+
+**Circle badge:**
+\`\`\`json
+{
+  "id": "solid-circle",
+  "type": "shape",
+  "shape": "circle",
+  "position": { "x_pct": 50, "y_pct": 50 },
+  "dimensions": { "width_pct": 20, "height_pct": 20 },
+  "fill_color": "#000000",
+  "fill_opacity": 0.85
+}
+\`\`\`
+
+### Solid block color
+
+Choose a color that serves the design:
+- Black (\`#000000\`) — editorial weight, maximum contrast
+- White (\`#FFFFFF\`) — light, airy, graphic inversion
+- A series palette color — brand coherence
+
+Opacity \`0.85\` is a solid starting point. Push to \`1.0\` for full solidity; pull to \`0.6–0.75\` for a semi-transparent version that still provides contrast but lets the photo breathe slightly at the edges.
 
 ---
 
