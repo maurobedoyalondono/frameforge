@@ -55,6 +55,15 @@ Before writing any individual brief, read the narrative brief's **viewer journey
 
 **Map the text spine** — list all candidate strings in sequence before writing any per-frame brief. Ask: would a viewer reading only these strings learn something specific and interesting at each moment? If they sound like fortune cookies or film title cards, they are poems — rewrite them as facts.
 
+**Journey rhythm** — text must breathe. A viewer scrolling through a series cannot absorb a fact on every frame. The pattern that works: inform at structural moments and first encounters, then let strong images carry the weight in silence. A rough guide:
+- Opening frame: establish where and what (title + location)
+- Each act transition: one orienting fact about the new world
+- Each first encounter with a subject type: identification + one interesting fact
+- Emotionally or visually complete images: silence
+- Closing: direct address to the viewer
+
+Text that appears too often stops being read. Silence between text frames makes each one land harder.
+
 **Language:** Use the language of the project's geography. Maintain consistency within categories.
 
 ---
@@ -134,8 +143,13 @@ Type:
   sans: [exact Google Fonts family name]
 Per-frame briefs:
   [frame position]: [filename]
-    treatment: [one sentence describing the visual treatment]
-    copy: "[exact approved text string 1]" / "[exact approved text string 2 if present]"
-    [silent — no copy] (use this line instead of copy: if the frame is silent)
+    legibility: gradient to-bottom | gradient to-top | solid bar bottom | solid bar top | natural contrast | none
+    eyebrow: "[exact string]"      ← omit line if no eyebrow
+    caption: "[exact string]"      ← omit line if no caption
+    headline: "[exact string]"     ← omit line if no headline
+    font-override: italic          ← omit line if default weight/style
+    [silent]                       ← replace all above with this if the frame is silent
   [repeat for each frame]
 ```
+
+Each text layer is a separate named line. No slashes, no combined strings. The Visual Designer reads this block and renders each layer independently.
