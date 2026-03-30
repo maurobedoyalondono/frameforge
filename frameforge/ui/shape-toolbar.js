@@ -122,41 +122,64 @@ export class ShapeToolbar {
       }
       case 'full-h': {
         const dims = (this._layer.dimensions ??= {});
-        const pos  = (this._layer.position  ??= {});
+        const pos  = this._toAbsolutePos();
         dims.width_pct = 100;
         pos.x_pct = 0;
         this._updateDisplays(); this.onChange?.(this._layer); break;
       }
       case 'full-v': {
         const dims = (this._layer.dimensions ??= {});
-        const pos  = (this._layer.position  ??= {});
+        const pos  = this._toAbsolutePos();
         dims.height_pct = 100;
         pos.y_pct = 0;
         this._updateDisplays(); this.onChange?.(this._layer); break;
       }
       case 'align-left': {
-        (this._layer.position ??= {}).x_pct = 0;
+        this._toAbsolutePos().x_pct = 0;
         this.onChange?.(this._layer); break;
       }
       case 'align-right': {
-        const pos  = (this._layer.position  ??= {});
         const dims = this._layer.dimensions ?? {};
-        pos.x_pct = 100 - (dims.width_pct ?? 10);
+        this._toAbsolutePos().x_pct = 100 - (dims.width_pct ?? 10);
         this.onChange?.(this._layer); break;
       }
       case 'align-top': {
-        (this._layer.position ??= {}).y_pct = 0;
+        this._toAbsolutePos().y_pct = 0;
         this.onChange?.(this._layer); break;
       }
       case 'align-bottom': {
-        const pos  = (this._layer.position  ??= {});
         const dims = this._layer.dimensions ?? {};
-        pos.y_pct = 100 - (dims.height_pct ?? 10);
+        this._toAbsolutePos().y_pct = 100 - (dims.height_pct ?? 10);
         this.onChange?.(this._layer); break;
       }
       case 'delete':
         this.onDelete?.(this._layer); break;
     }
+  }
+
+  /**
+   * Ensure layer.position uses absolute x_pct/y_pct (not zone mode).
+   * Converts zone → absolute so partial writes (e.g. only x_pct) don't
+   * cause resolvePosition to default the missing axis to 0.
+   */
+  _toAbsolutePos() {
+    const pos = (this._layer.position ??= {});
+    if (pos.x_pct == null || pos.y_pct == null) {
+      // Resolve zone anchor + offsets to percentages
+      const ZONE_ANCHORS = {
+        'top-left':      [0,   0  ], 'top-center':    [50,  0  ], 'top-right':     [100, 0  ],
+        'middle-left':   [0,   50 ], 'middle-center': [50,  50 ], 'middle-right':  [100, 50 ],
+        'bottom-left':   [0,   100], 'bottom-center': [50,  100], 'bottom-right':  [100, 100],
+      };
+      const [ax, ay] = ZONE_ANCHORS[pos.zone] ?? [50, 50];
+      if (pos.x_pct == null) pos.x_pct = ax + (pos.offset_x_pct ?? 0);
+      if (pos.y_pct == null) pos.y_pct = ay + (pos.offset_y_pct ?? 0);
+      delete pos.mode;
+      delete pos.zone;
+      delete pos.offset_x_pct;
+      delete pos.offset_y_pct;
+    }
+    return pos;
   }
 
   /** True if height_pct === width_pct at show() time (preserve square/circle aspect ratio) */

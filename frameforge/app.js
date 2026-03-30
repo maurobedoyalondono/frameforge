@@ -81,18 +81,20 @@ async function init() {
   function makeDefaultShapeLayer(id, variant) {
     const base = { id, type: 'shape', fill_color: '#000000', fill_opacity: 0.85 };
     if (variant === 'circle') {
+      // x/y = top-left of bounding box; center circle at 50%,50% → top-left = 50-10 = 40
       return { ...base, shape: 'circle',
-        position: { x_pct: 50, y_pct: 50 },
+        position: { x_pct: 40, y_pct: 40 },
         dimensions: { width_pct: 20, height_pct: 20 } };
     }
     if (variant === 'square') {
+      // Center square (25%×25%) at 50%,50% → top-left = 37.5 ≈ 37
       return { ...base, shape: 'rectangle',
-        position: { x_pct: 50, y_pct: 50 },
+        position: { x_pct: 37, y_pct: 37 },
         dimensions: { width_pct: 25, height_pct: 25 } };
     }
-    // bar (default)
+    // bar (default): full-width bottom bar, covers bottom 26% (y = 100-26 = 74)
     return { ...base, shape: 'rectangle',
-      position: { x_pct: 50, y_pct: 87 },
+      position: { x_pct: 0, y_pct: 74 },
       dimensions: { width_pct: 100, height_pct: 26 } };
   }
 

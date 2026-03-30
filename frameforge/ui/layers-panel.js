@@ -53,7 +53,7 @@ export class LayersPanel {
       if (btn.dataset.action === 'hide-all')    { this.onLayerVisibilityAll?.(false); return; }
       if (btn.dataset.action === 'add-text')    { this.onAddLayer?.('text');          return; }
       if (btn.dataset.action === 'add-overlay') { this.onAddLayer?.('overlay');       return; }
-      if (btn.dataset.action === 'add-shape')   { this._toggleShapePopover();         return; }
+      if (btn.dataset.action === 'add-shape')   { this._toggleShapePopover(btn);      return; }
     });
 
     this._popoverEl.addEventListener('click', e => {
@@ -126,10 +126,15 @@ export class LayersPanel {
     });
   }
 
-  _toggleShapePopover() {
+  _toggleShapePopover(btnEl) {
     if (!this._popoverEl) return;
     const isOpen = this._popoverEl.style.display !== 'none';
-    this._popoverEl.style.display = isOpen ? 'none' : '';
+    if (isOpen) { this._popoverEl.style.display = 'none'; return; }
+    // Position below the button using fixed coords so overflow/scroll can't clip it
+    const r = btnEl.getBoundingClientRect();
+    this._popoverEl.style.top  = `${Math.round(r.bottom + 4)}px`;
+    this._popoverEl.style.left = `${Math.round(r.left)}px`;
+    this._popoverEl.style.display = '';
   }
 
   _typeIcon(type) {
