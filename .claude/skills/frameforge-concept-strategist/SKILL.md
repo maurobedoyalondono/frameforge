@@ -61,10 +61,14 @@ Once the frame selection is approved, write `[NARRATIVE_BRIEF_PATH]` with this e
 - **Tone:** [exact answer from user]
 
 ## Approved frame sequence
+
+Add one row per approved frame. The table must include every frame in the approved sequence — do not truncate.
+
 | Position | Filename (from sheet) | Narrative role |
 |----------|-----------------------|----------------|
 | 1 | [exact filename printed under thumbnail] | [role in the story] |
 | 2 | [exact filename] | [role] |
+| ... | [continue for all approved frames] | |
 
 ## Confirmed facts
 [Any geographic names, dates, statistics, or other facts confirmed by the user — never invented. If none, write "None confirmed."]
