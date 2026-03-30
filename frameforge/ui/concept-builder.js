@@ -84,6 +84,17 @@ function yieldToUI() {
 
 // ── ConceptBuilder ────────────────────────────────────────────────────────────
 
+/**
+ * Builds a markdown image-map string mapping 1-based image numbers to filenames.
+ * @param {string[]} names  Original filenames in load order (same as thumbnail sheet order).
+ * @param {string}   slug   Project slug for the document title.
+ * @returns {string} Markdown table string.
+ */
+function generateImageMapMarkdown(names, slug) {
+  const rows = names.map((name, i) => `| ${i + 1} | ${name} |`).join('\n');
+  return `# Image Map — ${slug}\n\n| # | Filename |\n|---|----------|\n${rows}\n`;
+}
+
 export class ConceptBuilder {
   constructor() {
     this._backdrop            = null;
@@ -558,6 +569,7 @@ export class ConceptBuilder {
     btn.disabled = true;
     const { slug, platformObj } = this._readFields();
     let fileCount = 0;
+    let sheetCount = 0;
 
     const setStatus = (msg) => { if (status) status.textContent = msg; };
 
@@ -603,9 +615,22 @@ export class ConceptBuilder {
           fileCount++;
           await new Promise((r) => setTimeout(r, 200));
         }
+        sheetCount = sheetBlobs.length;
+
+        // 5 — Image map
+        setStatus('Generating image map…');
+        await yieldToUI();
+        const mapMd = generateImageMapMarkdown(this._imageFiles.map(f => f.name), slug);
+        triggerDownload(new Blob([mapMd], { type: 'text/markdown' }), `${slug}-image-map.md`);
+        fileCount++;
+        await new Promise((r) => setTimeout(r, 200));
       }
 
-      status.textContent = `✓ Package exported — ${fileCount} file${fileCount !== 1 ? 's' : ''} downloaded`;
+      if (sheetCount > 0) {
+        status.textContent = `✓ Package exported — brief, designs, shapes, ${sheetCount} thumbnail sheet${sheetCount !== 1 ? 's' : ''}, image map (${fileCount} files)`;
+      } else {
+        status.textContent = `✓ Package exported — brief, designs, shapes (${fileCount} files)`;
+      }
       status.className   = 'cb-export-status done';
     } catch (err) {
       console.error('[ConceptBuilder] Export error:', err);
