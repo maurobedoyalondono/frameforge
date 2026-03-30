@@ -2,1111 +2,445 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>The Amazon — Concept Template</title>
+<title>AMAZONÍA — Concept Template</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #F5EFE0; font-family: 'DM Sans', sans-serif; padding: 48px; }
 
-  body {
-    background: #0a0a0a;
-    color: #ccc;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 13px;
-    padding: 32px 24px 64px;
-  }
+  .series-header { margin-bottom: 40px; border-bottom: 1px solid #1e1e1e; padding-bottom: 24px; }
+  .series-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #7B9E87; margin-bottom: 6px; }
+  .series-title { font-family: 'Fraunces', serif; font-weight: 300; font-size: 36px; color: #F5EFE0; letter-spacing: 0.02em; margin-bottom: 10px; }
+  .series-meta { font-size: 12px; color: #7B9E87; line-height: 1.8; }
+  .palette-row { display: flex; gap: 16px; margin-top: 10px; align-items: center; }
+  .swatch { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #888; }
+  .swatch-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
 
-  /* ─── HEADER ─────────────────────────────────────────── */
-  .series-header {
-    max-width: 1100px;
-    margin: 0 auto 36px;
-    border-bottom: 1px solid #222;
-    padding-bottom: 24px;
-  }
-  .series-kicker {
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #555;
-    margin-bottom: 6px;
-  }
-  .series-title {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-  }
-  .series-meta {
-    font-size: 0.72rem;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  .series-meta span { color: #888; margin-right: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 380px); gap: 32px; }
 
-  /* ─── PALETTE ────────────────────────────────────────── */
-  .section-label {
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #444;
-    margin-bottom: 10px;
-  }
-  .palette-row { display: flex; gap: 12px; margin-bottom: 24px; }
-  .swatch {
-    display: flex; align-items: center; gap: 10px;
-    background: #111; border: 1px solid #1e1e1e;
-    border-radius: 5px; padding: 8px 12px;
-  }
-  .swatch-color { width: 28px; height: 28px; border-radius: 4px; flex-shrink: 0; }
-  .swatch-info { font-size: 0.62rem; }
-  .swatch-hex { color: #fff; font-weight: 600; font-size: 0.7rem; }
-  .swatch-name { color: #666; }
-  .swatch-role { color: #444; }
+  .frame-card { background: #111; border: 1px solid #1e1e1e; }
+  .frame-card-header { padding: 12px 16px; border-bottom: 1px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; }
+  .frame-id { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #7B9E87; }
+  .frame-status { font-size: 10px; color: #444; }
 
-  /* ─── TYPE SCALE ─────────────────────────────────────── */
-  .type-scale {
-    background: #0e0e0e; border: 1px solid #1a1a1a;
-    border-radius: 6px; padding: 14px 16px; margin-bottom: 8px;
-    display: flex; gap: 24px; flex-wrap: wrap;
-  }
-  .type-item { font-size: 0.62rem; }
-  .type-role { color: #555; margin-bottom: 2px; }
-  .type-spec { color: #888; }
-  .type-spec strong { color: #bbb; }
+  .canvas { width: 380px; height: 475px; background: #1a1a1a; position: relative; overflow: hidden; }
 
-  /* ─── RULES STRIP ────────────────────────────────────── */
-  .rules-strip {
-    background: #0e0e0e; border: 1px solid #1a1a1a;
-    border-radius: 6px; padding: 10px 16px; margin-bottom: 28px;
-    font-size: 0.62rem; color: #555; line-height: 1.8;
+  .grad-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(27,56,38,0.65) 100%);
   }
-  .rules-strip strong { color: #c84040; }
-
-  /* ─── SECTION DIVIDER ────────────────────────────────── */
-  .section-divider {
-    max-width: 1100px; margin: 32px auto 16px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .sec-label {
-    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: uppercase; white-space: nowrap;
-    padding: 3px 9px; border-radius: 3px;
-  }
-  .sec-opener  { background: #1a2a1a; color: #6ecf9a; }
-  .sec-river   { background: #1a2535; color: #7eb8e8; }
-  .sec-people  { background: #2a2018; color: #d4a86a; }
-  .sec-fauna   { background: #25181a; color: #c88a8a; }
-  .sec-closer  { background: #1e1a2a; color: #9a8ad4; }
-  .sec-line { flex: 1; height: 1px; background: #1a1a1a; }
-  .sec-count { font-size: 0.58rem; color: #333; white-space: nowrap; }
-
-  /* ─── FRAME GRID ─────────────────────────────────────── */
-  .frame-grid {
-    max-width: 1100px; margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
+  .grad-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    background: linear-gradient(to top, transparent 0%, rgba(27,56,38,0.50) 100%);
   }
 
-  /* ─── FRAME CARD ─────────────────────────────────────── */
-  .frame-card {
-    background: #0e0e0e; border: 1px solid #1e1e1e;
-    border-radius: 7px; overflow: hidden;
-  }
-  .frame-card.no-text-card { border-color: #1a1a2e; }
+  .zone-line-h { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.07); }
 
-  /* canvas zone */
-  .canvas-zone {
-    position: relative; width: 100%; aspect-ratio: 4/5; overflow: hidden;
-    background: #060606;
+  .layer-eyebrow-tl {
+    position: absolute; top: 7%; left: 6%;
+    font-family: 'DM Sans', sans-serif; font-size: 7px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #C4782A; opacity: 0.95;
   }
-  .canvas-photo {
-    position: absolute; inset: 0;
-    background-repeat: no-repeat; background-size: 500% 200%;
+  .layer-eyebrow-tr {
+    position: absolute; top: 7%; right: 6%;
+    font-family: 'DM Sans', sans-serif; font-size: 7px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: #C4782A; opacity: 0.95; text-align: right;
   }
-
-  /* gradient band annotation */
-  .grad-band {
-    position: absolute; left: 0; right: 0;
-    pointer-events: none;
+  .layer-headline-tl {
+    position: absolute; top: 11%; left: 6%;
+    font-family: 'Fraunces', serif; font-weight: 300;
+    color: #F5EFE0; letter-spacing: 0.01em; line-height: 1.0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
   }
-  .grad-band.to-top    { top: 0; height: 45%; background: linear-gradient(to bottom, rgba(5,20,10,0.72), transparent); }
-  .grad-band.to-bottom { bottom: 0; height: 45%; background: linear-gradient(to top, rgba(5,20,10,0.72), transparent); }
-  .grad-band.to-left   { left: 0; top: 0; bottom: 0; width: 48%; background: linear-gradient(to right, rgba(5,20,10,0.72), transparent); }
-
-  /* zone annotation box */
-  .zone-pin {
-    position: absolute;
-    font-size: 0.48rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 2px 5px; border-radius: 2px;
-    background: rgba(0,0,0,0.65); color: #7eb8e8; border: 1px solid rgba(126,184,232,0.3);
-    pointer-events: none;
+  .layer-headline-bl {
+    position: absolute; bottom: 6%; left: 6%;
+    font-family: 'Fraunces', serif; font-weight: 300;
+    color: #F5EFE0; letter-spacing: 0.01em; line-height: 1.0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
   }
-  .zone-pin.top-left     { top: 8px;  left: 8px; }
-  .zone-pin.top-right    { top: 8px;  right: 8px; }
-  .zone-pin.bottom-left  { bottom: 8px; left: 8px; }
-  .zone-pin.bottom-right { bottom: 8px; right: 8px; }
-
-  /* no-text badge */
-  .no-text-badge {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    font-size: 0.5rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 3px 8px; border-radius: 3px;
-    background: rgba(0,0,0,0.7); color: #444; border: 1px solid #222;
+  .layer-caption-bl {
+    position: absolute; bottom: 6%; left: 6%;
+    font-family: 'DM Sans', sans-serif; font-size: 8px;
+    color: #F5EFE0; opacity: 0.9; line-height: 1.5; max-width: 82%;
+  }
+  .layer-caption-italic-bl {
+    position: absolute; bottom: 6%; left: 6%;
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 9px;
+    color: #F5EFE0; opacity: 0.92; line-height: 1.5; max-width: 82%;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
   }
 
-  /* frame number pill */
-  .frame-num-pill {
-    position: absolute; top: 6px; right: 6px;
-    background: rgba(0,0,0,0.8); color: #666;
-    font-size: 0.5rem; font-weight: 700;
-    padding: 2px 6px; border-radius: 10px;
-    border: 1px solid #1e1e1e;
-  }
+  .annot { position: absolute; font-size: 8px; color: #7B9E87; letter-spacing: 0.05em; }
+  .annot-grad { color: #2a4a35; }
 
-  /* ─── FRAME BODY ─────────────────────────────────────── */
-  .frame-body { padding: 10px 12px 12px; }
+  .canvas-silent { background: #111; display: flex; align-items: center; justify-content: center; }
+  .silent-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #222; }
 
-  .frame-id {
-    font-size: 0.58rem; color: #444; margin-bottom: 4px;
-    display: flex; justify-content: space-between; align-items: baseline;
-  }
-  .frame-id .photo-n { color: #666; font-weight: 600; }
-  .frame-id .img-src  { color: #333; font-style: italic; }
-
-  .frame-title {
-    font-size: 0.78rem; font-weight: 600; color: #ccc; margin-bottom: 8px;
-  }
-
-  /* layer list */
-  .layer-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-  .layer-item { display: flex; gap: 6px; align-items: flex-start; }
-
-  .lt { /* layer type badge */
-    font-size: 0.45rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 1px 5px; border-radius: 2px; flex-shrink: 0; margin-top: 1px;
-    white-space: nowrap;
-  }
-  .lt-image    { background: #1a1a2e; color: #6699cc; }
-  .lt-overlay  { background: #1e1a10; color: #cc9933; }
-  .lt-headline { background: #1a2a1a; color: #6ecf9a; }
-  .lt-sub      { background: #1a2525; color: #5ab8b8; }
-  .lt-body     { background: #222;    color: #999; }
-  .lt-eyebrow  { background: #252025; color: #cc88cc; }
-  .lt-sci      { background: #252520; color: #c8b86a; }
-  .lt-placeholder { background: #1e1818; color: #885555; border: 1px dashed #442222; }
-
-  .layer-detail { font-size: 0.6rem; color: #666; line-height: 1.5; }
-  .layer-detail .layer-text { color: #bbb; font-style: italic; display: block; margin-top: 1px; }
-  .layer-detail .layer-spec { color: #444; display: block; }
-
-  /* focal point note */
-  .focal-note {
-    margin-top: 7px; padding-top: 7px; border-top: 1px solid #151515;
-    font-size: 0.54rem; color: #383838;
-  }
-  .focal-note span { color: #4a4a4a; }
+  .frame-spec { padding: 14px 16px; font-size: 11px; line-height: 1.8; color: #555; border-top: 1px solid #1a1a1a; }
+  .spec-row { display: flex; gap: 8px; }
+  .spec-key { color: #7B9E87; min-width: 90px; flex-shrink: 0; }
+  .spec-val { color: #888; }
 </style>
 </head>
 <body>
 
-<!-- ═══ SERIES HEADER ═══════════════════════════════════════════════════ -->
 <div class="series-header">
-  <div class="series-kicker">FrameForge · Concept Template · Step 5</div>
-  <div class="series-title">The Amazon</div>
+  <div class="series-label">Concept Template · FrameForge</div>
+  <div class="series-title">Amazonía</div>
   <div class="series-meta">
-    <span>Plataforma: Instagram Portrait 4:5 · 1080×1350 px</span>
-    <span>Frames: 20</span>
-    <span>Fecha: 2026-03-28</span>
+    Instagram Portrait 4:5 · 1080 × 1350 px · 72 DPI · scale_factor 2 · 20 frames<br>
+    Warm lush editorial · Fraunces + DM Sans
   </div>
-
-  <!-- PALETTE -->
-  <div class="section-label">Paleta de color</div>
   <div class="palette-row">
-    <div class="swatch">
-      <div class="swatch-color" style="background:#0D1F14"></div>
-      <div class="swatch-info">
-        <div class="swatch-hex">#0D1F14</div>
-        <div class="swatch-name">Profundidad del dosel</div>
-        <div class="swatch-role">Tono base · overlays · sombras</div>
-      </div>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background:#7B9FAE"></div>
-      <div class="swatch-info">
-        <div class="swatch-hex">#7B9FAE</div>
-        <div class="swatch-name">Neblina del río</div>
-        <div class="swatch-role">Eyebrows · labels · subtítulos</div>
-      </div>
-    </div>
-    <div class="swatch">
-      <div class="swatch-color" style="background:#C8751E"></div>
-      <div class="swatch-info">
-        <div class="swatch-hex">#C8751E</div>
-        <div class="swatch-name">Ámbar de la fauna</div>
-        <div class="swatch-role">Nombres científicos · datos destacados</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TYPE SCALE -->
-  <div class="section-label">Sistema tipográfico</div>
-  <div class="type-scale">
-    <div class="type-item">
-      <div class="type-role">Titular grande</div>
-      <div class="type-spec"><strong>DM Serif Display</strong> · size_pct 7.5 · ~101 px · blanco</div>
-    </div>
-    <div class="type-item">
-      <div class="type-role">Titular</div>
-      <div class="type-spec"><strong>DM Serif Display</strong> · size_pct 6.5 · ~88 px · blanco</div>
-    </div>
-    <div class="type-item">
-      <div class="type-role">Cuerpo</div>
-      <div class="type-spec"><strong>DM Sans 400</strong> · size_pct 2.8 · ~38 px · blanco</div>
-    </div>
-    <div class="type-item">
-      <div class="type-role">Subtítulo</div>
-      <div class="type-spec"><strong>DM Sans 400</strong> · size_pct 2.5 · ~34 px · #7B9FAE</div>
-    </div>
-    <div class="type-item">
-      <div class="type-role">Eyebrow / Label</div>
-      <div class="type-spec"><strong>DM Sans 700</strong> · size_pct 1.8 · ~24 px · #7B9FAE · tracking 0.15em</div>
-    </div>
-    <div class="type-item">
-      <div class="type-role">Nombre científico</div>
-      <div class="type-spec"><strong>DM Sans 400 italic</strong> · size_pct 2.2 · ~30 px · #C8751E</div>
-    </div>
-    <div class="type-item">
-      <div class="type-role">Dato fauna</div>
-      <div class="type-spec"><strong>DM Sans 400</strong> · size_pct 2.0 · ~27 px · blanco</div>
-    </div>
-  </div>
-
-  <!-- RULES -->
-  <div class="rules-strip">
-    <strong>Reglas de aplicación:</strong>
-    · Sin texto en frames silenciosos (01, 04, 08) · <strong>Sin overlay en frames sin texto</strong>
-    · Solo eyebrow en frames de lugar · Nombre científico + 1 dato en fauna (máx. 2 capas)
-    · 3 capas únicamente en el cierre (frame 20) · Todos los textos en español
-    · Los nombres científicos van en cursiva · Placeholders <em>[NOMBRE DE ESPECIE]</em> y <em>[DATO]</em> a completar manualmente
+    <div class="swatch"><span class="swatch-dot" style="background:#1B3826"></span>#1B3826 Deep Canopy — overlay</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#C4782A"></span>#C4782A River Amber — eyebrows &amp; labels</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#7B9E87"></span>#7B9E87 Sage Canopy — secondary overlay</div>
   </div>
 </div>
 
+<div class="grid">
 
-<!-- ═══ OPENER ══════════════════════════════════════════════════════════ -->
-<div class="section-divider">
-  <span class="sec-label sec-opener">Apertura</span>
-  <div class="sec-line"></div>
-  <span class="sec-count">1 frame · sin texto · la selva habla sola</span>
+  <!-- FRAME 01 — Eyebrow + headline · top zone -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-01 · aerial-amazon-river</span>
+      <span class="frame-status">Eyebrow + headline · top zone</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-top" style="height:35%;background:linear-gradient(to top,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
+      <div class="zone-line-h" style="top:65%"></div>
+      <div class="annot annot-grad" style="top:1%;left:4%">to_opacity 0.50</div>
+      <div class="annot annot-grad" style="top:66%;left:4%">gradient ends 65%</div>
+      <div class="layer-eyebrow-tl">AMAZONÍA · COLOMBIA</div>
+      <div class="layer-headline-tl" style="font-size:36px;">Amazonía</div>
+      <div class="annot" style="bottom:4%;right:4%">9.5 · Fraunces / 1.8 · DM Sans</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-top · 0.0@65% → 0.50@0%</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+      <div class="spec-row"><span class="spec-key">Headline</span><span class="spec-val">Fraunces wt 300 · size_pct 9.5 · top-left · offset_x 6, offset_y 11</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 02 — Caption · bottom zone (thin gradient strip) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-02 · aerial-river-descent</span>
+      <span class="frame-status">Caption · bottom zone</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:22%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.55) 100%)"></div>
+      <div class="zone-line-h" style="top:78%"></div>
+      <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.55</div>
+      <div class="layer-caption-bl">Un mes en la Amazonia colombiana.</div>
+      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@78% → 0.55@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 03 — Caption · natural dark zone (no gradient) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-03 · canoe-interior-river-view</span>
+      <span class="frame-status">Caption · natural dark zone</span>
+    </div>
+    <div class="canvas">
+      <!-- No gradient — dark canoe interior provides natural contrast -->
+      <div class="layer-caption-bl">El río es el camino.</div>
+      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark canoe interior</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — dark canoe interior provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 04 — Silent -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-04 · canoe-dusk-silhouette</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — cinematically complete, silence is the deliberate treatment</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 05 — Caption · bottom zone (thin gradient) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-05 · canoes-water-hyacinths</span>
+      <span class="frame-status">Caption · bottom zone</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:22%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
+      <div class="zone-line-h" style="top:78%"></div>
+      <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.50</div>
+      <div class="layer-caption-bl">Las canoas esperan.</div>
+      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@78% → 0.50@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 06 — Eyebrow · top zone (act pivot marker) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-06 · jungle-canopy-vertical</span>
+      <span class="frame-status">Eyebrow · top zone</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-top" style="height:30%;background:linear-gradient(to top,transparent 0%,rgba(27,56,38,0.45) 100%)"></div>
+      <div class="zone-line-h" style="top:70%"></div>
+      <div class="annot annot-grad" style="top:1%;left:4%">to_opacity 0.45</div>
+      <div class="annot annot-grad" style="top:71%;left:4%">gradient ends 70%</div>
+      <div class="layer-eyebrow-tl">SELVA AMAZÓNICA</div>
+      <div class="annot" style="bottom:4%;right:4%">1.8 · DM Sans</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-top · 0.0@70% → 0.45@0%</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 07 — Silent -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-07 · buttress-roots-closeup</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — Act I closes in silence</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 08 — Eyebrow · no gradient (FAUNA chapter marker) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-08 · yellow-tree-frog</span>
+      <span class="frame-status">Eyebrow · no gradient</span>
+    </div>
+    <div class="canvas">
+      <!-- No gradient — dark foliage edge provides contrast; image saturation must not be diluted -->
+      <div class="layer-eyebrow-tl">FAUNA</div>
+      <div class="annot" style="bottom:4%;right:4%">1.8 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — foliage edge</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — dark foliage edge provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 09 — Eyebrow · no gradient (species name) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-09 · howler-monkey-portrait</span>
+      <span class="frame-status">Eyebrow · no gradient</span>
+    </div>
+    <div class="canvas">
+      <div class="layer-eyebrow-tl">MONO AULLADOR</div>
+      <div class="annot" style="bottom:4%;right:4%">1.8 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark jungle background</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — dark jungle background provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 10 — Eyebrow · no gradient (species name) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-10 · squirrel-monkey-branch</span>
+      <span class="frame-status">Eyebrow · no gradient</span>
+    </div>
+    <div class="canvas">
+      <div class="layer-eyebrow-tl">MONO ARDILLA</div>
+      <div class="annot" style="bottom:4%;right:4%">1.8 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — out-of-focus foliage</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — out-of-focus foliage provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 11 — Eyebrow · no gradient (species name) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-11 · hoatzin-perched</span>
+      <span class="frame-status">Eyebrow · no gradient</span>
+    </div>
+    <div class="canvas">
+      <div class="layer-eyebrow-tl">HOATZÍN</div>
+      <div class="annot" style="bottom:4%;right:4%">1.8 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — jungle foliage background</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — foliage background provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 12 — Eyebrow · no gradient (species name) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-12 · kingfisher-amazon</span>
+      <span class="frame-status">Eyebrow · no gradient</span>
+    </div>
+    <div class="canvas">
+      <div class="layer-eyebrow-tl">MARTÍN PESCADOR AMAZÓNICO</div>
+      <div class="annot" style="bottom:4%;right:4%">1.8 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — soft-focus foliage</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — soft-focus foliage provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 13 — Eyebrow · no gradient (species name) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-13 · trogon-red-black</span>
+      <span class="frame-status">Eyebrow · no gradient</span>
+    </div>
+    <div class="canvas">
+      <div class="layer-eyebrow-tl">TROGÓN ROJO Y NEGRO</div>
+      <div class="annot" style="bottom:4%;right:4%">1.8 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark canopy background</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — dark canopy background provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 14 — Silent -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-14 · heron-golden-light</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — painterly golden light, naming shifts register from mood to nature guide</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 15 — Silent -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-15 · spider-closeup-eyes</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — Act II closes; discomfort must not be defused by any label</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 16 — Italic caption · natural dark zone (Act III pivot) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-16 · boy-canoe-bw</span>
+      <span class="frame-status">Caption italic · natural dark zone</span>
+    </div>
+    <div class="canvas">
+      <!-- No gradient — dark river water provides natural contrast -->
+      <div class="layer-caption-italic-bl">Este es el hogar.</div>
+      <div class="annot" style="top:3%;right:4%">2.5 · Fraunces italic</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark river water</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — dark river water provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">Fraunces italic wt 300 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 17 — Silent -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-17 · family-stilt-house-window</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — frame-16 caption does the act work; image delivers the proof</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 18 — Silent -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-18 · children-football-field</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — joy needs no annotation</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 19 — Silent -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-19 · two-canoe-bw</span>
+      <span class="frame-status">Silent</span>
+    </div>
+    <div class="canvas canvas-silent">
+      <span class="silent-label">No overlay · No text · No shapes</span>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Image only — visual echo of frame-04 and frame-16; the chord is the meaning</span></div>
+    </div>
+  </div>
+
+  <!-- FRAME 20 — Italic caption · bottom zone (series close) -->
+  <div class="frame-card">
+    <div class="frame-card-header">
+      <span class="frame-id">frame-20 · woman-heart-invitation</span>
+      <span class="frame-status">Caption italic · bottom zone</span>
+    </div>
+    <div class="canvas">
+      <div class="grad-bottom" style="height:28%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.55) 100%)"></div>
+      <div class="zone-line-h" style="top:72%"></div>
+      <div class="annot annot-grad" style="top:73%;left:4%">gradient starts 72%</div>
+      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.55</div>
+      <div class="layer-caption-italic-bl" style="font-size:11px;">Ven a la Amazonia.</div>
+      <div class="annot" style="top:3%;right:4%">3.0 · Fraunces italic</div>
+    </div>
+    <div class="frame-spec">
+      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@72% → 0.55@100%</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">Fraunces italic wt 300 · size_pct 3.0 · bottom-left · offset_x 6, offset_y -6</span></div>
+    </div>
+  </div>
+
 </div>
-
-<div class="frame-grid">
-
-  <!-- F01 · #45 -->
-  <div class="frame-card no-text-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-05.png');background-position:100% 0%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">titular + sub</div>
-      <div class="frame-num-pill">01</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#45</span><span class="img-src">canopy-walkway</span></div>
-      <div class="frame-title">Pasarela en el dosel</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:35</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.65 desde 40%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-headline">Titular</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Serif Display · 7.5% · blanco</span>
-            <span class="layer-text">"El Amazonas colombiano."</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sub">Sub</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.5% · #7B9FAE</span>
-            <span class="layer-text">"Un mes adentro de la selva más grande del mundo."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona fuerte: pasarela + dosel arriba · Zona quieta: tercio inferior oscuro · El titular anuncia el lugar, el sub aporta el contexto personal</div>
-    </div>
-  </div>
-
-</div><!-- /frame-grid opener -->
-
-
-<!-- ═══ RÍO Y SELVA ══════════════════════════════════════════════════════ -->
-<div class="section-divider" style="margin-top:28px">
-  <span class="sec-label sec-river">Río &amp; Selva</span>
-  <div class="sec-line"></div>
-  <span class="sec-count">3 frames · entorno antes que criaturas · escala, bosque, río al anochecer</span>
-</div>
-
-<div class="frame-grid">
-
-  <!-- F02 · #22 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-03.png');background-position:25% 0%"></div>
-      <div class="grad-band to-top"></div>
-      <div class="zone-pin top-left">eyebrow</div>
-      <div class="frame-num-pill">02</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#22</span><span class="img-src">towering-trees</span></div>
-      <div class="frame-title">Árboles monumentales</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:40</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-top · 0.0→0.55 desde 60%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"PUERTO NARIÑO · SELVA INUNDABLE"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Cuerpo</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 400 · 2.5% · blanco</span>
-            <span class="layer-text">"El río puede subir hasta 12 metros e inundar la selva por meses enteros."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona fuerte: densidad de troncos · Zona quieta: cielo/dosel difuso arriba → eyebrow nombra lugar y tipo de bosque · el dato dice lo que la foto no puede</div>
-    </div>
-  </div>
-
-  <!-- F03 · #46 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-05.png');background-position:0% 100%"></div>
-      <div class="grad-band to-top"></div>
-      <div class="zone-pin top-left">titular + cuerpo</div>
-      <div class="frame-num-pill">03</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#46</span><span class="img-src">aerial-amazon</span></div>
-      <div class="frame-title">Amazonas aérea</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:55 · curva del río en mitad inferior</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-top · 0.0→0.65 desde 50%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-headline">Titular</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Serif Display · 7.5% · blanco</span>
-            <span class="layer-text">"La selva tropical más grande del mundo."</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Cuerpo</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 400 · 2.5% · #7B9FAE</span>
-            <span class="layer-text">"5,5 millones de kilómetros cuadrados de vida."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona fuerte: curva del río + bosque inmediato · Zona quieta: franja de cielo sobre el horizonte → titular anuncia el sistema y su rango global · cuerpo da la cifra que el ojo no puede derivar de la imagen · gradiente sube hasta 0.65 sin tocar el horizonte</div>
-    </div>
-  </div>
-
-  <!-- F04 · #38 -->
-  <div class="frame-card no-text-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-04.png');background-position:50% 100%"></div>
-      <div class="no-text-badge">sin texto · sin overlay</div>
-      <div class="frame-num-pill">04</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#38</span><span class="img-src">canoe-at-dusk</span></div>
-      <div class="frame-title">Canoa al atardecer</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:65 · canoa en tercio inferior · maximizar cielo</span></div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona fuerte: silueta de canoa · Zona quieta: cielo dorado arriba · <span>El contraste propio de la imagen lo resuelve todo</span></div>
-    </div>
-  </div>
-
-</div><!-- /frame-grid río -->
-
-
-<!-- ═══ PERSONAS Y COMUNIDAD ═════════════════════════════════════════════ -->
-<div class="section-divider" style="margin-top:28px">
-  <span class="sec-label sec-people">Personas &amp; Comunidad</span>
-  <div class="sec-line"></div>
-  <span class="sec-count">4 frames · el Amazonas está habitado · lluvia, río, comunidad, alegría</span>
-</div>
-
-<div class="frame-grid">
-
-  <!-- F05 · #3 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-01.png');background-position:50% 0%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">cuerpo + sub</div>
-      <div class="frame-num-pill">05</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#3</span><span class="img-src">child-in-the-rain</span></div>
-      <div class="frame-title">Niño bajo la lluvia</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:45 y:40 · cara en centro-superior</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.60 desde 40%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"UMARIAÇU · TABATINGA · BRASIL"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Cuerpo</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.8% · blanco</span>
-            <span class="layer-text">"Cuando llega la lluvia, todo el pueblo sale a recibirla."</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sub">Sub</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.2% · #7B9FAE</span>
-            <span class="layer-text">"La lluvia aquí no interrumpe la vida. Es la vida."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Umariaçu, Tabatinga, Brasil · La foto muestra un niño quieto; el texto revela lo que la cámara no capturó: el pueblo entero celebrando · tensión intencional entre la imagen silenciosa y la alegría real · 3 capas justificadas por la brecha entre lo visible y lo vivido</div>
-    </div>
-  </div>
-
-  <!-- F06 · #48 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-05.png');background-position:50% 100%"></div>
-      <div class="grad-band to-top"></div>
-      <div class="zone-pin top-left">titular + sub</div>
-      <div class="frame-num-pill">06</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#48</span><span class="img-src">river-as-highway</span></div>
-      <div class="frame-title">El río como carretera</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:50 · centrar embarcación</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-top · 0.0→0.65 desde 55%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-headline">Titular</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Serif Display · 6.5% · blanco</span>
-            <span class="layer-text">"No hay carreteras. Solo el río."</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sub">Sub</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 400 · 2.5% · #7B9FAE</span>
-            <span class="layer-text">"El Amazonas es la única vía."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona fuerte: embarcación · Zona quieta: cielo sobre la nave → texto</div>
-    </div>
-  </div>
-
-  <!-- F07 · #10 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-01.png');background-position:100% 100%"></div>
-      <div class="grad-band to-top"></div>
-      <div class="zone-pin top-left">eyebrow</div>
-      <div class="frame-num-pill">07</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#10</span><span class="img-src">soccer-game</span></div>
-      <div class="frame-title">Partido de fútbol</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:55 · mantener acción principal en cuadro</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-top · 0.0→0.55 desde 60% · solo zona del cielo</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"MOCAGUA · COLOMBIA"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Cuerpo</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 400 · 2.8% · blanco</span>
-            <span class="layer-text">"Un partido. Una fiesta. Su unión."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Mocagua · texto carga el significado antes de que el ojo entre en la acción · tres beats: deporte → celebración → comunidad · la foto muestra jugadoras, el texto muestra su significado cultural</div>
-    </div>
-  </div>
-
-  <!-- F08 · #19 -->
-  <div class="frame-card no-text-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-02.png');background-position:75% 100%"></div>
-      <div class="no-text-badge">sin texto · sin overlay</div>
-      <div class="frame-num-pill">08</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#19</span><span class="img-src">women-laughing</span></div>
-      <div class="frame-title">Mujeres riendo</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:40 · caras centradas</span></div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona fuerte: caras · Sin zona quieta que no compita con una expresión · <span>La risa no necesita texto</span></div>
-    </div>
-  </div>
-
-</div><!-- /frame-grid personas -->
-
-
-<!-- ═══ FAUNA ═════════════════════════════════════════════════════════════ -->
-<div class="section-divider" style="margin-top:28px">
-  <span class="sec-label sec-fauna">Fauna</span>
-  <div class="sec-line"></div>
-  <span class="sec-count">11 frames · nombre científico + 1 dato · máx. 2 capas de texto</span>
-</div>
-
-<div class="frame-grid">
-
-  <!-- F09 · #6 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-01.png');background-position:0% 100%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico + dato</div>
-      <div class="frame-num-pill">09</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#6</span><span class="img-src">squirrel-monkey</span></div>
-      <div class="frame-title">Mono ardilla</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:40</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.65 desde 50%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Saimiri sciureus"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Viajan en grupos de hasta 75 individuos por el dosel amazónico."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona quieta: inferior → texto superpuesto en gradiente oscuro</div>
-    </div>
-  </div>
-
-  <!-- F10 · #16 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-02.png');background-position:0% 100%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico + dato</div>
-      <div class="frame-num-pill">10</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#16</span><span class="img-src">poison-dart-frog</span></div>
-      <div class="frame-title">Rana dardo venenosa</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:50 · rana centrada</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.70 desde 50% · hoja brillante requiere gradiente fuerte</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Dendrobates sp."</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Su piel contiene suficiente toxina para paralizar a un predador."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Zona fuerte: rana y hoja · Zona quieta: borde inferior oscurecido por gradiente</div>
-    </div>
-  </div>
-
-  <!-- F11 · #13 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-02.png');background-position:50% 0%"></div>
-      <div class="grad-band to-left"></div>
-      <div class="zone-pin top-left" style="top:auto;bottom:8px;">científico + dato</div>
-      <div class="frame-num-pill">11</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#13</span><span class="img-src">white-chinned-jacamar</span></div>
-      <div class="frame-title">Jacamar barbiblanco</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:65 y:50 · pájaro en derecha del cuadro · plumaje metálico visible</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.65 desde 50% · ave centrada, zona quieta en borde inferior</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Galbula tombacea"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"El Amazonas colombiano alberga más de 600 especies de aves."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Puerto Nariño · Galbula tombacea, no un martín pescador · plumaje iridiscente verde-dorado · gradiente lateral hacia el lado opuesto al ave · geografía ya establecida en frame 02, no se repite</div>
-    </div>
-  </div>
-
-  <!-- F12 · #4 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-01.png');background-position:75% 0%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico + dato</div>
-      <div class="frame-num-pill">12</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#4</span><span class="img-src">woolly-monkey</span></div>
-      <div class="frame-title">Mono lanudo</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:45</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.60 desde 55%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"MOCAGUA · FUNDACIÓN MAIKUCHIGA"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Lagothrix lagothricha"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Vulnerable. Dispersa semillas esenciales para la regeneración del bosque."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Mocagua · encuentro salvaje cerca de Fundación Maikuchiga · lectura: cara/ojos → eyebrow + texto → masa del cuerpo devuelve el ojo hacia arriba · balance resuelto · Mocagua aparece por segunda vez: la comunidad del fútbol convive con uno de los primates más amenazados del Amazonas</div>
-    </div>
-  </div>
-
-  <!-- F13 · #8 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-01.png');background-position:50% 100%"></div>
-      <div class="grad-band to-top"></div>
-      <div class="zone-pin top-left">científico + dato</div>
-      <div class="frame-num-pill">13</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#8</span><span class="img-src">pink-dolphin</span></div>
-      <div class="frame-title">Delfín rosado</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:55 · delfín en mitad inferior</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-top · 0.0→0.65 desde 50%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"RÍO AMAZONAS · VISTA ALEGRE · PERÚ"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Inia geoffrensis"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">top-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Un encuentro inesperado: un grupo, río arriba."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Vista Alegre, Perú · único frame fuera de Colombia · el Amazonas no se detiene en la frontera · lectura: delfín → eyebrow → científico → dato · balance resuelto · 3 capas justificadas por el peso narrativo del cruce de frontera</div>
-    </div>
-  </div>
-
-  <!-- F14 · #9 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-01.png');background-position:75% 100%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico + dato</div>
-      <div class="frame-num-pill">14</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#9</span><span class="img-src">musmuquis</span></div>
-      <div class="frame-title">Musmuquis ×3</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:45 · grupo de tres centrado</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.60 desde 55%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"VISTA ALEGRE · PERÚ"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Aotus vociferans"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Torturados por décadas para la investigación del Dr. Patarroyo. Hoy, en Vista Alegre, libres."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Vista Alegre, Perú · no son Cebuella pygmaea sino Aotus vociferans (musmuquis) · historia de recuperación tras capturas masivas para investigación médica · Vista Alegre aparece por segunda vez consecutiva tras el delfín · la misma orilla del río, dos historias de vida</div>
-    </div>
-  </div>
-
-  <!-- F15 · #24 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-03.png');background-position:75% 0%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico + dato</div>
-      <div class="frame-num-pill">15</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#24</span><span class="img-src">black-tailed-trogon</span></div>
-      <div class="frame-title">Trogón colinegro</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:45 · ave centrada mirando a la derecha · pecho carmesí visible</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.60 desde 50%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"LAGO TARAPOTO · PUERTO NARIÑO"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Trogon melanurus"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Uno de los pájaros más vistosos y menos conocidos del Amazonas."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Lago Tarapoto · ave centrada mirando derecha · mirada guía el ojo hacia la derecha, texto ancla bottom-left → tensión intencional · Puerto Nariño aparece por tercera vez · lectura: pecho carmesí → cara/ojo → mirada derecha → texto izquierda</div>
-    </div>
-  </div>
-
-  <!-- F16 · #25 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-03.png');background-position:100% 0%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico + dato</div>
-      <div class="frame-num-pill">16</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#25</span><span class="img-src">wire-tailed-manakin</span></div>
-      <div class="frame-title">Saltarín cola de alambre</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:50 · macho en danza, dorso visible, filamentos caudales en cuadro</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.60 desde 50%</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Eyebrow</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15</span>
-            <span class="layer-text">"LAGO EL CORREO · PUERTO NARIÑO"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Pipra filicauda"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Un macho en plena danza de cortejo. Un momento que pocos logran presenciar."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Lago el Correo · macho bailando mostrando dorso · filamentos caudales visibles · lectura: plumaje dorsal rojo → filamentos → texto · Puerto Nariño aparece por cuarta vez: trogón → saltarín, dos registros opuestos (quietud vs movimiento) · sin hechos inventados</div>
-    </div>
-  </div>
-
-  <!-- F17 · #42 -->
-  <div class="frame-card no-text-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-05.png');background-position:25% 0%"></div>
-      <div class="no-text-badge">sin texto · sin overlay</div>
-      <div class="frame-num-pill">17</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#42</span><span class="img-src">amazon-tree-frog</span></div>
-      <div class="frame-title">Rana arborícola</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:45 · rana en hoja centrada</span></div>
-        </li>
-      </ul>
-      <div class="focal-note">Sin texto · sin overlay · la imagen es completa sola · silencio intencional después de dos frames de aves con texto · el espectador respira</div>
-    </div>
-  </div>
-
-  <!-- F18 · #30 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-03.png');background-position:100% 100%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico</div>
-      <div class="frame-num-pill">18</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#30</span><span class="img-src">striated-heron-dusk</span></div>
-      <div class="frame-title">Garza rallada al atardecer</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:50 · ave en luz dorada · preservar la calidez del atardecer</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · flat 0.10 únicamente · sin gradiente · la luz dorada no se toca</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Butorides striata"</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Transición día→noche · un solo nombre, nada más · el ámbar del texto conversa con la luz dorada de la imagen · contención intencional tras once frames de fauna con datos · la serie desacelera antes de la noche</div>
-    </div>
-  </div>
-
-  <!-- F19 · #17 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-02.png');background-position:25% 100%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">científico + dato</div>
-      <div class="frame-num-pill">19</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#17</span><span class="img-src">mouse-opossum</span></div>
-      <div class="frame-title">Zarigüeya ratón</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:40 · cara iluminada centrada · fondo negro absoluto</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 flat 0.20 + #0A0510 flat 0.15 · doble capa plana · sin gradiente · unifica la oscuridad circundante</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-sci">Científico</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 italic · 2.2% · #C8751E</span>
-            <span class="layer-text">"Marmosa murina"</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-body">Dato</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 400 · 2.0% · blanco</span>
-            <span class="layer-text">"Sin bolsa marsupial. Sus crías se aferran directamente a las mamas."</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Jungla Puerto Nariño · nocturno · cara como único elemento iluminado · lectura: cara → científico → dato · la garza al atardecer fue la transición, esta es la llegada a la noche · el marsupial más inesperado de la fauna section</div>
-    </div>
-  </div>
-
-</div><!-- /frame-grid fauna -->
-
-
-<!-- ═══ CIERRE ═════════════════════════════════════════════════════════════ -->
-<div class="section-divider" style="margin-top:28px">
-  <span class="sec-label sec-closer">Cierre</span>
-  <div class="sec-line"></div>
-  <span class="sec-count">1 frame · único con 3 capas de texto · invitación directa</span>
-</div>
-
-<div class="frame-grid">
-
-  <!-- F20 · #47 -->
-  <div class="frame-card">
-    <div class="canvas-zone">
-      <div class="canvas-photo" style="background-image:url('http://127.0.0.1:5500/frameforge/data/test-projects/amazon/input/the-amazon-thumbs-05.png');background-position:25% 100%"></div>
-      <div class="grad-band to-bottom"></div>
-      <div class="zone-pin bottom-left">titular + sub + location</div>
-      <div class="frame-num-pill">20</div>
-    </div>
-    <div class="frame-body">
-      <div class="frame-id"><span class="photo-n">#47</span><span class="img-src">woman-with-anaconda</span></div>
-      <div class="frame-title">Mujer con anaconda</div>
-      <ul class="layer-list">
-        <li class="layer-item">
-          <span class="lt lt-image">Image</span>
-          <div class="layer-detail"><span class="layer-spec">cover · focal x:50 y:45 · figura + anaconda centradas · la mujer no es superada por el texto</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-overlay">Overlay</span>
-          <div class="layer-detail"><span class="layer-spec">#0D1F14 · to-bottom · 0.0→0.65 desde 40% · no toca a la mujer ni a la anaconda</span></div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-headline">Titular</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Serif Display · 6.5% · blanco</span>
-            <span class="layer-text">"Real. Como el Amazonas."</span>
-          </div>
-        </li>
-        <li class="layer-item">
-          <span class="lt lt-eyebrow">Location</span>
-          <div class="layer-detail">
-            <span class="layer-spec">bottom-left · DM Sans 700 · 1.8% · #7B9FAE · tracking 0.15 · debajo del titular</span>
-            <span class="layer-text">"AMAZONAS COLOMBIANO"</span>
-          </div>
-        </li>
-      </ul>
-      <div class="focal-note">Foto no fue pedida · momento espontáneo, sin guión · titular describe a la mujer y declara la naturaleza del lugar en un solo pensamiento · la imagen es la evidencia, el texto es el veredicto · espejo del frame 01: abre con un nombre, cierra con una verdad</div>
-    </div>
-  </div>
-
-</div><!-- /frame-grid cierre -->
-
 </body>
 </html>

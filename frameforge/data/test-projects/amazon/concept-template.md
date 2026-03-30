@@ -1,160 +1,273 @@
-# The Amazon — Concept Template
+# Amazonía — Concept Template
 
-**Platform:** Instagram Portrait 4:5 · 1080×1350 px
-**Frames:** 20
-**Date:** 2026-03-28
+## Series
+
+- **Title:** Amazonía
+- **Project ID:** `the-amazon`
+- **Platform:** Instagram Portrait 4:5 — 1080 × 1350 px, 72 DPI, scale_factor 2
+- **Frames:** 20
+- **Narrative arc:** Opening aerial → Act I: River & Jungle → Act II: Wildlife → Act III: People & Community → Closing invitation
 
 ---
 
 ## Color Palette
 
-| Hex | Name | Role |
-|-----|------|------|
-| `#0D1F14` | Profundidad del dosel | Base tone · overlays · shadows |
-| `#7B9FAE` | Neblina del río | Eyebrows · labels · subtitles |
-| `#C8751E` | Ámbar de la fauna | Scientific names · highlighted data |
+| Name | Hex | Role |
+|------|-----|------|
+| Deep Canopy | `#1B3826` | Primary overlay — gradients, gradient bases, shape anchors. Old-growth forest shadow, warm not cold. |
+| River Amber | `#C4782A` | Eyebrows, act labels, species names, location tags. Color of golden-hour river light. Never used in headlines or body copy. |
+| Sage Canopy | `#7B9E87` | Secondary overlay — light gradient moments in brighter frames where Deep Canopy is too heavy. |
+
+**Text color:** `#F5EFE0` — warm near-white for all headline and caption text.
 
 ---
 
 ## Type System
 
-| Role | Font | size_pct | Color |
-|------|------|----------|-------|
-| Large headline | DM Serif Display | 7.5 | white |
-| Headline | DM Serif Display | 6.5 | white |
-| Body | DM Sans 400 | 2.8 | white |
-| Subtitle | DM Sans 400 | 2.5 | `#7B9FAE` |
-| Eyebrow / Label | DM Sans 700 · tracking 0.15em | 1.8 | `#7B9FAE` |
-| Scientific name | DM Sans 400 italic | 2.2 | `#C8751E` |
-| Fauna data | DM Sans 400 | 2.0 | white |
+| Role | Family | Usage |
+|------|--------|-------|
+| Display | `Fraunces` | Opening title, italic captions (Act III pivot frame, closing frame). Weight 300. |
+| Sans-serif | `DM Sans` | All eyebrows, species labels, act markers, journey captions. Weight 400. |
+
+**Size scale (size_pct):**
+- Display headline: 9.5
+- Caption italic (closing): 3.0
+- Caption: 2.5
+- Eyebrow: 1.8
+
+**Numeral rule:** DM Sans only for any numeric content. Fraunces prohibited for numbers.
 
 ---
 
 ## Application Rules
 
-- **Silent frames** (no text, no overlay): frame-04, frame-08, frame-17
-- No overlay on frames without text
-- Location eyebrow only on place frames
-- Scientific name + 1 data point on fauna frames (max 2 text layers)
-- 3 text layers only on the closer (frame-20)
-- All text in Spanish
-- Scientific names in italic
-- Placeholders `[NOMBRE DE ESPECIE]` and `[DATO]` must be filled before publication
+- Gradient color: `#1B3826` (Deep Canopy) on all frames requiring a gradient
+- Eyebrow color: `#C4782A` (River Amber) on all frames
+- Text color: `#F5EFE0` on all text layers
+- Gradient direction matches text zone: bottom text → `to-bottom`; top text → `to-top`
+- Eyebrows appear without gradient only when the background provides sufficient natural contrast (dark canopy, jungle foliage, out-of-focus vegetation)
+- Italic Fraunces reserved exclusively for frames 16 and 20 — signals the emotional register shift of the human acts and the series close
+- Wildlife frames 9–13 carry species eyebrows only — no headline, no caption, no gradient unless art director confirms legibility issue
+- Silent frames (4, 7, 14, 15, 17, 18, 19): image only, no intervention of any kind
 
 ---
 
-## Frames
+## Frame Reference
 
-### Apertura (1 frame)
+### frame-01 · aerial-amazon-river · Sheet 5 · #46 · dji_fly_20260228_131446_0609_1772316071531_photo.jpg
 
-**frame-01** · `canopy-walkway` · Sheet 5 #45 · Pasarela en el dosel
-- Overlay: `#0D1F14` to-bottom 0.0→0.65 from 40%
-- Headline (bottom-left · DM Serif Display 7.5%): "El Amazonas colombiano."
-- Sub (bottom-left · DM Sans 2.5% · `#7B9FAE`): "Un mes adentro de la selva más grande del mundo."
+**Status:** Text — Eyebrow + headline · top zone
+**Gradient:** to-top · from_opacity 0.0 at 65% · to_opacity 0.50 at 0%
+**Focal point:** x_pct 50, y_pct 45
 
----
-
-### Río & Selva (3 frames)
-
-**frame-02** · `towering-trees` · Sheet 3 #22 · Árboles monumentales
-- Overlay: `#0D1F14` to-top 0.0→0.55 from 60%
-- Eyebrow (bottom-left · DM Sans 700 1.8% · `#7B9FAE`): "PUERTO NARIÑO · SELVA INUNDABLE"
-- Body (bottom-left · DM Sans 2.5%): "El río puede subir hasta 12 metros e inundar la selva por meses enteros."
-
-**frame-03** · `aerial-amazon` · Sheet 5 #46 · Amazonas aérea · `aerial-amazon.jpg`
-- Overlay: `#0D1F14` to-top 0.0→0.65 from 50%
-- Headline (top-left · DM Serif Display 7.5%): "La selva tropical más grande del mundo."
-- Body (top-left · DM Sans 2.5% · `#7B9FAE`): "5,5 millones de kilómetros cuadrados de vida."
-
-**frame-04** · `canoe-at-dusk` · Sheet 4 #38 · Canoa al atardecer · **SILENT — no text, no overlay**
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `AMAZONÍA · COLOMBIA` |
+| Headline | top-left, offset_x 6, offset_y 11 | Fraunces wt 300 | 9.5 | `Amazonía` |
 
 ---
 
-### Personas & Comunidad (4 frames)
+### frame-02 · aerial-river-descent · Sheet 5 · #45 · dji_fly_20260228_131208_0599_1772316094210_photo.jpg
 
-**frame-05** · `child-in-the-rain` · Sheet 1 #3 · Niño bajo la lluvia
-- Overlay: `#0D1F14` to-bottom 0.0→0.60 from 40%
-- Eyebrow (bottom-left · DM Sans 700 1.8% · `#7B9FAE`): "UMARIAÇU · TABATINGA · BRASIL"
-- Body (bottom-left · DM Sans 2.8%): "Cuando llega la lluvia, todo el pueblo sale a recibirla."
-- Sub (bottom-left · DM Sans 2.2% · `#7B9FAE`): "La lluvia aquí no interrumpe la vida. Es la vida."
+**Status:** Text — Caption · bottom zone
+**Gradient:** to-bottom · from_opacity 0.0 at 78% · to_opacity 0.55 at 100%
+**Focal point:** x_pct 50, y_pct 50
 
-**frame-06** · `river-as-highway` · Sheet 5 #48 · El río como carretera
-- Overlay: `#0D1F14` to-top 0.0→0.65 from 55%
-- Headline (top-left · DM Serif Display 6.5%): "No hay carreteras. Solo el río."
-- Sub (top-left · DM Sans 2.5% · `#7B9FAE`): "El Amazonas es la única vía."
-
-**frame-07** · `soccer-game` · Sheet 1 #10 · Partido de fútbol
-- Overlay: `#0D1F14` to-top 0.0→0.55 from 60%
-- Eyebrow (top-left · DM Sans 700 1.8% · `#7B9FAE`): "MOCAGUA · COLOMBIA"
-- Body (top-left · DM Sans 2.8%): "Un partido. Una fiesta. Su unión."
-
-**frame-08** · `women-laughing` · Sheet 2 #19 · Mujeres riendo · **SILENT — no text, no overlay**
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Un mes en la Amazonia colombiana.` |
 
 ---
 
-### Fauna (11 frames)
+### frame-03 · canoe-interior-river-view · Sheet 5 · #48 · IMG_9464.jpg
 
-**frame-09** · `squirrel-monkey` · Sheet 1 #6 · Mono ardilla
-- Overlay: `#0D1F14` to-bottom 0.0→0.65 from 50%
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Saimiri sciureus"
-- Dato (bottom-left · DM Sans 2.0%): "Viajan en grupos de hasta 75 individuos por el dosel amazónico."
+**Status:** Text — Caption · natural dark zone (no gradient)
+**Gradient:** None — dark canoe interior provides natural contrast
+**Focal point:** x_pct 50, y_pct 40
 
-**frame-10** · `poison-dart-frog` · Sheet 2 #16 · Rana dardo venenosa
-- Overlay: `#0D1F14` to-bottom 0.0→0.70 from 50%
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Dendrobates sp."
-- Dato (bottom-left · DM Sans 2.0%): "Su piel contiene suficiente toxina para paralizar a un predador."
-
-**frame-11** · `white-chinned-jacamar` · Sheet 2 #13 · Jacamar barbiblanco
-- Overlay: `#0D1F14` to-bottom 0.0→0.65 from 50%
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Galbula tombacea"
-- Dato (bottom-left · DM Sans 2.0%): "El Amazonas colombiano alberga más de 600 especies de aves."
-
-**frame-12** · `woolly-monkey` · Sheet 1 #4 · Mono lanudo
-- Overlay: `#0D1F14` to-bottom 0.0→0.60 from 55%
-- Eyebrow (bottom-left · DM Sans 700 1.8% · `#7B9FAE`): "MOCAGUA · FUNDACIÓN MAIKUCHIGA"
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Lagothrix lagothricha"
-- Dato (bottom-left · DM Sans 2.0%): "Vulnerable. Dispersa semillas esenciales para la regeneración del bosque."
-
-**frame-13** · `pink-dolphin` · Sheet 1 #8 · Delfín rosado
-- Overlay: `#0D1F14` to-top 0.0→0.65 from 50%
-- Eyebrow (top-left · DM Sans 700 1.8% · `#7B9FAE`): "RÍO AMAZONAS · VISTA ALEGRE · PERÚ"
-- Scientific (top-left · DM Sans italic 2.2% · `#C8751E`): "Inia geoffrensis"
-- Dato (top-left · DM Sans 2.0%): "Un encuentro inesperado: un grupo, río arriba."
-
-**frame-14** · `musmuquis` · Sheet 1 #9 · Musmuquis ×3
-- Overlay: `#0D1F14` to-bottom 0.0→0.60 from 55%
-- Eyebrow (bottom-left · DM Sans 700 1.8% · `#7B9FAE`): "VISTA ALEGRE · PERÚ"
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Aotus vociferans"
-- Dato (bottom-left · DM Sans 2.0%): "Torturados por décadas para la investigación del Dr. Patarroyo. Hoy, en Vista Alegre, libres."
-
-**frame-15** · `black-tailed-trogon` · Sheet 3 #24 · Trogón colinegro
-- Overlay: `#0D1F14` to-bottom 0.0→0.60 from 50%
-- Eyebrow (bottom-left · DM Sans 700 1.8% · `#7B9FAE`): "LAGO TARAPOTO · PUERTO NARIÑO"
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Trogon melanurus"
-- Dato (bottom-left · DM Sans 2.0%): "Uno de los pájaros más vistosos y menos conocidos del Amazonas."
-
-**frame-16** · `wire-tailed-manakin` · Sheet 3 #25 · Saltarín cola de alambre
-- Overlay: `#0D1F14` to-bottom 0.0→0.60 from 50%
-- Eyebrow (bottom-left · DM Sans 700 1.8% · `#7B9FAE`): "LAGO EL CORREO · PUERTO NARIÑO"
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Pipra filicauda"
-- Dato (bottom-left · DM Sans 2.0%): "Un macho en plena danza de cortejo. Un momento que pocos logran presenciar."
-
-**frame-17** · `amazon-tree-frog` · Sheet 5 #42 · Rana arborícola · **SILENT — no text, no overlay**
-
-**frame-18** · `striated-heron-dusk` · Sheet 3 #30 · Garza rallada al atardecer
-- Overlay: `#0D1F14` flat 0.10 only — no gradient (golden hour light must not be touched)
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Butorides striata"
-
-**frame-19** · `mouse-opossum` · Sheet 2 #17 · Zarigüeya ratón
-- Overlay: `#0D1F14` flat 0.20 + `#0A0510` flat 0.15 (double flat layer, no gradient)
-- Scientific (bottom-left · DM Sans italic 2.2% · `#C8751E`): "Marmosa murina"
-- Dato (bottom-left · DM Sans 2.0%): "Sin bolsa marsupial. Sus crías se aferran directamente a las mamas."
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `El río es el camino.` |
 
 ---
 
-### Cierre (1 frame)
+### frame-04 · canoe-dusk-silhouette · Sheet 4 · #38 · CC2A8728.jpg
 
-**frame-20** · `woman-with-anaconda` · Sheet 5 #47 · Mujer con anaconda
-- Overlay: `#0D1F14` to-bottom 0.0→0.65 from 40%
-- Headline (bottom-left · DM Serif Display 6.5%): "Real. Como el Amazonas."
-- Location (bottom-left · DM Sans 700 1.8% · `#7B9FAE`): "AMAZONAS COLOMBIANO"
+**Status:** Silent — no overlay, no text, no shapes
+**Focal point:** x_pct 50, y_pct 55
+
+Image only. Cinematically complete — silence is the deliberate treatment.
+
+---
+
+### frame-05 · canoes-water-hyacinths · Sheet 1 · #2 · CC2A0134.jpg
+
+**Status:** Text — Caption · bottom zone
+**Gradient:** to-bottom · from_opacity 0.0 at 78% · to_opacity 0.50 at 100%
+**Focal point:** x_pct 50, y_pct 50
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Las canoas esperan.` |
+
+---
+
+### frame-06 · jungle-canopy-vertical · Sheet 3 · #22 · CC2A5184.jpg
+
+**Status:** Text — Eyebrow · top zone (act pivot marker: river → forest)
+**Gradient:** to-top · from_opacity 0.0 at 70% · to_opacity 0.45 at 0%
+**Focal point:** x_pct 50, y_pct 40
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `SELVA AMAZÓNICA` |
+
+---
+
+### frame-07 · buttress-roots-closeup · Sheet 3 · #26 · CC2A6056.jpg
+
+**Status:** Silent — no overlay, no text, no shapes
+**Focal point:** x_pct 50, y_pct 55
+
+Image only. Act I closes in silence.
+
+---
+
+### frame-08 · yellow-tree-frog · Sheet 5 · #42 · CC2A9805.jpg
+
+**Status:** Text — Eyebrow · no gradient (Act II chapter marker)
+**Gradient:** None — dark foliage edge provides contrast
+**Focal point:** x_pct 50, y_pct 50
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `FAUNA` |
+
+---
+
+### frame-09 · howler-monkey-portrait · Sheet 1 · #4 · CC2A0442.jpg
+
+**Status:** Text — Eyebrow · no gradient (species name)
+**Gradient:** None — dark jungle background provides contrast
+**Focal point:** x_pct 50, y_pct 40
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `MONO AULLADOR` |
+
+---
+
+### frame-10 · squirrel-monkey-branch · Sheet 1 · #6 · CC2A0551.jpg
+
+**Status:** Text — Eyebrow · no gradient (species name)
+**Gradient:** None — out-of-focus foliage provides contrast
+**Focal point:** x_pct 50, y_pct 45
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `MONO ARDILLA` |
+
+---
+
+### frame-11 · hoatzin-perched · Sheet 3 · #27 · CC2A6358.jpg
+
+**Status:** Text — Eyebrow · no gradient (species name)
+**Gradient:** None — foliage background provides contrast
+**Focal point:** x_pct 50, y_pct 45
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `HOATZÍN` |
+
+---
+
+### frame-12 · kingfisher-amazon · Sheet 2 · #13 · CC2A4344.jpg
+
+**Status:** Text — Eyebrow · no gradient (species name)
+**Gradient:** None — soft-focus foliage provides contrast
+**Focal point:** x_pct 50, y_pct 45
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `MARTÍN PESCADOR AMAZÓNICO` |
+
+---
+
+### frame-13 · trogon-red-black · Sheet 3 · #24 · CC2A5494.jpg
+
+**Status:** Text — Eyebrow · no gradient (species name)
+**Gradient:** None — dark canopy background provides contrast
+**Focal point:** x_pct 50, y_pct 45
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `TROGÓN ROJO Y NEGRO` |
+
+---
+
+### frame-14 · heron-golden-light · Sheet 3 · #30 · CC2A6998.jpg
+
+**Status:** Silent — no overlay, no text, no shapes
+**Focal point:** x_pct 50, y_pct 50
+
+Image only. Painterly golden-light quality — naming shifts register from mood to nature guide.
+
+---
+
+### frame-15 · spider-closeup-eyes · Sheet 1 · #9 · CC2A1030.jpg
+
+**Status:** Silent — no overlay, no text, no shapes
+**Focal point:** x_pct 50, y_pct 50
+
+Image only. Act II closes on discomfort; no label defuses it.
+
+---
+
+### frame-16 · boy-canoe-bw · Sheet 1 · #1 · CC2A0036.jpg
+
+**Status:** Text — Caption italic · natural dark zone (Act III pivot)
+**Gradient:** None — dark river water provides natural contrast
+**Focal point:** x_pct 50, y_pct 40
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Caption | bottom-left, offset_x 6, offset_y -6 | Fraunces italic wt 300 | 2.5 | `Este es el hogar.` |
+
+---
+
+### frame-17 · family-stilt-house-window · Sheet 2 · #11 · CC2A3875.jpg
+
+**Status:** Silent — no overlay, no text, no shapes
+**Focal point:** x_pct 50, y_pct 45
+
+Image only. Frame-16 caption carries the act; image delivers the proof.
+
+---
+
+### frame-18 · children-football-field · Sheet 1 · #10 · CC2A1085.jpg
+
+**Status:** Silent — no overlay, no text, no shapes
+**Focal point:** x_pct 50, y_pct 50
+
+Image only. Joy needs no annotation.
+
+---
+
+### frame-19 · two-canoe-bw · Sheet 2 · #19 · CC2A4844.jpg
+
+**Status:** Silent — no overlay, no text, no shapes
+**Focal point:** x_pct 50, y_pct 50
+
+Image only. Visual echo of frame-04 and frame-16; the chord is the meaning.
+
+---
+
+### frame-20 · woman-heart-invitation · Sheet 5 · #47 · IMG_9302.jpg
+
+**Status:** Text — Caption italic · bottom zone (series close)
+**Gradient:** to-bottom · from_opacity 0.0 at 72% · to_opacity 0.55 at 100%
+**Focal point:** x_pct 50, y_pct 45
+
+| Layer | Zone | Font | size_pct | Content |
+|-------|------|------|----------|---------|
+| Caption | bottom-left, offset_x 6, offset_y -6 | Fraunces italic wt 300 | 3.0 | `Ven a la Amazonia.` |
