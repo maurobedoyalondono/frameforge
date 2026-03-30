@@ -15,30 +15,37 @@ export class LayersPanel {
 
   _build() {
     this._el.innerHTML = `
-      <div class="lp-header">
-        <span class="lp-title">Layers</span>
-        <div class="lp-header-actions">
-          <button class="lp-btn lp-btn-add" data-action="add-text"    title="Add text layer">T+</button>
-          <button class="lp-btn lp-btn-add" data-action="add-shape"   title="Add shape layer">◼</button>
-          <button class="lp-btn lp-btn-add" data-action="add-overlay" title="Add overlay layer">▓</button>
-          <div class="lp-sep-v"></div>
-          <button class="lp-btn lp-btn-all" data-action="show-all" title="Show all layers">👁</button>
-          <button class="lp-btn lp-btn-all" data-action="hide-all" title="Hide all layers">⊘</button>
-        </div>
+  <div class="lp-header">
+    <div class="lp-header-top">
+      <span class="lp-title">Layers</span>
+      <div class="lp-header-utils">
+        <button class="lp-btn lp-btn-all" data-action="show-all" title="Show all layers">👁</button>
+        <button class="lp-btn lp-btn-all" data-action="hide-all" title="Hide all layers">⊘</button>
       </div>
-      <div class="lp-list"></div>
-      <div class="lp-shape-popover" style="display:none">
-        <button class="lp-popover-btn" data-variant="bar">▬ Bar</button>
-        <button class="lp-popover-btn" data-variant="square">■ Square</button>
-        <button class="lp-popover-btn" data-variant="circle">● Circle</button>
-      </div>
-    `;
+    </div>
+    <div class="lp-header-add">
+      <button class="lp-btn-add" data-action="add-text"    title="Add text layer">Text</button>
+      <div class="lp-add-sep"></div>
+      <button class="lp-btn-add" data-action="add-shape"   title="Add shape layer">Shape</button>
+      <div class="lp-add-sep"></div>
+      <button class="lp-btn-add" data-action="add-overlay" title="Add overlay layer">Overlay</button>
+    </div>
+  </div>
+  <div class="lp-list"></div>
+  <div class="lp-shape-popover" style="display:none">
+    <button class="lp-popover-btn" data-variant="bar">▬ Bar</button>
+    <button class="lp-popover-btn" data-variant="square">■ Square</button>
+    <button class="lp-popover-btn" data-variant="circle">● Circle</button>
+  </div>
+`;
 
     this._listEl    = this._el.querySelector('.lp-list');
     this._popoverEl = this._el.querySelector('.lp-shape-popover');
 
+    const header    = this._el.querySelector('.lp-header');
+    const headerTop = this._el.querySelector('.lp-header-top');
+
     // Header actions (add-text / add-shape / add-overlay / show-all / hide-all) + drag initiation
-    const header = this._el.querySelector('.lp-header');
     header.addEventListener('click', e => {
       const btn = e.target.closest('[data-action]');
       if (!btn) return;
@@ -63,7 +70,7 @@ export class LayersPanel {
     };
     document.addEventListener('click', this._onDocClick);
 
-    this._initDrag(header);
+    this._initDrag(headerTop);
 
     this._listEl.addEventListener('click', e => {
       const row = e.target.closest('[data-layer-id]');
