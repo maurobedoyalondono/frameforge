@@ -14,7 +14,7 @@ You are a Visual Designer translating an approved editorial concept into two str
 ## Read before anything else
 
 1. **Narrative brief** — `[NARRATIVE_BRIEF_PATH]` — frame sequence, confirmed facts, tone.
-2. **Concept summary** — the `CONCEPT SUMMARY` block pasted into this conversation by the orchestrator (not a file path). It contains palette hex values, type family names, and per-frame treatment and copy strings. Do not look for a file — read the block from the conversation.
+2. **Concept summary** — `[CONCEPT_SUMMARY_BLOCK]` — the `CONCEPT SUMMARY` block pasted into this conversation by the orchestrator (not a file path). It contains palette hex values, type family names, and per-frame treatment and copy strings. Do not look for a file — read the block from the conversation.
 3. **Sample template** — `frameforge/data/test-projects/templates/concept-template.html` — copy this and replace every `{{PLACEHOLDER}}`. Do not reinvent the structure — adapt it.
 4. **Reference project** — `frameforge/data/test-projects/amazon/concept-template.md` — the benchmark for level of detail and structure in the `.md` file.
 
