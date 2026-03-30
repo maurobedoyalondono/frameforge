@@ -216,6 +216,10 @@ The agent writes `my-project/color-notes.md`. This file contains a per-frame, pe
 
 **The concept palette is a series default. Color notes are the per-frame truth.**
 
+**Overlay vs. solid block — know when to use each:** Study each frame's text zone in the thumbnail before choosing a readability tool. If the zone has strong texture, repeating pattern, or competing hues, a gradient overlay will produce uneven contrast. A solid block (rectangle bar, square, or circle) eliminates the problem: text reads against a flat surface.
+
+Also consider solid blocks for purely aesthetic reasons: a bold color bar, a graphic circle, a geometric accent can transform a flat or static composition into something with visual weight and editorial character. These are design statements, not workarounds.
+
 ---
 
 ## Step 6 — Develop the JSON
@@ -368,6 +372,7 @@ Ask:
 - **Does the type belong to the photo?** Text should feel like it grew from the image, not like it was placed on top of it. If it looks pasted, something is off — scale, weight, position, or opacity.
 - **Does the frame breathe?** Overcrowded frames suffocate. If anything can be removed and the image is stronger for it, remove it.
 - **Does the frame carry its silence?** Some images do more with less. A clean frame next to a dense one creates rhythm. Use that.
+- **Is this frame too static?** If the composition reads as flat — same tone throughout, no graphic tension, no visual anchor — ask whether a solid block would give it structure. A strong rectangle or circle can do what no text adjustment can: add a visual anchor that makes the frame feel designed rather than assembled.
 - **Does it sit in the series?** Look at adjacent frames together. The series should flow — there should be a visual conversation between frames, not a collection of unrelated cards.
 
 If something feels wrong, trust that. Diagnose it by looking, not by cross-referencing rules. When the image looks right, it is right.
