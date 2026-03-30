@@ -14,8 +14,8 @@
 
 | Name | Hex | Role |
 |------|-----|------|
-| Deep Canopy | `#1B3826` | Primary overlay — gradients, gradient bases, shape anchors. Old-growth forest shadow, warm not cold. |
-| River Amber | `#C4782A` | Eyebrows, act labels, species names, location tags. Color of golden-hour river light. Never used in headlines or body copy. |
+| Deep Canopy | `#1B3826` | Primary overlay — gradients, solid bars, shape anchors. Old-growth forest shadow, warm not cold. |
+| River Amber | `#C4782A` | Eyebrows and species labels. Color of golden-hour river light. Never used in headlines or body copy. |
 | Sage Canopy | `#7B9E87` | Secondary overlay — light gradient moments in brighter frames where Deep Canopy is too heavy. |
 
 **Text color:** `#F5EFE0` — warm near-white for all headline and caption text.
@@ -41,13 +41,13 @@
 
 ## Application Rules
 
-- Gradient color: `#1B3826` (Deep Canopy) on all frames requiring a gradient
+- Gradient color: `#1B3826` (Deep Canopy) on frames with smooth background in text zone
+- Solid bar color: `#1B3826` at 82% opacity on frames with noisy or complex background in text zone
 - Eyebrow color: `#C4782A` (River Amber) on all frames
 - Text color: `#F5EFE0` on all text layers
 - Gradient direction matches text zone: bottom text → `to-bottom`; top text → `to-top`
-- Eyebrows appear without gradient only when the background provides sufficient natural contrast (dark canopy, jungle foliage, out-of-focus vegetation)
 - Italic Fraunces reserved exclusively for frames 16 and 20 — signals the emotional register shift of the human acts and the series close
-- Wildlife frames 9–13 carry captions in the quietest zone — no headline, no gradient unless legibility requires it
+- Wildlife frames 9–13: eyebrow (species name) + caption (interesting biological fact). No gradient — natural backgrounds provide contrast.
 - Silent frames (4, 7, 14, 15, 18, 19): image only, no intervention of any kind
 
 ---
@@ -75,7 +75,7 @@
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Un mes. Un río. Un mundo.` |
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Un mes en la Amazonia colombiana.` |
 
 ---
 
@@ -87,7 +87,7 @@
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `El río es el camino.` |
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `El río: única vía de entrada y salida.` |
 
 ---
 
@@ -102,25 +102,25 @@ Image only. Cinematically complete — silence is the deliberate treatment.
 
 ### frame-05 · canoes-water-hyacinths · Sheet 1 · #2 · CC2A0134.jpg
 
-**Status:** Text — Caption · bottom zone
-**Gradient:** to-bottom · from_opacity 0.0 at 78% · to_opacity 0.50 at 100%
+**Status:** Text — Caption · solid bar bottom (noisy water and plant texture background)
+**Gradient:** None — solid bar replaces gradient; textured surface would defeat a gradient
 **Focal point:** x_pct 50, y_pct 50
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Todo viaje empieza aquí.` |
+| Caption | bottom bar, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `En la Amazonia, la canoa reemplaza al auto.` |
 
 ---
 
 ### frame-06 · jungle-canopy-vertical · Sheet 3 · #22 · CC2A5184.jpg
 
-**Status:** Text — Caption · bottom zone (act pivot marker: river → forest)
-**Gradient:** to-bottom · from_opacity 0.0 at 78% · to_opacity 0.50 at 100%
+**Status:** Text — Caption · solid bar bottom (dense vertical foliage, extremely noisy)
+**Gradient:** None — solid bar replaces gradient; vertical canopy texture would defeat a gradient
 **Focal point:** x_pct 50, y_pct 40
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `El río tiene otra mitad.` |
+| Caption | bottom bar, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `El dosel amazónico supera los 30 metros de altura.` |
 
 ---
 
@@ -135,73 +135,79 @@ Image only. Act I closes in silence.
 
 ### frame-08 · yellow-tree-frog · Sheet 5 · #42 · CC2A9805.jpg
 
-**Status:** Text — Caption · bottom zone (Act II chapter marker)
-**Gradient:** to-bottom · from_opacity 0.0 at 78% · to_opacity 0.50 at 100%
+**Status:** Text — Eyebrow + caption · solid bar bottom (Act II chapter marker; saturated subject, textured foliage)
+**Gradient:** None — solid bar; foliage texture and vivid frog color require a clean treatment
 **Focal point:** x_pct 50, y_pct 50
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Un mundo que desborda.` |
+| Eyebrow | bottom bar, offset_x 6, offset_y above caption | DM Sans wt 400 | 1.8 | `FAUNA` |
+| Caption | bottom bar, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `La Amazonia alberga el 10% de la vida silvestre del planeta.` |
 
 ---
 
 ### frame-09 · howler-monkey-portrait · Sheet 1 · #4 · CC2A0442.jpg
 
-**Status:** Text — Caption · no gradient
-**Gradient:** None — dark jungle background provides contrast
+**Status:** Text — Eyebrow + caption · no gradient (dark jungle background provides contrast)
+**Gradient:** None — naturally dark background
 **Focal point:** x_pct 50, y_pct 40
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `El que te mira de frente.` |
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `MONO AULLADOR` |
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Su rugido se escucha a 5 km de distancia.` |
 
 ---
 
 ### frame-10 · squirrel-monkey-branch · Sheet 1 · #6 · CC2A0551.jpg
 
-**Status:** Text — Caption · no gradient
-**Gradient:** None — out-of-focus foliage provides contrast
+**Status:** Text — Eyebrow + caption · no gradient (out-of-focus foliage provides contrast)
+**Gradient:** None — soft bokeh background
 **Focal point:** x_pct 50, y_pct 45
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `No todos son tan serios.` |
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `MONO ARDILLA` |
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Vive en grupos de hasta 300 individuos.` |
 
 ---
 
 ### frame-11 · hoatzin-perched · Sheet 3 · #27 · CC2A6358.jpg
 
-**Status:** Text — Caption · no gradient
-**Gradient:** None — foliage background provides contrast
+**Status:** Text — Eyebrow + caption · no gradient (foliage background provides contrast)
+**Gradient:** None — natural background contrast
 **Focal point:** x_pct 50, y_pct 45
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Vive como en el Cretácico.` |
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `HOATZÍN` |
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Sus crías nacen con garras en las alas.` |
 
 ---
 
 ### frame-12 · kingfisher-amazon · Sheet 2 · #13 · CC2A4344.jpg
 
-**Status:** Text — Caption · no gradient
-**Gradient:** None — soft-focus foliage provides contrast
+**Status:** Text — Eyebrow + caption · no gradient (soft-focus foliage provides contrast)
+**Gradient:** None — soft bokeh background
 **Focal point:** x_pct 50, y_pct 45
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `El río le pertenece.` |
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `MARTÍN PESCADOR` |
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Caza en picado a más de 40 km/h.` |
 
 ---
 
 ### frame-13 · trogon-red-black · Sheet 3 · #24 · CC2A5494.jpg
 
-**Status:** Text — Caption · no gradient
-**Gradient:** None — dark canopy background provides contrast
+**Status:** Text — Eyebrow + caption · no gradient (dark canopy background provides contrast)
+**Gradient:** None — naturally dark canopy
 **Focal point:** x_pct 50, y_pct 45
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Raro. Perfecto.` |
+| Eyebrow | top-left, offset_x 6, offset_y 7 | DM Sans wt 400 | 1.8 | `TROGÓN` |
+| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Solo habita en selva primaria no intervenida.` |
 
 ---
 
@@ -237,13 +243,13 @@ Image only. Act II closes on discomfort; no label defuses it.
 
 ### frame-17 · family-stilt-house-window · Sheet 2 · #11 · CC2A3875.jpg
 
-**Status:** Text — Caption · bottom zone
-**Gradient:** to-bottom · from_opacity 0.0 at 78% · to_opacity 0.50 at 100%
+**Status:** Text — Caption · solid bar bottom (complex architectural scene)
+**Gradient:** None — solid bar; window, wall, and family create a noisy background
 **Focal point:** x_pct 50, y_pct 45
 
 | Layer | Zone | Font | size_pct | Content |
 |-------|------|------|----------|---------|
-| Caption | bottom-left, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `La casa vive sobre el agua.` |
+| Caption | bottom bar, offset_x 6, offset_y -6 | DM Sans wt 400 | 2.5 | `Casas palafíticas: construidas para sobrevivir las crecidas del río.` |
 
 ---
 

@@ -34,6 +34,19 @@ The template includes six frame patterns:
 - Eyebrow + headline
 - Full text (eyebrow + headline + caption)
 
+When the concept summary specifies a **solid bar** treatment (used when the background is noisy or complex), render a semi-opaque filled rectangle behind the text instead of a gradient. Add this CSS if not already present:
+```css
+.layer-bar {
+  position: absolute;
+  left: 0; right: 0;
+  background: rgba(27,56,38,0.82);
+  padding: 8px 6%;
+}
+.layer-bar-bottom { bottom: 0; }
+.layer-bar-top { top: 0; }
+```
+Text sits inside the bar div. Spec row should read: `solid bar · Deep Canopy 82% opacity`.
+
 Duplicate the closest matching pattern for any frame not covered by the template.
 
 The finished file must show:

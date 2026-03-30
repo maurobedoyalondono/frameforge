@@ -43,37 +43,37 @@ For each: why it fits the subject matter and mood — not aesthetic preference a
 
 ## Story arc — map before per-frame work
 
-Before writing any individual brief, read the narrative brief's **viewer journey** section cover to cover. That section already contains the story. Your job is to surface its claims as editorial copy — not to invent new ones, and not to replace them with labels.
+Before writing any individual brief, read the narrative brief's **viewer journey** section cover to cover. Then answer these questions:
 
-Then answer these questions:
+1. **What are the structural text moments?** Every series has a spine — the title frame, act transitions, the closing. Identify these first. These frames earn text regardless of image strength.
 
-1. **What are the structural text moments?** Every series has a spine — the title frame, act transitions, key narrative claims, the closing. Identify these first. These frames earn text regardless of image strength.
+2. **What facts does the story provide?** The viewer journey confirms specific facts: how long the photographer was there, that the river is the only road in and out, that a creature's lineage is prehistoric. These are the raw material for copy. Write down candidate fact strings before opening any frame brief.
 
-2. **What claims does the story make?** The viewer journey makes specific claims: the river is a road, not scenery. This creature looks like it belongs to a different era. After nineteen frames, the viewer is asked a personal question. These are the raw material for copy. Write them down as candidate text strings before you open a single frame brief.
+3. **What context can only text deliver?** Trip duration, species biology, what role this place plays — facts the image cannot carry. Where the narrative brief or well-established knowledge confirms a fact that deepens a frame, use it. State it directly.
 
-3. **What context can only text deliver?** Some facts the image cannot carry: how long the photographer was there, that a bird's lineage predates the dinosaurs, that the river is the only road in and out. Where the narrative brief confirms a fact that would deepen a frame — use it. State it as a claim, not a label.
+4. **Where does silence serve the story?** Silence is correct for: cinematically complete images where text can only diminish; frames where the preceding text has already done the work. Silence must be chosen, not defaulted to.
 
-4. **Where does silence serve the story?** Silence is correct for: cinematically complete images where text can only diminish; emotional pauses where the composition is the statement; frames where the preceding text has already done the work. Silence must be chosen, not defaulted to.
-
-**Map the text spine** — list all candidate text strings in sequence before writing any per-frame brief. Read them aloud as a sequence. They should tell the story of the series on their own. If they sound like a table of contents or a species index, they are labels — start over.
+**Map the text spine** — list all candidate strings in sequence before writing any per-frame brief. Ask: would a viewer reading only these strings learn something specific and interesting at each moment? If they sound like fortune cookies or film title cards, they are poems — rewrite them as facts.
 
 **Language:** Use the language of the project's geography. Maintain consistency within categories.
 
 ---
 
-## Labels are not copy
+## Copy: facts, not labels or poetry
 
-This is the most common failure mode. A label identifies. Copy claims.
+Three failure modes:
 
-| Label (wrong) | Copy (right) |
-|---|---|
-| `MONO AULLADOR` | `El que te mira de frente.` |
-| `HOATZÍN` | `Vive como en el Cretácico.` |
-| `SELVA AMAZÓNICA` | `El río tiene otra mitad.` |
-| `FAUNA` | `Un mundo que desborda.` |
-| `ACTO III` | `Este es el hogar.` |
+| Failure | Example | Problem |
+|---|---|---|
+| Label | `HOATZÍN` | Identifies — viewer learns nothing new |
+| Poem | `Vive como en el Cretácico.` | Evokes vaguely — no specific information |
+| Quick fact | `Sus crías nacen con garras en las alas.` | Specific, verifiable, invisible in the image |
 
-The test: can you replace the text with nothing and lose only identification? If yes, it is a label — rewrite it as a claim. Copy that could appear in a magazine caption, a film title card, or a book chapter opener is on the right track. Copy that could appear in a museum exhibit label is not.
+The test: would this appear in a National Geographic caption? If it sounds like a fortune cookie or a film title card, it is a poem — rewrite it as a fact.
+
+**Wildlife frames:** eyebrow = species name (identifies) + caption = most interesting biological fact (informs). Both layers are needed. The eyebrow alone is a label. The poem alone is vague. The combination is a complete editorial unit.
+
+**Environment and journey frames:** caption = one fact the viewer could not know from the image — trip duration, what role this environment plays, what makes it distinctive.
 
 ---
 
@@ -86,10 +86,14 @@ For each frame: one decision, stated plainly.
 The image shows what it shows. Do not describe it. Text carries what is invisible: time, meaning, consequence, what comes next. Ask only: does the viewer need something the image cannot give them? If yes — write it. If no — silence.
 
 For each frame state:
-- **Context decision:** what the text gives that the image cannot (or: why silence is correct)
-- **Copy:** the exact string — a claim, not a label. Publication-ready. No placeholders.
+- **Context decision:** what text adds that the image cannot show (or: why silence is correct)
+- **Copy:** a quick fact — specific, interesting, informative. Not a poem. See "Copy: facts, not labels or poetry" above.
 - **Placement:** quietest zone, away from the subject. One sentence.
-- **Gradient:** only if needed for legibility. Direction matches text zone.
+- **Legibility treatment:** read the background at the text zone before choosing a treatment:
+  - Naturally dark or uniformly toned zone → no treatment needed
+  - Smooth tonal transition (sky, soft blur, gradual shadow) → gradient in direction of text
+  - Noisy, textured, or complex background → solid bar behind text. Gradient is ineffective on noise — it darkens the image but the texture survives.
+  The call is made by reading each image. Never default to gradient.
 
 **Strongest-zone boundary:** No element may cover or compete with the strongest zone. Hard constraint.
 

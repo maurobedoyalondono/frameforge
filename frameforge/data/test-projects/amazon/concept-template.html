@@ -34,6 +34,20 @@
     background: linear-gradient(to top, transparent 0%, rgba(27,56,38,0.50) 100%);
   }
 
+  /* Solid bar — used when background is noisy/complex and gradient would lose to texture */
+  .bar-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(27,56,38,0.82);
+    padding: 10px 6% 8px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .bar-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    background: rgba(27,56,38,0.82);
+    padding: 8px 6% 10px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+
   .zone-line-h { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.07); }
 
   .layer-eyebrow-tl {
@@ -42,20 +56,13 @@
     letter-spacing: 0.15em; text-transform: uppercase;
     color: #C4782A; opacity: 0.95;
   }
-  .layer-eyebrow-tr {
-    position: absolute; top: 7%; right: 6%;
+  .layer-eyebrow-bar {
     font-family: 'DM Sans', sans-serif; font-size: 7px;
     letter-spacing: 0.15em; text-transform: uppercase;
-    color: #C4782A; opacity: 0.95; text-align: right;
+    color: #C4782A; opacity: 0.95;
   }
   .layer-headline-tl {
     position: absolute; top: 11%; left: 6%;
-    font-family: 'Fraunces', serif; font-weight: 300;
-    color: #F5EFE0; letter-spacing: 0.01em; line-height: 1.0;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-  }
-  .layer-headline-bl {
-    position: absolute; bottom: 6%; left: 6%;
     font-family: 'Fraunces', serif; font-weight: 300;
     color: #F5EFE0; letter-spacing: 0.01em; line-height: 1.0;
     text-shadow: 0 2px 8px rgba(0,0,0,0.5);
@@ -64,6 +71,10 @@
     position: absolute; bottom: 6%; left: 6%;
     font-family: 'DM Sans', sans-serif; font-size: 8px;
     color: #F5EFE0; opacity: 0.9; line-height: 1.5; max-width: 82%;
+  }
+  .layer-caption-bar {
+    font-family: 'DM Sans', sans-serif; font-size: 8px;
+    color: #F5EFE0; opacity: 0.9; line-height: 1.5;
   }
   .layer-caption-italic-bl {
     position: absolute; bottom: 6%; left: 6%;
@@ -94,8 +105,8 @@
     Warm lush editorial · Fraunces + DM Sans
   </div>
   <div class="palette-row">
-    <div class="swatch"><span class="swatch-dot" style="background:#1B3826"></span>#1B3826 Deep Canopy — overlay</div>
-    <div class="swatch"><span class="swatch-dot" style="background:#C4782A"></span>#C4782A River Amber — eyebrows &amp; labels</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#1B3826"></span>#1B3826 Deep Canopy — overlays &amp; bars</div>
+    <div class="swatch"><span class="swatch-dot" style="background:#C4782A"></span>#C4782A River Amber — eyebrows</div>
     <div class="swatch"><span class="swatch-dot" style="background:#7B9E87"></span>#7B9E87 Sage Canopy — secondary overlay</div>
   </div>
 </div>
@@ -124,7 +135,7 @@
     </div>
   </div>
 
-  <!-- FRAME 02 — Caption · bottom zone (thin gradient strip) -->
+  <!-- FRAME 02 — Caption · bottom zone · gradient (smooth aerial background) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-02 · aerial-river-descent</span>
@@ -135,7 +146,7 @@
       <div class="zone-line-h" style="top:78%"></div>
       <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
       <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.55</div>
-      <div class="layer-caption-bl">Un mes. Un río. Un mundo.</div>
+      <div class="layer-caption-bl">Un mes en la Amazonia colombiana.</div>
       <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
     </div>
     <div class="frame-spec">
@@ -144,15 +155,14 @@
     </div>
   </div>
 
-  <!-- FRAME 03 — Caption · natural dark zone (no gradient) -->
+  <!-- FRAME 03 — Caption · natural dark zone (dark canoe interior) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-03 · canoe-interior-river-view</span>
       <span class="frame-status">Caption · natural dark zone</span>
     </div>
     <div class="canvas">
-      <!-- No gradient — dark canoe interior provides natural contrast -->
-      <div class="layer-caption-bl">El río es el camino.</div>
+      <div class="layer-caption-bl">El río: única vía de entrada y salida.</div>
       <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
       <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark canoe interior</div>
     </div>
@@ -176,43 +186,41 @@
     </div>
   </div>
 
-  <!-- FRAME 05 — Caption · bottom zone (thin gradient) -->
+  <!-- FRAME 05 — Caption · solid bar (noisy water + hyacinth texture) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-05 · canoes-water-hyacinths</span>
-      <span class="frame-status">Caption · bottom zone</span>
+      <span class="frame-status">Caption · solid bar bottom</span>
     </div>
     <div class="canvas">
-      <div class="grad-bottom" style="height:22%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
-      <div class="zone-line-h" style="top:78%"></div>
-      <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
-      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.50</div>
-      <div class="layer-caption-bl">Todo viaje empieza aquí.</div>
+      <div class="bar-bottom">
+        <span class="layer-caption-bar">En la Amazonia, la canoa reemplaza al auto.</span>
+      </div>
       <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="annot annot-grad" style="top:3%;left:4%">solid bar — textured water surface</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@78% → 0.50@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Solid bar · Deep Canopy 82% opacity · bottom</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom bar · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
-  <!-- FRAME 06 — Caption · bottom zone (act pivot marker: river → forest) -->
+  <!-- FRAME 06 — Caption · solid bar (dense vertical foliage, extremely noisy) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-06 · jungle-canopy-vertical</span>
-      <span class="frame-status">Caption · bottom zone</span>
+      <span class="frame-status">Caption · solid bar bottom</span>
     </div>
     <div class="canvas">
-      <div class="grad-bottom" style="height:22%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
-      <div class="zone-line-h" style="top:78%"></div>
-      <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
-      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.50</div>
-      <div class="layer-caption-bl">El río tiene otra mitad.</div>
+      <div class="bar-bottom">
+        <span class="layer-caption-bar">El dosel amazónico supera los 30 metros de altura.</span>
+      </div>
       <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="annot annot-grad" style="top:3%;left:4%">solid bar — vertical canopy too noisy for gradient</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@78% → 0.50@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Solid bar · Deep Canopy 82% opacity · bottom</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom bar · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
@@ -230,107 +238,118 @@
     </div>
   </div>
 
-  <!-- FRAME 08 — Caption · bottom zone (Act II chapter marker) -->
+  <!-- FRAME 08 — Eyebrow + caption · solid bar (vivid frog + textured foliage) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-08 · yellow-tree-frog</span>
-      <span class="frame-status">Caption · bottom zone</span>
+      <span class="frame-status">Eyebrow + caption · solid bar bottom</span>
     </div>
     <div class="canvas">
-      <div class="grad-bottom" style="height:22%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
-      <div class="zone-line-h" style="top:78%"></div>
-      <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
-      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.50</div>
-      <div class="layer-caption-bl">Un mundo que desborda.</div>
-      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="bar-bottom">
+        <span class="layer-eyebrow-bar">FAUNA</span>
+        <span class="layer-caption-bar">La Amazonia alberga el 10% de la vida silvestre del planeta.</span>
+      </div>
+      <div class="annot" style="top:3%;right:4%">1.8 · DM Sans / 2.5 · DM Sans</div>
+      <div class="annot annot-grad" style="top:3%;left:4%">solid bar — foliage texture + vivid frog</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@78% → 0.50@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Solid bar · Deep Canopy 82% opacity · bottom</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · bottom bar · color #C4782A</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom bar</span></div>
     </div>
   </div>
 
-  <!-- FRAME 09 — Caption · no gradient -->
+  <!-- FRAME 09 — Eyebrow + caption · no gradient (dark jungle background) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-09 · howler-monkey-portrait</span>
-      <span class="frame-status">Caption · no gradient</span>
+      <span class="frame-status">Eyebrow + caption · no gradient</span>
     </div>
     <div class="canvas">
-      <div class="layer-caption-bl">El que te mira de frente.</div>
-      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="layer-eyebrow-tl">MONO AULLADOR</div>
+      <div class="layer-caption-bl">Su rugido se escucha a 5 km de distancia.</div>
+      <div class="annot" style="top:3%;right:4%">1.8 · DM Sans / 2.5 · DM Sans</div>
       <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark jungle background</div>
     </div>
     <div class="frame-spec">
       <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — dark jungle background provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
       <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
-  <!-- FRAME 10 — Caption · no gradient -->
+  <!-- FRAME 10 — Eyebrow + caption · no gradient (soft bokeh foliage) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-10 · squirrel-monkey-branch</span>
-      <span class="frame-status">Caption · no gradient</span>
+      <span class="frame-status">Eyebrow + caption · no gradient</span>
     </div>
     <div class="canvas">
-      <div class="layer-caption-bl">No todos son tan serios.</div>
-      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
-      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — out-of-focus foliage</div>
+      <div class="layer-eyebrow-tl">MONO ARDILLA</div>
+      <div class="layer-caption-bl">Vive en grupos de hasta 300 individuos.</div>
+      <div class="annot" style="top:3%;right:4%">1.8 · DM Sans / 2.5 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — soft bokeh foliage</div>
     </div>
     <div class="frame-spec">
       <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — out-of-focus foliage provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
       <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
-  <!-- FRAME 11 — Caption · no gradient -->
+  <!-- FRAME 11 — Eyebrow + caption · no gradient (foliage background) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-11 · hoatzin-perched</span>
-      <span class="frame-status">Caption · no gradient</span>
+      <span class="frame-status">Eyebrow + caption · no gradient</span>
     </div>
     <div class="canvas">
-      <div class="layer-caption-bl">Vive como en el Cretácico.</div>
-      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
-      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — jungle foliage background</div>
+      <div class="layer-eyebrow-tl">HOATZÍN</div>
+      <div class="layer-caption-bl">Sus crías nacen con garras en las alas.</div>
+      <div class="annot" style="top:3%;right:4%">1.8 · DM Sans / 2.5 · DM Sans</div>
+      <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — foliage background</div>
     </div>
     <div class="frame-spec">
       <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — foliage background provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
       <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
-  <!-- FRAME 12 — Caption · no gradient -->
+  <!-- FRAME 12 — Eyebrow + caption · no gradient (soft-focus foliage) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-12 · kingfisher-amazon</span>
-      <span class="frame-status">Caption · no gradient</span>
+      <span class="frame-status">Eyebrow + caption · no gradient</span>
     </div>
     <div class="canvas">
-      <div class="layer-caption-bl">El río le pertenece.</div>
-      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="layer-eyebrow-tl">MARTÍN PESCADOR</div>
+      <div class="layer-caption-bl">Caza en picado a más de 40 km/h.</div>
+      <div class="annot" style="top:3%;right:4%">1.8 · DM Sans / 2.5 · DM Sans</div>
       <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — soft-focus foliage</div>
     </div>
     <div class="frame-spec">
       <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — soft-focus foliage provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
       <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
-  <!-- FRAME 13 — Caption · no gradient -->
+  <!-- FRAME 13 — Eyebrow + caption · no gradient (dark canopy) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-13 · trogon-red-black</span>
-      <span class="frame-status">Caption · no gradient</span>
+      <span class="frame-status">Eyebrow + caption · no gradient</span>
     </div>
     <div class="canvas">
-      <div class="layer-caption-bl">Raro. Perfecto.</div>
-      <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="layer-eyebrow-tl">TROGÓN</div>
+      <div class="layer-caption-bl">Solo habita en selva primaria no intervenida.</div>
+      <div class="annot" style="top:3%;right:4%">1.8 · DM Sans / 2.5 · DM Sans</div>
       <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark canopy background</div>
     </div>
     <div class="frame-spec">
       <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">None — dark canopy background provides contrast</span></div>
+      <div class="spec-row"><span class="spec-key">Eyebrow</span><span class="spec-val">DM Sans wt 400 · size_pct 1.8 · top-left · offset_x 6, offset_y 7 · color #C4782A</span></div>
       <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
@@ -370,7 +389,6 @@
       <span class="frame-status">Caption italic · natural dark zone</span>
     </div>
     <div class="canvas">
-      <!-- No gradient — dark river water provides natural contrast -->
       <div class="layer-caption-italic-bl">Este es el hogar.</div>
       <div class="annot" style="top:3%;right:4%">2.5 · Fraunces italic</div>
       <div class="annot annot-grad" style="bottom:14%;left:4%">no gradient — dark river water</div>
@@ -381,23 +399,22 @@
     </div>
   </div>
 
-  <!-- FRAME 17 — Caption · bottom zone -->
+  <!-- FRAME 17 — Caption · solid bar (complex architectural scene, window + family) -->
   <div class="frame-card">
     <div class="frame-card-header">
       <span class="frame-id">frame-17 · family-stilt-house-window</span>
-      <span class="frame-status">Caption · bottom zone</span>
+      <span class="frame-status">Caption · solid bar bottom</span>
     </div>
     <div class="canvas">
-      <div class="grad-bottom" style="height:22%;background:linear-gradient(to bottom,transparent 0%,rgba(27,56,38,0.50) 100%)"></div>
-      <div class="zone-line-h" style="top:78%"></div>
-      <div class="annot annot-grad" style="top:79%;left:4%">gradient starts 78%</div>
-      <div class="annot annot-grad" style="bottom:1%;left:4%">to_opacity 0.50</div>
-      <div class="layer-caption-bl">La casa vive sobre el agua.</div>
+      <div class="bar-bottom">
+        <span class="layer-caption-bar">Casas palafíticas: construidas para sobrevivir las crecidas del río.</span>
+      </div>
       <div class="annot" style="top:3%;right:4%">2.5 · DM Sans</div>
+      <div class="annot annot-grad" style="top:3%;left:4%">solid bar — complex scene, window + family</div>
     </div>
     <div class="frame-spec">
-      <div class="spec-row"><span class="spec-key">Gradient</span><span class="spec-val">to-bottom · 0.0@78% → 0.50@100%</span></div>
-      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom-left · offset_x 6, offset_y -6</span></div>
+      <div class="spec-row"><span class="spec-key">Treatment</span><span class="spec-val">Solid bar · Deep Canopy 82% opacity · bottom</span></div>
+      <div class="spec-row"><span class="spec-key">Caption</span><span class="spec-val">DM Sans wt 400 · size_pct 2.5 · bottom bar · offset_x 6, offset_y -6</span></div>
     </div>
   </div>
 
