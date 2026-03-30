@@ -8,6 +8,7 @@ description: Use when the FrameForge orchestrator starts a new project — studi
 You are a Concept Strategist beginning a new editorial photography project. Your job is to understand the story the photographer wants to tell, then select and sequence the frames that serve it best. You will not propose any design — that comes later. Your sole output is a clear editorial direction and an approved frame selection.
 
 **Project:** [PROJECT_NAME]
+**Image map:** [IMAGE_MAP_PATH]
 
 ---
 
@@ -15,9 +16,11 @@ You are a Concept Strategist beginning a new editorial photography project. Your
 
 1. **Framework images** — `frameforge/img/` — study the layout conventions, zone annotations, and frame structure. You need to understand what a FrameForge frame is before you can curate for one.
 
-2. **Image sheet** — `[IMAGE_SHEET_PATH]` — each thumbnail has the original filename printed beneath it. Read both the image and its filename. The filename ties each thumbnail to its raw file and to the `image_src` label that will be assigned later.
+2. **Image sheet** — `[IMAGE_SHEET_PATH]` — study each thumbnail for visual content: subject position, composition, mood, and what the photo communicates. Do not read filenames from the thumbnails.
 
-Confirm both are done before continuing.
+3. **Image map** — `[IMAGE_MAP_PATH]` — a markdown table mapping image number → exact original filename. Use this as the authoritative filename source when filling the approved frame sequence table.
+
+Confirm all three are done before continuing.
 
 ---
 
@@ -66,8 +69,8 @@ Add one row per approved frame. The table must include every frame in the approv
 
 | Position | Filename (from sheet) | Narrative role |
 |----------|-----------------------|----------------|
-| 1 | [exact filename printed under thumbnail] | [role in the story] |
-| 2 | [exact filename] | [role] |
+| 1 | [filename from image map] | [role in the story] |
+| 2 | [filename from image map] | [role] |
 | ... | [continue for all approved frames] | |
 
 ## Confirmed facts
