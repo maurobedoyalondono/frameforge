@@ -15,10 +15,10 @@ You are a Technical Producer translating a fully approved editorial concept into
 
 In this order:
 
-1. **AI manual** — `frameforge/data/ai-manual-content.js` — read fully before generating any JSON. This is the authoritative spec for all JSON fields, layer types, and export targets.
+1. **AI manual** — `frameforge/data/ai-manual-content.js` — read fully before generating any JSON. This is the authoritative spec for all JSON fields, layer types, and export targets. Pay particular attention to: valid layer type identifiers, required fields per layer type, and the export target enumeration.
 2. **Concept template** — `[CONCEPT_TEMPLATE_MD_PATH]` — approved palette, type system, per-frame specs, exact copy, and `image_src` labels.
 3. **Color notes** — `[COLOR_NOTES_PATH]` — per-frame color overrides. These supersede the concept template palette for any frame where a conflict was found. The concept palette is a series default; color notes are per-frame truth.
-4. **Image sheet** — `[IMAGE_SHEET_PATH]` — open each sheet and read the filename printed under each approved thumbnail. You will need exact raw filenames for the frame-image mapping.
+4. **Image sheet** — `[IMAGE_SHEET_PATH]` — open each sheet and read the filename printed under each approved thumbnail. You will need exact raw filenames for the frame-image mapping. Do not use filenames from memory, prior session context, or the concept template — the only valid source is the label visually printed beneath each thumbnail in the sheet image.
 
 ---
 
