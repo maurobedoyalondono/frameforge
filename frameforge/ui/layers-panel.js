@@ -24,11 +24,9 @@ export class LayersPanel {
       </div>
     </div>
     <div class="lp-header-add">
-      <button class="lp-btn-add" data-action="add-text"    title="Add text layer">Text</button>
-      <div class="lp-add-sep"></div>
-      <button class="lp-btn-add" data-action="add-shape"   title="Add shape layer">Shape</button>
-      <div class="lp-add-sep"></div>
-      <button class="lp-btn-add" data-action="add-overlay" title="Add overlay layer">Overlay</button>
+      <button class="lp-btn-add" data-action="add-text"    title="Add text layer">+ Text</button>
+      <button class="lp-btn-add" data-action="add-shape"   title="Add shape layer">+ Shape</button>
+      <button class="lp-btn-add" data-action="add-overlay" title="Add overlay layer">+ Overlay</button>
     </div>
   </div>
   <div class="lp-list"></div>
