@@ -40,6 +40,11 @@ export class ShapeToolbar {
         <span class="st-val" data-field="w">—</span>
         <button class="st-btn" data-action="w-inc">+</button>
         <div class="st-sep"></div>
+        <span class="st-label" title="Height">↕</span>
+        <button class="st-btn" data-action="h-dec">−</button>
+        <span class="st-val" data-field="h">—</span>
+        <button class="st-btn" data-action="h-inc">+</button>
+        <div class="st-sep"></div>
         <button class="st-btn st-delete" data-action="delete" title="Delete shape">🗑</button>
       </div>
     `;
@@ -47,10 +52,10 @@ export class ShapeToolbar {
     this._colorInput = this._el.querySelector('.st-color');
     this._opVal      = this._el.querySelector('[data-field="op"]');
     this._wVal       = this._el.querySelector('[data-field="w"]');
+    this._hVal       = this._el.querySelector('[data-field="h"]');
 
     this._colorInput.addEventListener('input', () => {
       if (!this._layer) return;
-      // Migrate legacy 'color' field → 'fill_color' on first toolbar write
       this._layer.fill_color = this._colorInput.value;
       delete this._layer.color;
       this.onChange?.(this._layer);
@@ -91,6 +96,18 @@ export class ShapeToolbar {
         if (this._isSquare()) dims.height_pct = dims.width_pct;
         this._updateDisplays(); this.onChange?.(this._layer); break;
       }
+      case 'h-dec': {
+        const dims = (this._layer.dimensions ??= {});
+        const cur  = dims.height_pct ?? 10;
+        dims.height_pct = Math.max(2, cur - 2);
+        this._updateDisplays(); this.onChange?.(this._layer); break;
+      }
+      case 'h-inc': {
+        const dims = (this._layer.dimensions ??= {});
+        const cur  = dims.height_pct ?? 10;
+        dims.height_pct = Math.min(100, cur + 2);
+        this._updateDisplays(); this.onChange?.(this._layer); break;
+      }
       case 'delete':
         this.onDelete?.(this._layer); break;
     }
@@ -114,7 +131,8 @@ export class ShapeToolbar {
     if (!this._layer) return;
     this._colorInput.value = this._getFillColor();
     this._opVal.textContent = this._getOpacity().toFixed(2);
-    this._wVal.textContent  = `${Math.round(this._layer.dimensions?.width_pct ?? 10)}%`;
+    this._wVal.textContent  = `${Math.round(this._layer.dimensions?.width_pct  ?? 10)}%`;
+    this._hVal.textContent  = `${Math.round(this._layer.dimensions?.height_pct ?? 10)}%`;
   }
 
   show(layer) {
