@@ -54,6 +54,66 @@ async function init() {
   const statusbarEl    = document.getElementById('statusbar');
   const dropzoneEl     = document.getElementById('dropzone');
 
+  // ── Layer factories ──────────────────────────────────────────────────────
+
+  function makeUniqueId(prefix, frame) {
+    const existing = new Set((frame.layers ?? []).map(l => l.id));
+    let n = 1;
+    while (existing.has(`${prefix}-${n}`)) n++;
+    return `${prefix}-${n}`;
+  }
+
+  function makeDefaultTextLayer(id) {
+    return {
+      id,
+      type: 'text',
+      content: 'Text',
+      font: {
+        family: 'Inter', style: 'normal', weight: 400,
+        size_pct: 5, line_height: 1.2, color: '#FFFFFF', opacity: 1.0,
+      },
+      position: { mode: 'zone', zone: 'bottom-left', offset_x_pct: 6, offset_y_pct: -8 },
+      max_width_pct: 80,
+      align: 'left',
+    };
+  }
+
+  function makeDefaultShapeLayer(id, variant) {
+    const base = { id, type: 'shape', fill_color: '#000000', fill_opacity: 0.85 };
+    if (variant === 'circle') {
+      return { ...base, shape: 'circle',
+        position: { x_pct: 50, y_pct: 50 },
+        dimensions: { width_pct: 20, height_pct: 20 } };
+    }
+    if (variant === 'square') {
+      return { ...base, shape: 'rectangle',
+        position: { x_pct: 50, y_pct: 50 },
+        dimensions: { width_pct: 25, height_pct: 25 } };
+    }
+    // bar (default)
+    return { ...base, shape: 'rectangle',
+      position: { x_pct: 50, y_pct: 87 },
+      dimensions: { width_pct: 100, height_pct: 26 } };
+  }
+
+  function makeDefaultOverlayLayer(id) {
+    return {
+      id,
+      type: 'overlay',
+      color: '#000000',
+      opacity: 1.0,
+      blend_mode: 'normal',
+      gradient: {
+        enabled: true,
+        direction: 'to-bottom',
+        from_opacity: 0.0,
+        from_position_pct: 45,
+        to_opacity: 0.65,
+        to_position_pct: 100,
+      },
+    };
+  }
+
   // ── Module instances ────────────────────────────────────────────────────
   const project    = new Project();
   const renderer   = new Renderer();
@@ -479,6 +539,30 @@ async function init() {
     layersPanel.render(frame);
     layersPanel.setSelectedId(renderer.selectedLayerId);
     project.save();
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+  };
+
+  layersPanel.onAddLayer = (type, variant) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    if (!frame) return;
+    frame.layers ??= [];
+
+    let layer;
+    if (type === 'text') {
+      layer = makeDefaultTextLayer(makeUniqueId('text', frame));
+    } else if (type === 'shape') {
+      layer = makeDefaultShapeLayer(makeUniqueId('solid-block', frame), variant ?? 'bar');
+    } else if (type === 'overlay') {
+      layer = makeDefaultOverlayLayer(makeUniqueId('overlay', frame));
+    } else {
+      return;
+    }
+
+    frame.layers.push(layer);
+    project.save();
+    layersPanel.render(frame);
+    onLayerClick(layer);
     renderCurrentFrame();
     filmstrip.renderOne(project.activeFrameIndex, project);
   };
