@@ -8,8 +8,10 @@ export class LayersPanel {
     this.onLayerVisibilityAll    = null; // (makeVisible: boolean) => void
     this.onLayerDelete           = null; // (layerId) => void
     this.onAddLayer              = null; // (type: string, variant?: string) => void
+    this.onLayerReorder          = null; // (movedId, targetId, insertBefore: boolean) => void
     this._popoverEl              = null;
     this._onDocClick             = null;
+    this._draggedId              = null;
     this._build();
   }
 
@@ -85,6 +87,43 @@ export class LayersPanel {
       }
       this.onLayerSelect?.(layerId);
     });
+
+    // Drag-to-reorder list rows
+    this._listEl.addEventListener('dragstart', e => {
+      const row = e.target.closest('[data-layer-id]');
+      if (!row) { e.preventDefault(); return; }
+      this._draggedId = row.dataset.layerId;
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => row.classList.add('lp-dragging'), 0);
+    });
+
+    this._listEl.addEventListener('dragend', () => {
+      this._draggedId = null;
+      this._listEl.querySelectorAll('.lp-dragging, .lp-drop-above, .lp-drop-below')
+        .forEach(r => r.classList.remove('lp-dragging', 'lp-drop-above', 'lp-drop-below'));
+    });
+
+    this._listEl.addEventListener('dragover', e => {
+      e.preventDefault();
+      const row = e.target.closest('[data-layer-id]');
+      this._listEl.querySelectorAll('.lp-drop-above, .lp-drop-below')
+        .forEach(r => r.classList.remove('lp-drop-above', 'lp-drop-below'));
+      if (!row || row.dataset.layerId === this._draggedId) return;
+      const mid = row.getBoundingClientRect().top + row.getBoundingClientRect().height / 2;
+      row.classList.add(e.clientY < mid ? 'lp-drop-above' : 'lp-drop-below');
+    });
+
+    this._listEl.addEventListener('drop', e => {
+      e.preventDefault();
+      const targetRow = e.target.closest('[data-layer-id]');
+      if (!targetRow || !this._draggedId || targetRow.dataset.layerId === this._draggedId) return;
+      const mid = targetRow.getBoundingClientRect().top + targetRow.getBoundingClientRect().height / 2;
+      const insertBefore = e.clientY < mid;
+      this._listEl.querySelectorAll('.lp-drop-above, .lp-drop-below')
+        .forEach(r => r.classList.remove('lp-drop-above', 'lp-drop-below'));
+      this.onLayerReorder?.(this._draggedId, targetRow.dataset.layerId, insertBefore);
+      this._draggedId = null;
+    });
   }
 
   _toggleShapePopover() {
@@ -143,7 +182,9 @@ export class LayersPanel {
       return `
         <div class="lp-row${isSelected ? ' lp-selected' : ''}${isHidden ? ' lp-hidden-layer' : ''}"
              data-layer-id="${layer.id}"
+             draggable="true"
              title="${label}">
+          <span class="lp-drag-handle" title="Drag to reorder">⠿</span>
           <span class="lp-icon">${this._typeIcon(layer.type)}</span>
           <span class="lp-label">${label}</span>
           <span class="lp-swatch${swatch ? '' : ' lp-swatch-empty'}"

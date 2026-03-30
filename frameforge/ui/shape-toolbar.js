@@ -1,7 +1,8 @@
 /**
  * shape-toolbar.js — Floating contextual toolbar for a selected shape layer.
  *
- * Single-row layout: [ Fill color ] | [ Op − val + ] | [ ↔ − val% + ] | [ ↕ − val% + ] | [ 🗑 ]
+ * Row 1: [ Fill color ] | [ Op − val + ] | [ ↔ − val% + ] | [ ↕ − val% + ] | [ 🗑 ]
+ * Row 2: [ ↔ Full W ] [ ↕ Full H ] | [ ← ] [ → ] [ ↑ ] [ ↓ ]
  *
  * Usage:
  *   const toolbar = new ShapeToolbar(el);
@@ -46,6 +47,15 @@ export class ShapeToolbar {
         <button class="st-btn" data-action="h-inc">+</button>
         <div class="st-sep"></div>
         <button class="st-btn st-delete" data-action="delete" title="Delete shape">🗑</button>
+      </div>
+      <div class="st-row st-row-align">
+        <button class="st-btn" data-action="full-h" title="Full width (100%)">↔</button>
+        <button class="st-btn" data-action="full-v" title="Full height (100%)">↕</button>
+        <div class="st-sep"></div>
+        <button class="st-btn" data-action="align-left"   title="Align left">←</button>
+        <button class="st-btn" data-action="align-right"  title="Align right">→</button>
+        <button class="st-btn" data-action="align-top"    title="Align top">↑</button>
+        <button class="st-btn" data-action="align-bottom" title="Align bottom">↓</button>
       </div>
     `;
 
@@ -109,6 +119,40 @@ export class ShapeToolbar {
         const cur  = dims.height_pct ?? 10;
         dims.height_pct = Math.min(100, cur + 2);
         this._updateDisplays(); this.onChange?.(this._layer); break;
+      }
+      case 'full-h': {
+        const dims = (this._layer.dimensions ??= {});
+        const pos  = (this._layer.position  ??= {});
+        dims.width_pct = 100;
+        pos.x_pct = 0;
+        this._updateDisplays(); this.onChange?.(this._layer); break;
+      }
+      case 'full-v': {
+        const dims = (this._layer.dimensions ??= {});
+        const pos  = (this._layer.position  ??= {});
+        dims.height_pct = 100;
+        pos.y_pct = 0;
+        this._updateDisplays(); this.onChange?.(this._layer); break;
+      }
+      case 'align-left': {
+        (this._layer.position ??= {}).x_pct = 0;
+        this.onChange?.(this._layer); break;
+      }
+      case 'align-right': {
+        const pos  = (this._layer.position  ??= {});
+        const dims = this._layer.dimensions ?? {};
+        pos.x_pct = 100 - (dims.width_pct ?? 10);
+        this.onChange?.(this._layer); break;
+      }
+      case 'align-top': {
+        (this._layer.position ??= {}).y_pct = 0;
+        this.onChange?.(this._layer); break;
+      }
+      case 'align-bottom': {
+        const pos  = (this._layer.position  ??= {});
+        const dims = this._layer.dimensions ?? {};
+        pos.y_pct = 100 - (dims.height_pct ?? 10);
+        this.onChange?.(this._layer); break;
       }
       case 'delete':
         this.onDelete?.(this._layer); break;

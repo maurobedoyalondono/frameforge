@@ -1392,6 +1392,7 @@ code {
 
 .st-delete { color: var(--color-text-muted); background: transparent; border-color: transparent; }
 .st-delete:hover { color: var(--color-error); background: rgba(255,85,85,0.1); border-color: rgba(255,85,85,0.35); }
+.st-row-align { border-top: 1px solid var(--color-border); padding-top: 4px; padding-bottom: 4px; }
 
 /* ── White frame inspector controls ─────────────────────────────────────── */
 
@@ -1618,3 +1619,11 @@ code {
 .lp-delete { opacity: 0; }
 .lp-row:hover .lp-delete { opacity: 1; }
 .lp-delete:hover { color: var(--color-error) !important; }
+.lp-drag-handle {
+  flex-shrink: 0; font-size: 12px; color: var(--color-text-muted);
+  cursor: grab; opacity: 0; line-height: 1; user-select: none;
+}
+.lp-row:hover .lp-drag-handle { opacity: 0.5; }
+.lp-dragging   { opacity: 0.4; }
+.lp-drop-above { box-shadow: inset 0 2px 0 var(--color-accent); }
+.lp-drop-below { box-shadow: inset 0 -2px 0 var(--color-accent); }

@@ -543,6 +543,28 @@ async function init() {
     filmstrip.renderOne(project.activeFrameIndex, project);
   };
 
+  // Smart insertion: maintain image → overlay(s) → shape(s) → text order
+  function smartInsertIndex(layers, type) {
+    if (type === 'text') return layers.length; // text always on top
+    if (type === 'overlay') {
+      // After last image or overlay, before shapes and text
+      let last = -1;
+      for (let i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'image' || layers[i].type === 'overlay') last = i;
+      }
+      return last + 1;
+    }
+    if (type === 'shape') {
+      // After last image, overlay, or shape — before text
+      let last = -1;
+      for (let i = 0; i < layers.length; i++) {
+        if (layers[i].type === 'image' || layers[i].type === 'overlay' || layers[i].type === 'shape') last = i;
+      }
+      return last + 1;
+    }
+    return layers.length;
+  }
+
   layersPanel.onAddLayer = (type, variant) => {
     const frame = project.data?.frames?.[project.activeFrameIndex];
     if (!frame) return;
@@ -559,11 +581,31 @@ async function init() {
       return;
     }
 
-    frame.layers.push(layer);
+    const insertAt = smartInsertIndex(frame.layers, type);
+    frame.layers.splice(insertAt, 0, layer);
     project.save();
     layersPanel.render(frame);
     layersPanel.setSelectedId(layer.id);
     onLayerClick(layer);
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+  };
+
+  layersPanel.onLayerReorder = (movedId, targetId, insertBefore) => {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    if (!frame?.layers) return;
+    const layers = frame.layers;
+    const fromIdx = layers.findIndex(l => l.id === movedId);
+    if (fromIdx === -1) return;
+    const [moved] = layers.splice(fromIdx, 1);
+    const toIdx = layers.findIndex(l => l.id === targetId);
+    if (toIdx === -1) { layers.push(moved); }
+    else {
+      // Panel is reversed (top = highest z). insertBefore in panel = higher z = after in array.
+      layers.splice(insertBefore ? toIdx + 1 : toIdx, 0, moved);
+    }
+    project.save();
+    layersPanel.render(frame);
     renderCurrentFrame();
     filmstrip.renderOne(project.activeFrameIndex, project);
   };
