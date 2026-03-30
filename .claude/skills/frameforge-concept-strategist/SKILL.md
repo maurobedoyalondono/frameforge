@@ -47,6 +47,8 @@ For each image **kept**: state its role in the narrative and proposed position i
 
 Present as a numbered list. **Iterate with the user — add, drop, reorder — until the selection is approved.**
 
+Once the selection is approved, write the viewer journey: a 250–350 word prose passage describing the viewer's emotional experience moving through the series. Focus on what each act *does* to the viewer, the key transition moments between acts, and where the viewer lands emotionally at the end. This is a director's note to the creative team — not a description of image content.
+
 ---
 
 ## Return protocol
@@ -63,6 +65,19 @@ Once the frame selection is approved, write `[NARRATIVE_BRIEF_PATH]` with this e
 - **Core takeaway:** [exact answer from user]
 - **Tone:** [exact answer from user]
 
+## Narrative structure
+
+| Act | Theme | Frames | Editorial intent |
+|-----|-------|--------|-----------------|
+| Opening | Establishing | 1 | [one line] |
+| Act I | [theme] | 2–N | [intent] |
+| ... | | | |
+| Closing | Invitation | N | [one line] |
+
+## Viewer journey
+
+[250–350 words of prose. Describes the viewer's emotional experience from frame 1 to the last frame. Not what the images show — what the viewer feels, understands, and experiences as the series unfolds. Covers: what each act does to the viewer, the key transition moments between acts, and where the viewer lands at the end. Written as a director's note to the creative team.]
+
 ## Approved frame sequence
 
 Add one row per approved frame. The table must include every frame in the approved sequence — do not truncate.
@@ -72,6 +87,12 @@ Add one row per approved frame. The table must include every frame in the approv
 | 1 | [filename from image map] | [role in the story] |
 | 2 | [filename from image map] | [role] |
 | ... | [continue for all approved frames] | |
+
+## Dropped images — stated reasons
+
+| Image # | Description | Reason dropped |
+|---------|-------------|----------------|
+| N | [what it shows] | [why it doesn't serve the concept] |
 
 ## Confirmed facts
 [Any geographic names, dates, statistics, or other facts confirmed by the user — never invented. If none, write "None confirmed."]
