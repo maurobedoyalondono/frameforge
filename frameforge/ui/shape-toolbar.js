@@ -1,7 +1,7 @@
 /**
  * shape-toolbar.js — Floating contextual toolbar for a selected shape layer.
  *
- * Single-row layout: [ Fill color ] | [ Op − val + ] | [ ↔ − val% + ] | [ 🗑 ]
+ * Single-row layout: [ Fill color ] | [ Op − val + ] | [ ↔ − val% + ] | [ ↕ − val% + ] | [ 🗑 ]
  *
  * Usage:
  *   const toolbar = new ShapeToolbar(el);
@@ -56,6 +56,7 @@ export class ShapeToolbar {
 
     this._colorInput.addEventListener('input', () => {
       if (!this._layer) return;
+      // Migrate legacy 'color' field → 'fill_color' on first toolbar write
       this._layer.fill_color = this._colorInput.value;
       delete this._layer.color;
       this.onChange?.(this._layer);
@@ -96,6 +97,7 @@ export class ShapeToolbar {
         if (this._isSquare()) dims.height_pct = dims.width_pct;
         this._updateDisplays(); this.onChange?.(this._layer); break;
       }
+      // Height adjusts independently — _isSquare() lock intentionally not applied here
       case 'h-dec': {
         const dims = (this._layer.dimensions ??= {});
         const cur  = dims.height_pct ?? 10;
