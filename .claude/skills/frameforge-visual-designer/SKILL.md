@@ -14,7 +14,7 @@ You are a Visual Designer translating an approved editorial concept into two str
 ## Read before anything else
 
 1. **Narrative brief** — `[NARRATIVE_BRIEF_PATH]` — frame sequence, confirmed facts, tone.
-2. **Concept summary** — provided inline by the orchestrator as `[CONCEPT_SUMMARY_BLOCK]` — palette, type system, per-frame briefs, approved copy.
+2. **Concept summary** — the `CONCEPT SUMMARY` block pasted into this conversation by the orchestrator (not a file path). It contains palette hex values, type family names, and per-frame treatment and copy strings. Do not look for a file — read the block from the conversation.
 3. **Sample template** — `frameforge/data/test-projects/templates/concept-template.html` — copy this and replace every `{{PLACEHOLDER}}`. Do not reinvent the structure — adapt it.
 4. **Reference project** — `frameforge/data/test-projects/amazon/concept-template.md` — the benchmark for level of detail and structure in the `.md` file.
 
@@ -60,7 +60,7 @@ Include:
 
 **No placeholders** — every field must contain the actual approved value.
 
-The `image_src` label for each frame must be a descriptive identifier (e.g. `"wide-canyon-overview"`) that matches what the Technical Producer will use in the JSON. Derive it from the frame's subject and visual character — never use the raw filename.
+The `image_src` label for each frame must be a kebab-case identifier in the form `[primary-subject]-[distinctive-descriptor]` (e.g. `canopy-walkway`, `canoe-at-dusk`, `aerial-amazon`). Use the noun that names the primary subject, followed by one word or short phrase that distinguishes this frame from others with a similar subject. Derive both parts from what is visible in the image or stated in the frame brief — never from the raw filename. This label is written once here and used verbatim by all downstream agents (Technical Producer, frame-image mapping, project JSON) — it cannot be changed later without touching multiple files.
 
 ---
 
