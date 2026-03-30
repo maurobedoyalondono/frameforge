@@ -107,6 +107,9 @@ Type:
   display: [exact Google Fonts family name]
   sans: [exact Google Fonts family name]
 Per-frame briefs:
-  [frame position]: [filename] — [one-line summary of treatment and approved copy strings]
+  [frame position]: [filename]
+    treatment: [one sentence describing the visual treatment]
+    copy: "[exact approved text string 1]" / "[exact approved text string 2 if present]"
+    [silent — no copy] (use this line instead of copy: if the frame is silent)
   [repeat for each frame]
 ```
