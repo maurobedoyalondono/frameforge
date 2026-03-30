@@ -132,13 +132,13 @@ Dispatch `frameforge-creative-director` with:
 >
 > **Palette:** propose 2–3 hex colors as design colors — overlays, type accents, graphic elements. Not extracted from photos; editorial choices that must work as text placed on top of images. For each: name, hex, role, and why it fits the series mood.
 >
-> **Type system:** one display face + one sans-serif, both valid Google Fonts family names. Verify at fonts.google.com. For each: why it fits the mood. The sans-serif handles all numbers and measurements — display faces are prohibited for numeric layers.
+> **Type system:** one display face + one sans-serif, both valid Google Fonts family names. Verify at fonts.google.com. For each: why it fits the mood. The sans-serif handles all numbers and measurements — display faces are prohibited for numeric layers (Playfair Display, Cormorant Garamond, DM Serif Display, Bebas Neue are specifically prohibited for any layer whose primary content is a number or measurement).
 >
 > **Per-frame briefs:** for each frame in the approved sequence, write: image read (visual mass, tonal register, eye path, working zones), layer intent (role, position, weight, enhancement, survival test, exact copy for text layers), and composition check. If a frame carries no text, it is silent — no overlay elements of any kind.
 >
 > **Hard constraint:** no element may cover or compete with the strongest zone. Elements stay in the quietest zone only.
 >
-> **Copy review (internal):** before presenting, review every proposed text string for grammar, completeness, register, precision, redundancy, and factual accuracy. Revise — do not flag and defer.
+> **Copy review (internal):** before presenting, review every proposed text string for grammar, completeness, register, precision, redundancy, and factual accuracy. Revise — do not flag and defer. All copy must follow standard written language rules — no informal abbreviations, incomplete words, or missing articles. Write as you would for a published editorial caption.
 
 **Approval gate:** Present the full concept. Wait for user approval before dispatching Step 3. Iterate until approved.
 
@@ -159,7 +159,7 @@ Dispatch `frameforge-visual-designer` with:
 |-------------|-------|
 | `[PROJECT_NAME]` | `my-project` |
 | `[NARRATIVE_BRIEF_PATH]` | `frameforge/data/test-projects/my-project/narrative-brief.md` |
-| `[CONCEPT_SUMMARY_BLOCK]` | Full `CONCEPT SUMMARY` block returned by the Creative Director |
+| `[CONCEPT_SUMMARY_BLOCK]` | Paste the full `CONCEPT SUMMARY` block from the Creative Director's conversation output (not a file path — this is inline text) |
 | `[PROJECT_PATH]` | `frameforge/data/test-projects/my-project` |
 
 ### Other AI models
@@ -188,7 +188,7 @@ Dispatch `frameforge-color-advisor` with:
 | Placeholder | Value |
 |-------------|-------|
 | `[CONCEPT_TEMPLATE_MD_PATH]` | `frameforge/data/test-projects/my-project/concept-template.md` |
-| `[FRAME_IMAGE_MAPPING_PATH]` | `frameforge/data/test-projects/my-project/frame-image-mapping.md` *(not yet created — pass the intended output path; the agent uses this as its write target)* |
+| `[FRAME_IMAGE_MAPPING_PATH]` | `frameforge/data/test-projects/my-project/frame-image-mapping.md` *(not yet created — pass the intended path; it will be created by Step 5)* |
 | `[THUMBNAIL_SHEETS_PATH]` | `frameforge/data/test-projects/my-project/inputs/` |
 | `[COLOR_NOTES_PATH]` | `frameforge/data/test-projects/my-project/color-notes.md` |
 
