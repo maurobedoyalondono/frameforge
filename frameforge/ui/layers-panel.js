@@ -7,6 +7,8 @@ export class LayersPanel {
     this.onLayerVisibilityToggle = null; // (layerId) => void
     this.onLayerVisibilityAll    = null; // (makeVisible: boolean) => void
     this.onLayerDelete           = null; // (layerId) => void
+    this.onAddLayer              = null; // (type: string, variant?: string) => void
+    this._popoverEl              = null;
     this._build();
   }
 
@@ -15,21 +17,46 @@ export class LayersPanel {
       <div class="lp-header">
         <span class="lp-title">Layers</span>
         <div class="lp-header-actions">
+          <button class="lp-btn lp-btn-add" data-action="add-text"    title="Add text layer">T+</button>
+          <button class="lp-btn lp-btn-add" data-action="add-shape"   title="Add shape layer">◼</button>
+          <button class="lp-btn lp-btn-add" data-action="add-overlay" title="Add overlay layer">▓</button>
+          <div class="lp-sep-v"></div>
           <button class="lp-btn lp-btn-all" data-action="show-all" title="Show all layers">👁</button>
           <button class="lp-btn lp-btn-all" data-action="hide-all" title="Hide all layers">⊘</button>
         </div>
       </div>
       <div class="lp-list"></div>
+      <div class="lp-shape-popover" style="display:none">
+        <button class="lp-popover-btn" data-variant="bar">▬ Bar</button>
+        <button class="lp-popover-btn" data-variant="square">■ Square</button>
+        <button class="lp-popover-btn" data-variant="circle">● Circle</button>
+      </div>
     `;
-    this._listEl = this._el.querySelector('.lp-list');
 
-    // Header actions (show-all / hide-all) + drag initiation
+    this._listEl    = this._el.querySelector('.lp-list');
+    this._popoverEl = this._el.querySelector('.lp-shape-popover');
+
     const header = this._el.querySelector('.lp-header');
     header.addEventListener('click', e => {
       const btn = e.target.closest('[data-action]');
       if (!btn) return;
-      if (btn.dataset.action === 'show-all') { this.onLayerVisibilityAll?.(true);  return; }
-      if (btn.dataset.action === 'hide-all') { this.onLayerVisibilityAll?.(false); return; }
+      if (btn.dataset.action === 'show-all')    { this.onLayerVisibilityAll?.(true);  return; }
+      if (btn.dataset.action === 'hide-all')    { this.onLayerVisibilityAll?.(false); return; }
+      if (btn.dataset.action === 'add-text')    { this.onAddLayer?.('text');          return; }
+      if (btn.dataset.action === 'add-overlay') { this.onAddLayer?.('overlay');       return; }
+      if (btn.dataset.action === 'add-shape')   { this._toggleShapePopover();         return; }
+    });
+
+    this._popoverEl.addEventListener('click', e => {
+      const btn = e.target.closest('[data-variant]');
+      if (!btn) return;
+      this._popoverEl.style.display = 'none';
+      this.onAddLayer?.('shape', btn.dataset.variant);
+    });
+
+    document.addEventListener('click', e => {
+      if (!this._popoverEl || this._popoverEl.style.display === 'none') return;
+      if (!this._el.contains(e.target)) this._popoverEl.style.display = 'none';
     });
 
     this._initDrag(header);
@@ -49,6 +76,12 @@ export class LayersPanel {
       }
       this.onLayerSelect?.(layerId);
     });
+  }
+
+  _toggleShapePopover() {
+    if (!this._popoverEl) return;
+    const isOpen = this._popoverEl.style.display !== 'none';
+    this._popoverEl.style.display = isOpen ? 'none' : '';
   }
 
   _typeIcon(type) {
