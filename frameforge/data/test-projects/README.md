@@ -41,7 +41,7 @@ FrameForge can generate image sheets directly: use the **Export → Thumbnail Sh
 ## How to start a new project
 
 1. Create `test-projects/my-project/`
-2. Inside it, create `inputs/` and place an **image sheet** there — use **Export → Thumbnail Sheet** in FrameForge to generate it from the raw photos.
+2. Inside it, create `inputs/` and place the exported package files there — use **Export Package** in the FrameForge Concept Builder to generate the thumbnail sheets and image map from the raw photos. The image map (`{slug}-image-map.md`) is required for AI filename resolution.
 3. Place the raw source photos in `test-projects/my-project/images/` (Playwright use only — never send these to an AI model)
 4. Tell the AI: **"follow the steps in `test-projects/README.md` for `my-project`"**
 
@@ -55,8 +55,9 @@ test-projects/
 ├── templates/
 │   └── concept-template.html        ← sample template for Step 3 (Visual Designer copies and fills)
 └── my-project/
-    ├── inputs/                      ← image sheet(s) for AI concept work
-    │   └── image-sheet.jpg
+    ├── inputs/                      ← image sheet(s) and image map for AI concept work
+    │   ├── image-sheet.jpg
+    │   └── {slug}-image-map.md
     ├── images/                      ← raw source photos (Playwright only)
     │   ├── photo-01.jpg
     │   └── ...
@@ -89,6 +90,7 @@ Dispatch `frameforge-concept-strategist` with:
 | `[PROJECT_NAME]` | `my-project` |
 | `[IMAGE_SHEET_PATH]` | `frameforge/data/test-projects/my-project/inputs/image-sheet.jpg` |
 | `[NARRATIVE_BRIEF_PATH]` | `frameforge/data/test-projects/my-project/narrative-brief.md` |
+| `[IMAGE_MAP_PATH]` | `frameforge/data/test-projects/my-project/inputs/{slug}-image-map.md` |
 
 ### Other AI models
 
@@ -225,6 +227,7 @@ Dispatch `frameforge-technical-producer` with:
 | `[IMAGE_SHEET_PATH]` | `frameforge/data/test-projects/my-project/inputs/image-sheet.jpg` |
 | `[FRAME_IMAGE_MAPPING_PATH]` | `frameforge/data/test-projects/my-project/frame-image-mapping.md` |
 | `[PROJECT_JSON_PATH]` | `frameforge/data/test-projects/my-project/my-project.json` |
+| `[IMAGE_MAP_PATH]` | `frameforge/data/test-projects/my-project/inputs/{slug}-image-map.md` |
 
 ### Other AI models
 
