@@ -562,6 +562,7 @@ async function init() {
     frame.layers.push(layer);
     project.save();
     layersPanel.render(frame);
+    layersPanel.setSelectedId(layer.id);
     onLayerClick(layer);
     renderCurrentFrame();
     filmstrip.renderOne(project.activeFrameIndex, project);
