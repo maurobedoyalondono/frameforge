@@ -9,6 +9,7 @@ export class LayersPanel {
     this.onLayerDelete           = null; // (layerId) => void
     this.onAddLayer              = null; // (type: string, variant?: string) => void
     this._popoverEl              = null;
+    this._onDocClick             = null;
     this._build();
   }
 
@@ -36,6 +37,7 @@ export class LayersPanel {
     this._listEl    = this._el.querySelector('.lp-list');
     this._popoverEl = this._el.querySelector('.lp-shape-popover');
 
+    // Header actions (add-text / add-shape / add-overlay / show-all / hide-all) + drag initiation
     const header = this._el.querySelector('.lp-header');
     header.addEventListener('click', e => {
       const btn = e.target.closest('[data-action]');
@@ -54,10 +56,12 @@ export class LayersPanel {
       this.onAddLayer?.('shape', btn.dataset.variant);
     });
 
-    document.addEventListener('click', e => {
+    if (this._onDocClick) document.removeEventListener('click', this._onDocClick);
+    this._onDocClick = e => {
       if (!this._popoverEl || this._popoverEl.style.display === 'none') return;
       if (!this._el.contains(e.target)) this._popoverEl.style.display = 'none';
-    });
+    };
+    document.addEventListener('click', this._onDocClick);
 
     this._initDrag(header);
 
