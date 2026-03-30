@@ -1,17 +1,23 @@
-# Solid Blocks — Text Readability Shapes
+# Solid Blocks — Design Tool and Text Readability
 
 **Date:** 2026-03-30
 **Status:** Approved
 
 ---
 
-## Problem
+## Purpose
 
-Gradient overlays fail as text-readability tools when the text zone has heavy texture, repeating pattern, or competing hues. The gradient darkens the area but uneven contrast remains — the text still fights the photo. A solid opaque shape behind text eliminates the problem entirely by giving the text a flat surface to read against.
+Solid blocks serve two equal roles:
+
+**1. Legibility** — when the text zone has heavy texture, repeating pattern, or competing hues, a gradient overlay produces uneven contrast. A solid opaque shape gives the text a flat surface to read against, eliminating the problem entirely.
+
+**2. Aesthetic** — solid geometric forms are a first-class design tool. A bold color block, a white circle breaking a monotone composition, a black bar that anchors the frame — these are editorial design statements, not workarounds. They add visual energy, structure, and character to compositions that would otherwise read as flat or static.
+
+Neither role is a fallback. Both are legitimate reasons to reach for a solid block.
 
 The existing `shape` layer already supports `fill_color` + `fill_opacity: 1.0` — solid blocks are not a new type. What is missing is:
 
-1. Documentation of the solid-block pattern in the AI manual and all dependent skills/README
+1. Documentation of solid blocks as a design tool in the AI manual and all dependent skills/README
 2. A height control in the shape toolbar (currently only width is adjustable)
 3. A way to add shape layers from the UI without editing JSON
 
@@ -23,11 +29,11 @@ No new layer type. Solid blocks are `shape` layers with `fill_opacity` at or nea
 
 ### Canonical presets
 
-| Preset | `shape` | Default dimensions | Typical use |
+| Preset | `shape` | Default dimensions | Use |
 |---|---|---|---|
-| Bar | `rectangle` | `width_pct: 100, height_pct: 26` | Covers bottom of photo; text sits on top |
-| Square | `rectangle` | `width_pct: 25, height_pct: 25` | Badge behind a stat or short label |
-| Circle | `circle` | `width_pct: 20, height_pct: 20` | Circular badge behind callout or icon |
+| Bar | `rectangle` | `width_pct: 100, height_pct: 26` | Covers bottom of photo — text readability and/or bold editorial anchor |
+| Square | `rectangle` | `width_pct: 25, height_pct: 25` | Badge behind stat or label; geometric accent block |
+| Circle | `circle` | `width_pct: 20, height_pct: 20` | Circular badge; graphic focal point; frame within a frame |
 
 ### Default inserted JSON (Bar)
 
@@ -107,21 +113,27 @@ New row:
 
 ### `frameforge/data/ai-manual-content.js`
 
-Add a new **"Solid Blocks — Text Readability"** section in the Overlay Rules area.
+Add a new **"Solid Blocks"** section in the Overlay Rules area.
 
 Content:
-- When to use a solid block instead of a gradient overlay (heavy texture, color conflict, deliberate design choice)
-- Three preset examples with full JSON
+- Two equal roles: legibility (text zone too busy for overlay) and aesthetic (bold design statement on flat/static compositions)
+- Decision guide: study the text zone — if texture or hue conflict makes a gradient insufficient, or if the composition needs a strong graphic element, a solid block is the right tool
+- Three preset examples with full JSON (bar, square, circle)
 - Updated layer order rule: `image → overlay(s) → solid blocks → shapes → text`
-- Note: text layer goes above the solid block, no gradient needed for that zone
+- Note: text layer goes above the solid block; a gradient is not needed for that zone
+- Examples of aesthetic use: a colored rectangle as a design accent, a circle breaking visual monotony, a bar giving compositional weight
 
-Also update the **"When NOT to use"** shape guidance to note that solid blocks ARE an intentional use of shapes — they are not decoration but a readability tool.
+Also update the **Shapes — Use Them Intentionally** table to add solid-block use cases alongside the existing decorative shape purposes.
 
 ### `.claude/skills/frameforge-art-director/SKILL.md`
 
-Extend the **Overlay gate** with a solid-block branch:
+Extend the **Overlay gate** with a solid-block branch, and add a new **Solid block gate** after it:
 
+**Overlay gate addition:**
 > If the text zone is high-texture or color-conflicted: consider a solid block instead of or alongside the gradient. A solid rectangle at the bottom eliminates the readability problem entirely. State your decision explicitly — "used solid block" or "gradient sufficient."
+
+**New Solid block gate:**
+> Independently of text readability: does this frame feel static, flat, or visually inert? A solid block — a bold rectangle, a circle, a color band — can inject graphic energy and structure. This is an aesthetic decision, not a technical fix. Ask: would a strong geometric form make this frame more compelling? If yes, add it. State your decision explicitly.
 
 ### `.claude/skills/frameforge-color-advisor/SKILL.md`
 
@@ -131,11 +143,15 @@ Add a note under the **Busy / high-texture** risk row in the zone assessment tab
 
 ### `frameforge/data/test-projects/README.md`
 
-Add a **"Choosing between overlay and solid block"** callout in Step 5b and a parallel note in Step 8:
+Add a **"Overlay vs. solid block — know when to use each"** callout in Step 5b, and expand the Step 8 "Looking at each frame" section:
 
-> Look at the text zone in the thumbnail. If the zone has strong texture, repeating pattern, or competing hues — a gradient overlay will produce uneven contrast. In those cases, a solid block (rectangle or circle) eliminates the problem: the text reads against a flat surface.
+**Step 5b addition:**
+> Study each frame's text zone in the thumbnail before choosing a readability tool. If the zone has strong texture, repeating pattern, or competing hues — a gradient overlay will produce uneven contrast. A solid block (rectangle or circle) eliminates the problem: text reads against a flat surface.
 >
-> This is an editorial decision, not a fallback. A bold black bar at the bottom is a legitimate design choice in its own right. Study each photo's text zone before deciding.
+> Also consider solid blocks for purely aesthetic reasons: a bold color bar, a graphic circle, a geometric accent can transform a flat or static composition into something with visual weight and editorial character. These are design statements, not workarounds.
+
+**Step 8 addition (under "Does the frame breathe?"):**
+> **Is this frame too static?** If the composition reads as flat — same tone throughout, no graphic tension — ask whether a solid block would give it structure. A strong rectangle or circle can do what no amount of text adjustment can: add a visual anchor that makes the frame feel designed rather than assembled.
 
 ---
 
