@@ -43,52 +43,55 @@ For each: why it fits the subject matter and mood — not aesthetic preference a
 
 ## Story arc — map before per-frame work
 
-Before writing any individual brief, answer these questions about the series as a whole:
+Before writing any individual brief, read the narrative brief's **viewer journey** section cover to cover. That section already contains the story. Your job is to surface its claims as editorial copy — not to invent new ones, and not to replace them with labels.
+
+Then answer these questions:
 
 1. **What are the structural text moments?** Every series has a spine — the title frame, act transitions, key narrative claims, the closing. Identify these first. These frames earn text regardless of image strength.
 
-2. **What needs to be named?** Naming is storytelling. A viewer who doesn't know what a howler monkey is gains something by being told. A viewer who doesn't know which river system they're looking at gains something by being told. Species, locations, acts, ecological context — these are not captions, they are orientation. Identify which subjects across the series the viewer needs introduced.
+2. **What claims does the story make?** The viewer journey makes specific claims: the river is a road, not scenery. This creature looks like it belongs to a different era. After nineteen frames, the viewer is asked a personal question. These are the raw material for copy. Write them down as candidate text strings before you open a single frame brief.
 
-3. **What does the series explain?** A story explains things. It delivers context the viewer cannot read from the image alone: how long someone was there, what the river means to the people who live on it, that this creature has survived for 60 million years. Where the narrative brief contains a fact or claim that would deepen a frame, use it.
+3. **What context can only text deliver?** Some facts the image cannot carry: how long the photographer was there, that a bird's lineage predates the dinosaurs, that the river is the only road in and out. Where the narrative brief confirms a fact that would deepen a frame — use it. State it as a claim, not a label.
 
-4. **Where does silence serve the story?** Silence is not the default — it is a deliberate treatment. It is correct for: cinematically complete images where text can only diminish; emotional pauses where the composition is the statement; transitional breath frames between acts. Silence must be chosen, not defaulted to. State why.
+4. **Where does silence serve the story?** Silence is correct for: cinematically complete images where text can only diminish; emotional pauses where the composition is the statement; frames where the preceding text has already done the work. Silence must be chosen, not defaulted to.
 
-Map the text spine across the full sequence before writing any individual brief. Each text decision should serve the whole, not just the frame it sits on.
+**Map the text spine** — list all candidate text strings in sequence before writing any per-frame brief. Read them aloud as a sequence. They should tell the story of the series on their own. If they sound like a table of contents or a species index, they are labels — start over.
 
-**Language:** Use the language that fits the project's geography and audience — the photographer's country, the location, the series' cultural context. If a location tag, species name, or act label is more authentic in the local language, use it. Maintain consistency within categories (e.g., all species names in the same language; all location tags in the same language).
+**Language:** Use the language of the project's geography. Maintain consistency within categories.
+
+---
+
+## Labels are not copy
+
+This is the most common failure mode. A label identifies. Copy claims.
+
+| Label (wrong) | Copy (right) |
+|---|---|
+| `MONO AULLADOR` | `El que te mira de frente.` |
+| `HOATZÍN` | `Vive como en el Cretácico.` |
+| `SELVA AMAZÓNICA` | `El río tiene otra mitad.` |
+| `FAUNA` | `Un mundo que desborda.` |
+| `ACTO III` | `Este es el hogar.` |
+
+The test: can you replace the text with nothing and lose only identification? If yes, it is a label — rewrite it as a claim. Copy that could appear in a magazine caption, a film title card, or a book chapter opener is on the right track. Copy that could appear in a museum exhibit label is not.
 
 ---
 
 ## Per-frame editorial brief
 
-Work through every frame in the approved sequence from the narrative brief. For each frame, present each sub-section as a separate labeled block with its heading as written. Do not merge sections. Follow this order:
+For each frame: one decision, stated plainly.
 
-### Image read *(before any element is proposed)*
+**What context does text add here that the image cannot show?**
 
-- **Visual mass:** where the heaviest, most dominant area sits — subject, deep shadow, texture density
-- **Tonal register:** high-key, low-key, or midtone-heavy
-- **Eye path:** where the eye enters, travels, and rests
-- **Working zones:** the **strongest zone** (do not interfere here) and the **quietest zone** (candidate area for layered elements)
+The image shows what it shows. Do not describe it. Text carries what is invisible: time, meaning, consequence, what comes next. Ask only: does the viewer need something the image cannot give them? If yes — write it. If no — silence.
 
-**Story role and text decision:** State what narrative role this frame plays in the sequence — is it opening an act, naming a subject, delivering the series thesis, creating emotional contrast, sustaining atmosphere? Based on that role, decide whether text deepens this frame's contribution or silence serves it better. State the reason either way. Do not default to silence — both choices require justification.
+For each frame state:
+- **Context decision:** what the text gives that the image cannot (or: why silence is correct)
+- **Copy:** the exact string — a claim, not a label. Publication-ready. No placeholders.
+- **Placement:** quietest zone, away from the subject. One sentence.
+- **Gradient:** only if needed for legibility. Direction matches text zone.
 
-**Strongest-zone boundary:** No element — gradient, shape, line, or text — may cover or compete with the strongest zone. Hard constraint, not a guideline.
-
-### Layer intent *(one block per proposed element — text, shape, line, gradient)*
-
-*(Skip this section only if silence is the deliberate, stated choice for this frame.)*
-
-- **Role:** what this element does for the story — names a subject, marks an act, delivers a claim, anchors the series identity, signals a transition
-- **Position:** why this exact location, stated relative to the quietest zone only — never the strongest zone
-- **Weight:** opacity, scale, and contrast relative to the image beneath — does it sit *on* the photo or *emerge from* it
-- **Story contribution:** how this element advances the series narrative — what the viewer knows or feels after reading it that they didn't before. If it adds nothing to the story, cut it.
-- **Copy** *(text layers only):* the exact proposed text — written in full, reviewed, publication-ready. No placeholders or draft copy.
-
-### Composition check
-
-- **Reading order:** first → second → third visual beat
-- **Balance:** resolved or strained — if strained, is the tension intentional
-- **Series note:** one sentence on how this frame's treatment connects to or contrasts with adjacent frames — omit if single-frame project
+**Strongest-zone boundary:** No element may cover or compete with the strongest zone. Hard constraint.
 
 ---
 
