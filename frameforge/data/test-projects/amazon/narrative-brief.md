@@ -26,6 +26,22 @@ Total approved frames: **20**
 
 ---
 
+## Viewer journey
+
+The series opens from above. The first two frames give the viewer no choice but to feel the scale of what they are looking at — a river cutting through an unbroken continent of green. There is no immediate human presence, no familiar landmark. The effect is one of held breath: the world is larger and older than expected. The descent through frame 2 is subtle but purposeful — the camera is moving closer, and the viewer senses they are being brought in.
+
+Frame 3 completes that arrival. The shift from aerial to ground level is the series' first major pivot, and it lands like a physical drop. Suddenly the viewer is in a canoe, on the water, the river ahead. What was abstract from above becomes immediate and navigable. Frames 4 and 5 deepen this intimacy with the river — the dusk silhouette renders the act of paddling as something timeless, while the moored canoes at the water's edge make it ordinary and lived-in. By frame 5, the viewer understands: the river is not scenery. It is the road.
+
+Frames 6 and 7 turn the viewer's gaze from horizontal to vertical. The river drops away and the forest rises. These two frames — tall canopy, then the massive architecture of buttress roots — shift the emotional register from movement to stillness. The viewer is now inside the forest, not passing through it.
+
+Frame 8 detonates. The yellow tree frog, saturated and luminous, announces Act II with a jolt of pure color. What follows is eight frames of creatures the viewer may never have encountered: a howler monkey holding eye contact with the gravity of a portrait subject; a squirrel monkey that breaks the seriousness with something lighter; a hoatzin that looks like it belongs in a different geological era; birds of iridescent precision; a heron in golden light that feels almost painterly. The sequence builds a cumulative sense of abundance — the Amazon is not a place with some wildlife, it is a place that overflows with it. Frame 15, the spider, closes this act honestly. It asks something of the viewer. It says: this world is also this.
+
+Frame 16 resets everything with a single image. A child in a canoe, in black and white. The spider's unsettling close gives way to a child's face, and the entire emotional temperature of the series shifts. This is home. Frames 17 and 18 develop that warmth — a family at their window, children playing football — images of full, ordinary lives conducted inside an extraordinary ecosystem. Frame 19 returns to the river one final time, two people rowing together, a quiet echo of frame 4. The river began this story and it closes Act III.
+
+Frame 20 is a direct address. A young woman looks straight into the camera and makes a heart with her hands. After nineteen frames of landscape, creatures, and community observed from the outside, this frame steps across the threshold and speaks to the viewer personally. The cumulative effect of everything before — the scale, the color, the creatures, the human warmth — is now aimed at a single question: why haven't you been here? The answer the series has already given is the invitation itself.
+
+---
+
 ## Approved frame sequence
 
 | Position | Image # (from sheet) | Filename (from sheet) | Thematic group | Narrative role |
