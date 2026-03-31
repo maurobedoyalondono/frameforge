@@ -6,6 +6,8 @@
  *   frameforge_brief_{id}      → Full brief JSON object
  */
 
+import * as storage from './storage.js';
+
 const PREFIX    = 'frameforge';
 const KEY_INDEX = `${PREFIX}_briefs`;
 const briefKey  = (id) => `${PREFIX}_brief_${id}`;
@@ -61,6 +63,7 @@ export function save(brief) {
     slug:       brief.slug       || '',
     platform:   brief.platform   || '',
     imageCount: brief.imageCount ?? 0,
+    hasLayout:  brief.hasLayout  ?? false,
     created:    brief.created,
     updated:    brief.updated,
   };
@@ -108,4 +111,29 @@ export function remove(id) {
     console.warn(`[brief-storage] remove(${id}) failed:`, e);
   }
   saveIndex(loadIndex().filter((e) => e.id !== id));
+}
+
+/**
+ * Update the hasLayout flag for a project.
+ * @param {string} id
+ * @param {boolean} value
+ */
+export function setHasLayout(id, value) {
+  const index = loadIndex();
+  const entry = index.find((e) => e.id === id);
+  if (!entry) return;
+  entry.hasLayout = value;
+  saveIndex(index);
+}
+
+/**
+ * Delete a project completely — brief entry, layout JSON, images, assignments.
+ * @param {string} id
+ * @returns {Promise<void>}
+ */
+export async function deleteProject(id) {
+  remove(id);
+  storage.deleteLayoutData(id);
+  storage.clearAssignments(id);
+  await storage.clearImages(id);
 }
