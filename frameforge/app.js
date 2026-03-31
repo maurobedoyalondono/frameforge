@@ -367,9 +367,9 @@ async function init() {
     const layerId = renderer.selectedLayerId;
     if (!layerId || !project.isLoaded) { hideOverlay(resizeOverlayEl); return; }
     const frame = project.data?.frames?.[project.activeFrameIndex];
-    if (!frame) return;
+    if (!frame) { hideOverlay(resizeOverlayEl); return; }
     const layer = (frame.layers ?? []).find(l => l.id === layerId);
-    if (!layer) return;
+    if (!layer) { hideOverlay(resizeOverlayEl); return; }
 
     const ctx = mainCanvas.getContext('2d');
     const w   = mainCanvas.width;
