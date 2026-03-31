@@ -5,7 +5,7 @@
  *   frameforge_projects         → JSON array of index entries {id, title, created, updated}
  *   frameforge_project_{id}     → Full project JSON string
  *   frameforge_images_{id}      → { filename: base64_dataURL }
- *   frameforge_prefs            → { safe_zone_visible, zoom_level, last_project_id }
+ *   frameforge_prefs            → { safe_zone_visible, zoom_level, last_project_id, active_project_id }
  */
 
 const PREFIX = 'frameforge';

@@ -11,7 +11,7 @@
 
 /**
  * Show the clear projects modal.
- * @param {ProjectEntry[]} projects — all stored projects from storage.loadProjectIndex()
+ * @param {ProjectEntry[]} projects — all stored projects from briefStorage.list()
  * @param {string|null} activeProjectId — currently loaded project id, or null
  * @returns {Promise<string[]>} resolves with array of IDs to delete; [] if cancelled
  */
