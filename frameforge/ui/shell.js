@@ -256,18 +256,18 @@ export function buildToolbar(toolbarEl) {
     </div>
     <div class="toolbar-sep"></div>
 
-    <button class="btn btn-secondary" id="btn-new-project" title="Create a new project brief for AI generation">
+    <button class="btn btn-secondary" id="btn-new-project" title="Create a new project">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
         <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2z"/>
       </svg>
-      New Brief
+      New Project
     </button>
 
-    <button class="btn btn-ghost" id="btn-my-briefs" title="Browse and manage your saved briefs">
+    <button class="btn btn-ghost" id="btn-my-briefs" title="Browse and manage your projects">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
       </svg>
-      My Briefs
+      My Projects
     </button>
 
     <span id="active-brief-label">
