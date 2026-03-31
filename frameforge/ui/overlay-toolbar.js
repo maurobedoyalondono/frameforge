@@ -256,8 +256,10 @@ export class OverlayToolbar {
       startLeft = rect.left; startTop = rect.top;
 
       const onMove = mv => {
-        const left = Math.max(0, Math.min(window.innerWidth  - 20, startLeft + mv.clientX - startX));
-        const top  = Math.max(0, Math.min(window.innerHeight - 20, startTop  + mv.clientY - startY));
+        const w    = this._el.offsetWidth  || 200;
+        const h    = this._el.offsetHeight || 100;
+        const left = Math.max(0, Math.min(window.innerWidth  - w, startLeft + mv.clientX - startX));
+        const top  = Math.max(0, Math.min(window.innerHeight - h, startTop  + mv.clientY - startY));
         this._el.style.left  = `${left}px`;
         this._el.style.top   = `${top}px`;
         this._el.style.right = '';
@@ -281,8 +283,12 @@ export class OverlayToolbar {
     try {
       const saved = JSON.parse(localStorage.getItem(POS_KEY) || 'null');
       if (saved && typeof saved.left === 'number') {
-        this._el.style.left  = `${saved.left}px`;
-        this._el.style.top   = `${saved.top}px`;
+        const w       = this._el.offsetWidth  || 200;
+        const h       = this._el.offsetHeight || 100;
+        const clampL  = Math.max(0, Math.min(window.innerWidth  - w, saved.left));
+        const clampT  = Math.max(0, Math.min(window.innerHeight - h, saved.top));
+        this._el.style.left  = `${clampL}px`;
+        this._el.style.top   = `${clampT}px`;
         this._el.style.right = '';
         return true;
       }

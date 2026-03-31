@@ -116,13 +116,14 @@ export class ColorPicker {
     this._setColor   = setColor;
     this._getProject = getProject;
 
-    this._popoverEl   = null;
-    this._swatchEl    = null;
-    this._expandedHex = null;   // which palette swatch is expanded
-    this._nativePicker = null;
-    this._onClick     = null;
-    this._onDocClick  = null;
-    this._onKeyDown   = null;
+    this._popoverEl        = null;
+    this._swatchEl         = null;
+    this._expandedHex      = null;   // which palette swatch is expanded
+    this._nativePicker     = null;
+    this._nativePickerActive = false;
+    this._onClick          = null;
+    this._onDocClick       = null;
+    this._onKeyDown        = null;
   }
 
   /** Bind the picker to a trigger element. */
@@ -152,7 +153,14 @@ export class ColorPicker {
     this._nativePicker.type = 'color';
     this._nativePicker.style.cssText = 'position:absolute;opacity:0;width:0;height:0;pointer-events:none;';
     this._nativePicker.addEventListener('input', () => {
-      this._applyColor(this._nativePicker.value);
+      if (this._nativePicker) this._applyColor(this._nativePicker.value);
+    });
+    this._nativePicker.addEventListener('change', () => {
+      this._nativePickerActive = false;
+      if (this._nativePicker) this._applyColor(this._nativePicker.value);
+    });
+    this._nativePicker.addEventListener('blur', () => {
+      this._nativePickerActive = false;
     });
     document.body.appendChild(this._nativePicker);
     this._popoverEl = document.createElement('div');
@@ -162,6 +170,7 @@ export class ColorPicker {
     this._position();
 
     this._onDocClick = (e) => {
+      if (this._nativePickerActive) return;
       if (!this._popoverEl?.contains(e.target) && e.target !== this._swatchEl) {
         this.close();
       }
@@ -179,6 +188,7 @@ export class ColorPicker {
     this._popoverEl = null;
     this._nativePicker?.remove();
     this._nativePicker = null;
+    this._nativePickerActive = false;
     document.removeEventListener('click', this._onDocClick);
     document.removeEventListener('keydown', this._onKeyDown);
     this._onDocClick = null;
@@ -280,6 +290,7 @@ export class ColorPicker {
     customBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       this._nativePicker.value = this._getColor() || '#000000';
+      this._nativePickerActive = true;
       this._nativePicker.click();
     });
     customSection.appendChild(customBtn);
