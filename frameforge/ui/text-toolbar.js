@@ -121,7 +121,6 @@ export class TextToolbar {
         <div class="tt-sep"></div>
         <button class="tt-btn tt-toggle" data-action="shadow">Shadow</button>
         <div class="tt-sep"></div>
-        <div class="tt-sep"></div>
         <button class="tt-btn" data-action="copy"  title="Copy layer">Copy</button>
         <button class="tt-btn" data-action="paste" title="Paste layer" disabled>Paste</button>
         <button class="tt-btn tt-delete" data-action="delete" title="Delete layer">🗑</button>

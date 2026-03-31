@@ -50,7 +50,6 @@ export class ShapeToolbar {
         <span class="st-val" data-field="h">—</span>
         <button class="st-btn" data-action="h-inc">+</button>
         <div class="st-sep"></div>
-        <div class="st-sep"></div>
         <button class="st-btn" data-action="copy"  title="Copy layer">Copy</button>
         <button class="st-btn" data-action="paste" title="Paste layer" disabled>Paste</button>
         <button class="st-btn st-delete" data-action="delete" title="Delete shape">🗑</button>
