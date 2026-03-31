@@ -24,6 +24,7 @@ import { BriefManager }     from './ui/brief-manager.js';
 import * as briefStorage     from './modules/brief-storage.js';
 import { ImageTray } from './ui/image-tray.js';
 import { initDrag, destroyDrag } from './modules/drag.js';
+import { initResize, positionOverlay, hideOverlay } from './modules/resize.js';
 import { computeTextBounds, computeShapeBounds } from './modules/layers.js';
 import { TextToolbar }    from './ui/text-toolbar.js';
 import { ShapeToolbar }   from './ui/shape-toolbar.js';
@@ -52,9 +53,68 @@ async function init() {
   const filmstripCountEl = document.getElementById('filmstrip-count');
   const canvasAreaEl   = document.getElementById('canvas-area');
   const canvasWrapEl   = document.getElementById('canvas-wrap');
+  const resizeOverlayEl = document.getElementById('resize-overlay');
   const inspectorContentEl = document.getElementById('inspector-content');
   const statusbarEl    = document.getElementById('statusbar');
   const dropzoneEl     = document.getElementById('dropzone');
+
+  // ── Clipboard (in-memory only, not persisted) ─────────────────────────────
+  let clipboard = null;
+
+  function copySelectedLayer() {
+    const layerId = renderer.selectedLayerId;
+    if (!layerId || !project.isLoaded) return;
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    const layer = frame?.layers?.find(l => l.id === layerId);
+    if (!layer) return;
+    clipboard = JSON.parse(JSON.stringify(layer));
+    textToolbar.setCanPaste(true);
+    shapeToolbar.setCanPaste(true);
+    toasts.success('Copied', '');
+  }
+
+  function pasteLayer() {
+    if (!clipboard || !project.isLoaded) return;
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    if (!frame) return;
+
+    const pasted = JSON.parse(JSON.stringify(clipboard));
+    pasted.id = makeUniqueId(pasted.type, frame);
+
+    // Insert at the correct z-order position.
+    const layers  = (frame.layers ??= []);
+    const type    = pasted.type;
+    let insertAt  = -1;
+
+    // Find last index of same type
+    for (let i = layers.length - 1; i >= 0; i--) {
+      if (layers[i].type === type) { insertAt = i + 1; break; }
+    }
+
+    // If no same-type layer found, use the type boundary
+    if (insertAt === -1) {
+      if (type === 'text') {
+        insertAt = layers.length;
+      } else if (type === 'shape') {
+        const firstText = layers.findIndex(l => l.type === 'text');
+        insertAt = firstText >= 0 ? firstText : layers.length;
+      } else if (type === 'overlay') {
+        const firstShape = layers.findIndex(l => l.type === 'shape' || l.type === 'text');
+        insertAt = firstShape >= 0 ? firstShape : layers.length;
+      } else {
+        insertAt = 0; // image: at the bottom
+      }
+    }
+
+    layers.splice(insertAt, 0, pasted);
+    project.save();
+    layersPanel.render(frame);
+    layersPanel.setSelectedId(pasted.id);
+    onLayerClick(pasted);
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+    toasts.success('Pasted', '');
+  }
 
   // ── Layer factories ──────────────────────────────────────────────────────
 
@@ -254,6 +314,8 @@ async function init() {
     toggleSafeZone:    () => toggleSafeZone(),
     toggleLayersPanel: () => toggleLayersPanel(),
     rerender:          () => project.isLoaded && renderCurrentFrame(),
+    copyLayer:         copySelectedLayer,
+    pasteLayer:        pasteLayer,
   });
 
   // ── White frame changes ───────────────────────────────────────────────────
@@ -364,11 +426,11 @@ async function init() {
 
   function positionToolbar() {
     const layerId = renderer.selectedLayerId;
-    if (!layerId || !project.isLoaded) return;
+    if (!layerId || !project.isLoaded) { hideOverlay(resizeOverlayEl); return; }
     const frame = project.data?.frames?.[project.activeFrameIndex];
-    if (!frame) return;
+    if (!frame) { hideOverlay(resizeOverlayEl); return; }
     const layer = (frame.layers ?? []).find(l => l.id === layerId);
-    if (!layer) return;
+    if (!layer) { hideOverlay(resizeOverlayEl); return; }
 
     const ctx = mainCanvas.getContext('2d');
     const w   = mainCanvas.width;
@@ -377,13 +439,17 @@ async function init() {
     if (layer.type === 'text') {
       const bounds = computeTextBounds(ctx, layer, w, h, project);
       positionElement(textToolbarEl, bounds);
+      positionOverlay(resizeOverlayEl, layer, mainCanvas, project);
     } else if (layer.type === 'shape') {
       const bounds = computeShapeBounds(ctx, layer, w, h, project);
       positionElement(shapeToolbarEl, bounds);
+      positionOverlay(resizeOverlayEl, layer, mainCanvas, project);
     } else if (layer.type === 'image') {
       positionElementRight(imageToolbarEl);
+      hideOverlay(resizeOverlayEl);
     } else if (layer.type === 'overlay') {
       positionElementRight(overlayToolbarEl);
+      hideOverlay(resizeOverlayEl);
     }
   }
 
@@ -406,11 +472,15 @@ async function init() {
       shapeToolbar.show(layer);
       requestAnimationFrame(() => positionToolbar());
     } else if (layer?.type === 'image') {
+      hideOverlay(resizeOverlayEl);
       imageToolbar.show(layer);
       requestAnimationFrame(() => positionToolbar());
     } else if (layer?.type === 'overlay') {
+      hideOverlay(resizeOverlayEl);
       overlayToolbar.show(layer);
       requestAnimationFrame(() => positionToolbar());
+    } else {
+      hideOverlay(resizeOverlayEl);
     }
 
     layersPanel.setSelectedId(layer?.id ?? null);
@@ -425,6 +495,8 @@ async function init() {
     requestAnimationFrame(() => positionToolbar());
   };
 
+  textToolbar.onCopy  = () => copySelectedLayer();
+  textToolbar.onPaste = ()      => pasteLayer();
   textToolbar.onDelete = (layer) => {
     const frame = project.data?.frames?.[project.activeFrameIndex];
     if (!frame) return;
@@ -446,6 +518,8 @@ async function init() {
     requestAnimationFrame(() => positionToolbar());
   };
 
+  shapeToolbar.onCopy  = () => copySelectedLayer();
+  shapeToolbar.onPaste = ()      => pasteLayer();
   shapeToolbar.onDelete = (layer) => {
     const frame = project.data?.frames?.[project.activeFrameIndex];
     if (!frame) return;
@@ -674,6 +748,7 @@ async function init() {
     shapeToolbar.hide();
     imageToolbar.hide();
     overlayToolbar.hide();
+    hideOverlay(resizeOverlayEl);
     layersPanel.hide();
 
     // When switching projects, capture current images so they survive the switch.
@@ -786,6 +861,14 @@ async function init() {
       () => { renderer.isDragging = true; renderCurrentFrame(); positionToolbar(); },
       (frameIndex) => { renderer.isDragging = false; filmstrip.renderOne(frameIndex, project); },
       onLayerClick,
+    );
+    initResize(
+      resizeOverlayEl,
+      mainCanvas,
+      project,
+      () => project.activeFrameIndex,
+      () => { renderer.isDragging = true; renderCurrentFrame(); positionToolbar(); },
+      (frameIndex) => { renderer.isDragging = false; filmstrip.renderOne(frameIndex, project); },
     );
 
     // Inspector
@@ -902,6 +985,7 @@ async function init() {
     shapeToolbar.hide();
     imageToolbar.hide();
     overlayToolbar.hide();
+    hideOverlay(resizeOverlayEl);
 
     if (!project.setActiveFrame(index)) return;
     filmstrip.setActive(index);
@@ -1108,6 +1192,7 @@ async function init() {
       shapeToolbar.hide();
       imageToolbar.hide();
       overlayToolbar.hide();
+      hideOverlay(resizeOverlayEl);
       layersPanel.hide();
       filmstrip.clear();
       inspector.clear();

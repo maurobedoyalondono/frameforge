@@ -62,6 +62,10 @@ export class TextToolbar {
     this.onChange = null;
     /** @type {((layer: object) => void) | null} */
     this.onDelete = null;
+    /** @type {((layer: object) => void) | null} */
+    this.onCopy = null;
+    /** @type {(() => void) | null} */
+    this.onPaste = null;
 
     this._build();
   }
@@ -117,6 +121,8 @@ export class TextToolbar {
         <div class="tt-sep"></div>
         <button class="tt-btn tt-toggle" data-action="shadow">Shadow</button>
         <div class="tt-sep"></div>
+        <button class="tt-btn" data-action="copy"  title="Copy layer"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="0" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="0" y="4" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/></svg></button>
+        <button class="tt-btn" data-action="paste" title="Paste layer" disabled><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="3" width="10" height="8.5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="4" y="1" width="4" height="3" rx="0.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 5.5v3M4.5 7 6 8.5 7.5 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="tt-btn tt-delete" data-action="delete" title="Delete layer">🗑</button>
       </div>
       <div class="tt-row2">
@@ -138,6 +144,7 @@ export class TextToolbar {
       right:  this._el.querySelector('[data-action="align-right"]'),
     };
     this._shadowBtn    = this._el.querySelector('[data-action="shadow"]');
+    this._pasteBtn = this._el.querySelector('[data-action="paste"]');
     this._colorInput   = this._el.querySelector('.tt-color');
     this._contentInput = this._el.querySelector('.tt-content');
     this._pickerEl     = this._el.querySelector('.tt-picker');
@@ -213,6 +220,10 @@ export class TextToolbar {
         this._updateDisplays(); this.onChange?.(this._layer); break;
       case 'delete':
         this.onDelete?.(this._layer); break;
+      case 'copy':
+        this.onCopy?.(this._layer); break;
+      case 'paste':
+        this.onPaste?.(); break;
     }
   }
 
@@ -357,6 +368,14 @@ export class TextToolbar {
     this._closePicker();
     this._layer = null;
     this._el.style.display = 'none';
+  }
+
+  /**
+   * Enable or disable the paste button (disable when clipboard is empty).
+   * @param {boolean} enabled
+   */
+  setCanPaste(enabled) {
+    if (this._pasteBtn) this._pasteBtn.disabled = !enabled;
   }
 
   get currentLayer() { return this._layer; }
