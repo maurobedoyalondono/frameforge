@@ -198,7 +198,7 @@ async function init() {
   });
 
   const textToolbarEl = document.getElementById('text-toolbar');
-  const textToolbar   = new TextToolbar(textToolbarEl, loadFont);
+  const textToolbar   = new TextToolbar(textToolbarEl, loadFont, { getProject: () => project });
 
   const shapeToolbarEl   = document.getElementById('shape-toolbar');
   const shapeToolbar     = new ShapeToolbar(shapeToolbarEl);

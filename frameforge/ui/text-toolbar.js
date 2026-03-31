@@ -45,15 +45,19 @@ const CURATED_FONT_URL =
   '&family=Open+Sans:wght@400;700' +
   '&display=swap';
 
+import { ColorPicker } from './color-picker.js';
+
 export class TextToolbar {
   /**
    * @param {HTMLElement} el
    * @param {(family: string) => Promise<boolean>} loadFontFn — loads a Google Font family
    */
-  constructor(el, loadFontFn) {
-    this._el        = el;
-    this._layer     = null;
-    this._loadFont  = loadFontFn ?? (() => Promise.resolve(false));
+  constructor(el, loadFontFn, { getProject } = {}) {
+    this._el          = el;
+    this._layer       = null;
+    this._loadFont    = loadFontFn ?? (() => Promise.resolve(false));
+    this._getProject  = getProject ?? (() => null);
+    this._colorPicker = null;
     this._pickerOpen       = false;
     this._curatedLoaded    = false;
     this._projectFamilies  = [];
@@ -117,7 +121,7 @@ export class TextToolbar {
         <span class="tt-val" data-field="width">—</span>
         <button class="tt-btn" data-action="width-inc">+</button>
         <div class="tt-sep"></div>
-        <input type="color" class="tt-color" title="Text colour">
+        <div class="tt-color-swatch" title="Text colour"></div>
         <div class="tt-sep"></div>
         <button class="tt-btn tt-toggle" data-action="shadow">Shadow</button>
         <div class="tt-sep"></div>
@@ -145,7 +149,17 @@ export class TextToolbar {
     };
     this._shadowBtn    = this._el.querySelector('[data-action="shadow"]');
     this._pasteBtn = this._el.querySelector('[data-action="paste"]');
-    this._colorInput   = this._el.querySelector('.tt-color');
+    this._colorSwatchEl = this._el.querySelector('.tt-color-swatch');
+    this._colorPicker   = new ColorPicker({
+      getColor:   () => this._layer?.font?.color ?? '#ffffff',
+      setColor:   (hex) => {
+        if (!this._layer) return;
+        (this._layer.font ??= {}).color = hex;
+        this.onChange?.(this._layer);
+      },
+      getProject: this._getProject,
+    });
+    this._colorPicker.attach(this._colorSwatchEl);
     this._contentInput = this._el.querySelector('.tt-content');
     this._pickerEl     = this._el.querySelector('.tt-picker');
 
@@ -153,12 +167,6 @@ export class TextToolbar {
     this._contentInput.addEventListener('input', () => {
       if (!this._layer) return;
       this._layer.content = this._contentInput.value;
-      this.onChange?.(this._layer);
-    });
-
-    this._colorInput.addEventListener('input', () => {
-      if (!this._layer) return;
-      (this._layer.font ??= {}).color = this._colorInput.value;
       this.onChange?.(this._layer);
     });
 
@@ -342,7 +350,8 @@ export class TextToolbar {
     this._alignBtns.right.classList.toggle('tt-active',  align === 'right');
     this._shadowBtn.classList.toggle('tt-active', shadow);
 
-    this._colorInput.value = font.color ?? '#ffffff';
+    if (this._colorSwatchEl) this._colorSwatchEl.style.background = font.color ?? '#ffffff';
+    this._colorPicker?.syncSwatch();
   }
 
   // ── Public API ─────────────────────────────────────────────────────────
@@ -366,6 +375,7 @@ export class TextToolbar {
 
   hide() {
     this._closePicker();
+    this._colorPicker?.close();
     this._layer = null;
     this._el.style.display = 'none';
   }

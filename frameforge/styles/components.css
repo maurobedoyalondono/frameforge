@@ -1259,20 +1259,16 @@ code {
   border-color: rgba(255,85,85,0.35);
 }
 
-.tt-color {
+.tt-color-swatch {
   width: 22px;
   height: 22px;
-  padding: 0;
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  background: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
   cursor: pointer;
   flex-shrink: 0;
 }
 
-.tt-color::-webkit-color-swatch-wrapper { padding: 0; }
-.tt-color::-webkit-color-swatch { border: none; border-radius: calc(var(--radius-sm) - 1px); }
-.tt-color::-moz-color-swatch { border: none; }
+.tt-color-swatch:hover { border-color: var(--color-accent); }
 
 /* ── Font picker panel ──────────────────────────────────────────────────── */
 
