@@ -58,7 +58,10 @@ export function showProjectSelectModal(projects, { message = '', suggestedId = n
     }
 
     /** @type {string|null} */
-    let selectedId = suggestedId ?? (projects.length === 1 ? projects[0].id : null);
+    const isValidId = (id) => id !== null && projects.some((p) => p.id === id);
+    let selectedId = isValidId(suggestedId)
+      ? suggestedId
+      : (projects.length === 1 ? projects[0].id : null);
 
     if (projects.length === 0) {
       const empty = document.createElement('p');

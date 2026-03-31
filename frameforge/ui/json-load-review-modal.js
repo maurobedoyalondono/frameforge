@@ -51,7 +51,7 @@ export function showJsonLoadReviewModal(oldData, newData) {
 
     const desc = document.createElement('p');
     desc.style.marginBottom = '12px';
-    desc.textContent = `${changes.length} of ${newData.frames.length} frame(s) have changes. Select which frames to update.`;
+    desc.textContent = `${changes.length} of ${newData.frames?.length ?? 0} frame(s) have changes. Select which frames to update.`;
     body.appendChild(desc);
 
     // Bulk row
