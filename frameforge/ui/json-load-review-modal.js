@@ -251,13 +251,23 @@ function diffFrames(oldData, newData) {
       details.copy = copyChanges;
     }
 
-    // Content changed? (layer count)
-    const oldCount = (oldFrame.layers ?? []).length;
-    const newCount = (newFrame.layers ?? []).length;
-    if (oldCount !== newCount) {
+    // Content changed? — structural differences beyond image and copy:
+    // layer count, layer properties, overlays, frame-level fields.
+    const stripForContent = (frame) => {
+      const { image_src: _a, image_filename: _b, layers, ...rest } = frame;
+      return {
+        ...rest,
+        layers: (layers ?? []).map(({ text: _t, ...l }) => l),
+      };
+    };
+    if (JSON.stringify(stripForContent(oldFrame)) !== JSON.stringify(stripForContent(newFrame))) {
       categories.push('content');
+      const oldCount = (oldFrame.layers ?? []).length;
+      const newCount = (newFrame.layers ?? []).length;
       const diff = newCount - oldCount;
-      details.content = `${Math.abs(diff)} layer(s) ${diff > 0 ? 'added' : 'removed'}`;
+      details.content = diff !== 0
+        ? `${Math.abs(diff)} layer(s) ${diff > 0 ? 'added' : 'removed'}`
+        : 'Layout properties changed';
     }
 
     if (categories.length > 0) {
