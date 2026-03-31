@@ -260,7 +260,7 @@ export function positionOverlay(overlayEl, layer, canvas, project) {
   overlayEl.style.width  = `${Math.round((bounds.right  - bounds.left) * scaleX)}px`;
   overlayEl.style.height = `${Math.round((bounds.bottom - bounds.top)  * scaleY)}px`;
   overlayEl.dataset.layerId = layer.id;
-  overlayEl.style.display   = '';
+  overlayEl.style.display   = 'block';
 }
 
 /**
