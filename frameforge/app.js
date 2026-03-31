@@ -708,6 +708,7 @@ async function init() {
       decisions.forEach((action, frameIndex) => {
         if (action === 'replace') {
           const conflict = autoConflicts.find((c) => c.frameIndex === frameIndex);
+          if (!conflict) return;
           project.assignImage(frameIndex, conflict.newKey);
           loadReplacedCount++;
         }
@@ -828,7 +829,9 @@ async function init() {
       decisions.forEach((action, frameIndex) => {
         if (action === 'replace') {
           const conflict = conflicts.find((c) => c.frameIndex === frameIndex);
+          if (!conflict) return;
           project.assignImage(frameIndex, conflict.newKey);
+          imageTray.showAssignment(conflict.newKey, frameIndex);
           replacedCount++;
         }
       });
