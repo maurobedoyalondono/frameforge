@@ -200,15 +200,15 @@ export class ConceptBuilder {
     const backdrop = document.createElement('div');
     backdrop.className = 'modal-backdrop cb-backdrop';
     backdrop.innerHTML = `
-      <div class="cb-modal" role="dialog" aria-modal="true" aria-label="New Project Brief">
+      <div class="cb-modal" role="dialog" aria-modal="true" aria-label="New Project">
 
         <div class="cb-header">
           <div class="cb-header-left">
-            <span class="cb-title">New Project Brief</span>
+            <span class="cb-title">New Project</span>
             <span class="cb-subtitle">Fill this in, then share the exported package + your photos with the AI model</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px">
-            <button class="btn btn-ghost btn-sm cb-my-briefs-link" style="font-size:12px">≡ My Briefs</button>
+            <button class="btn btn-ghost btn-sm cb-my-briefs-link" style="font-size:12px">≡ My Projects</button>
             <button class="btn btn-ghost btn-icon cb-close" aria-label="Close">✕</button>
           </div>
         </div>
@@ -384,7 +384,7 @@ export class ConceptBuilder {
             Downloads everything the AI model needs in one click:
           </p>
           <ul style="list-style:none;font-size:12px;color:var(--color-text-secondary);margin-bottom:var(--space-8);line-height:1.9;text-align:left;display:inline-block;">
-            <li>📄 <strong>Brief</strong> — project description + AI generation manual (.txt)</li>
+            <li>📄 <strong>Project File</strong> — project description + AI generation manual (.txt)</li>
             <li>🖼 <strong>3 Sample Designs</strong> — layout mockups for your platform (.png)</li>
             <li>🎨 <strong>3 Shape Samples</strong> — decorative layer reference (image_mask, polyline, path) (.png)</li>
             <li>🗂 <strong>Thumbnail Sheets</strong> — all images grouped by ${THUMB_COLS * THUMB_ROWS} (.png)</li>
@@ -405,7 +405,7 @@ export class ConceptBuilder {
         <div style="text-align:center;padding:var(--space-7) 0;">
           <p class="cb-prompt-hint">
             Copy this prompt and paste it into your AI session.<br>
-            Attach the exported files (brief + designs + thumbnails) along with it.
+            Attach the exported files (project file + designs + thumbnails) along with it.
           </p>
           <br>
           <button class="btn btn-primary" id="cb-copy" style="min-width:180px">
@@ -575,7 +575,7 @@ export class ConceptBuilder {
 
     try {
       // 1 — Brief text
-      setStatus('Generating brief…');
+      setStatus('Generating project file…');
       await yieldToUI();
       const briefText = this._buildBrief();
       const briefBlob = new Blob([briefText], { type: 'text/plain;charset=utf-8' });
@@ -628,9 +628,9 @@ export class ConceptBuilder {
       }
 
       if (sheetCount > 0) {
-        status.textContent = `✓ Package exported — brief, designs, shapes, ${sheetCount} thumbnail sheet${sheetCount !== 1 ? 's' : ''}, image map (${fileCount} files)`;
+        status.textContent = `✓ Package exported — project file, designs, shapes, ${sheetCount} thumbnail sheet${sheetCount !== 1 ? 's' : ''}, image map (${fileCount} files)`;
       } else {
-        status.textContent = `✓ Package exported — brief, designs, shapes (${fileCount} files)`;
+        status.textContent = `✓ Package exported — project file, designs, shapes (${fileCount} files)`;
       }
       status.className   = 'cb-export-status done';
     } catch (err) {
@@ -738,7 +738,7 @@ export class ConceptBuilder {
     const { title, slug, today, w, h, dpi, platformObj, story, notes, toneLine, imageCount } = this._readFields();
     const platformLabel = platformObj?.label ?? this._platform;
 
-    return `# FrameForge Project Brief
+    return `# FrameForge Project File
 Generated: ${today}
 
 ---
@@ -763,7 +763,7 @@ ${notes ? `\n**Additional notes:** ${notes}` : ''}
 
 ## Images
 
-${imageCount} image${imageCount !== 1 ? 's' : ''} provided alongside this brief.
+${imageCount} image${imageCount !== 1 ? 's' : ''} provided alongside this project file.
 See the attached thumbnail sheets for a visual reference of all images (grouped by ${THUMB_COLS * THUMB_ROWS}).
 Images are numbered 1–${imageCount} in the thumbnail sheets — reference them by number in your JSON (\`image_src: "image-01.jpg"\`, etc.).
 
@@ -794,14 +794,14 @@ When generating the JSON, output **only** the raw JSON — no markdown fences, n
     return `I'm working on a photography project and need you to design FrameForge layouts for it.
 I'm attaching:
 
-- The FrameForge brief file (full technical instructions for generating the JSON)
+- The FrameForge project file (full technical instructions for generating the JSON)
 - Sample design mockups (layout references — study element sizes and zones)
 - Thumbnail sheets showing all ${imageCount} image${imageCount !== 1 ? 's' : ''}
 
 ---
 
 **Step 1 — Read and confirm.**
-Read the brief and study every thumbnail carefully. Confirm you've done this before proceeding. Do not generate anything yet.
+Read the project file and study every thumbnail carefully. Confirm you've done this before proceeding. Do not generate anything yet.
 
 ---
 
@@ -847,7 +847,7 @@ Wait for my approval on the full concept before continuing.
 ---
 
 **Step 5 — Generate.**
-Once the concept is approved, generate the complete FrameForge JSON in one clean pass following the brief exactly. No partial outputs, no placeholder text, no assumed facts.
+Once the concept is approved, generate the complete FrameForge JSON in one clean pass following the project file exactly. No partial outputs, no placeholder text, no assumed facts.
 
 ---
 
