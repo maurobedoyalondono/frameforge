@@ -1094,7 +1094,6 @@ code {
 #shape-toolbar,
 #image-toolbar,
 #overlay-toolbar {
-  position: fixed;
   z-index: 50;
   background: var(--color-bg-panel);
   border: 1.5px solid var(--color-accent);
@@ -1102,6 +1101,14 @@ code {
   box-shadow: 0 6px 20px rgba(0,0,0,0.55);
   /* top/left set by JS */
 }
+
+/* text/shape/image toolbars are positioned relative to #canvas-wrap */
+#text-toolbar,
+#shape-toolbar,
+#image-toolbar { position: absolute; }
+
+/* overlay toolbar is draggable — uses viewport coords */
+#overlay-toolbar { position: fixed; }
 
 /* Arrow pointing down toward selected layer (default) */
 #text-toolbar.arrow-down::after,
