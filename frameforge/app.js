@@ -830,6 +830,7 @@ async function init() {
         }
         project.isDirty = true;
         project.save();
+        briefStorage.setHasLayout(projectId, true);
 
         filmstrip.build(project);
         filmstrip.setActive(project.activeFrameIndex);
