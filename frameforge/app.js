@@ -494,7 +494,7 @@ async function init() {
     requestAnimationFrame(() => positionToolbar());
   };
 
-  textToolbar.onCopy  = (layer) => copySelectedLayer();
+  textToolbar.onCopy  = () => copySelectedLayer();
   textToolbar.onPaste = ()      => pasteLayer();
   textToolbar.onDelete = (layer) => {
     const frame = project.data?.frames?.[project.activeFrameIndex];
@@ -517,7 +517,7 @@ async function init() {
     requestAnimationFrame(() => positionToolbar());
   };
 
-  shapeToolbar.onCopy  = (layer) => copySelectedLayer();
+  shapeToolbar.onCopy  = () => copySelectedLayer();
   shapeToolbar.onPaste = ()      => pasteLayer();
   shapeToolbar.onDelete = (layer) => {
     const frame = project.data?.frames?.[project.activeFrameIndex];
