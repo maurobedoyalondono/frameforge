@@ -831,6 +831,9 @@ async function init() {
             project.data.frames[frameIndex] = newFrame;
           }
         }
+        // Merge top-level metadata from the incoming JSON (palette, globals, etc.)
+        if (data.palette  !== undefined) project.data.palette  = data.palette;
+        if (data.globals  !== undefined) project.data.globals  = data.globals;
         project.isDirty = true;
         project.save();
         briefStorage.setHasLayout(projectId, true);

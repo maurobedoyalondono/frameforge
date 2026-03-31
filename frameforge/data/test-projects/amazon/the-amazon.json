@@ -25,6 +25,11 @@
     },
     "safe_zone_pct": 6
   },
+  "palette": [
+    { "hex": "#F5EFE0", "name": "Warm White" },
+    { "hex": "#C4782A", "name": "River Amber" },
+    { "hex": "#1B3826", "name": "Deep Canopy" }
+  ],
   "frames": [
     {
       "id": "frame-01",
@@ -68,7 +73,7 @@
             "size_pct": 1.8,
             "line_height": 1.2,
             "letter_spacing_em": 0.15,
-            "color": "#F5EFE0",
+            "color": "#C4782A",
             "opacity": 1.0
           },
           "position": {

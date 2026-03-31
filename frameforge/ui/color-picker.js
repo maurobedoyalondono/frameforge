@@ -201,6 +201,8 @@ export class ColorPicker {
     const palette = this._getProject?.()?.palette ?? [];
     const saved   = loadSaved();
 
+    const currentHex = (this._getColor() || '').toLowerCase();
+
     el.innerHTML = '';
 
     // ── Project palette section ──
@@ -216,7 +218,7 @@ export class ColorPicker {
       swatches.className = 'cp-row';
       palette.forEach(({ hex, name }) => {
         const btn = document.createElement('button');
-        btn.className = 'cp-swatch';
+        btn.className = 'cp-swatch' + (hex.toLowerCase() === currentHex ? ' cp-swatch--active' : '');
         btn.style.background = hex;
         btn.title = `${name} ${hex}`;
         btn.addEventListener('click', (e) => {
@@ -249,10 +251,15 @@ export class ColorPicker {
 
     saved.forEach((hex, i) => {
       const btn = document.createElement('button');
-      btn.className = 'cp-swatch';
+      btn.className = 'cp-swatch' + (hex.toLowerCase() === currentHex ? ' cp-swatch--active' : '');
       btn.style.background = hex;
       btn.title = hex + ' (right-click to remove)';
-      btn.addEventListener('click', (e) => { e.stopPropagation(); this._applyColor(hex); });
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this._applyColor(hex);
+        this._expandedHex = this._expandedHex === hex ? null : hex;
+        this._render();
+      });
       btn.addEventListener('contextmenu', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -279,6 +286,11 @@ export class ColorPicker {
     savedRow.appendChild(addBtn);
 
     savedSection.appendChild(savedRow);
+
+    // Expansion strip for the expanded saved swatch
+    if (this._expandedHex && saved.includes(this._expandedHex)) {
+      this._appendExpansion(savedSection, this._expandedHex);
+    }
     el.appendChild(savedSection);
 
     // ── Custom color ──
@@ -323,16 +335,16 @@ export class ColorPicker {
     parent.appendChild(wrap);
   }
 
-  /** A derived (tone/harmony) swatch button — click applies color and collapses expansion to show this color's own tones/harmonies. */
+  /** A derived (tone/harmony) swatch button — click applies color, keeps expansion open. */
   _derivedSwatch(hex) {
     const btn = document.createElement('button');
-    btn.className = 'cp-swatch cp-swatch-sm';
+    const isActive = hex.toLowerCase() === (this._getColor() || '').toLowerCase();
+    btn.className = 'cp-swatch cp-swatch-sm' + (isActive ? ' cp-swatch--active' : '');
     btn.style.background = hex;
     btn.title = hex;
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       this._applyColor(hex);
-      this._expandedHex = hex;
       this._render();
     });
     return btn;

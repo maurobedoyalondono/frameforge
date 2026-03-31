@@ -1822,6 +1822,11 @@ code {
   transform: scale(1.1);
 }
 
+.cp-swatch--active {
+  border-color: var(--color-text) !important;
+  box-shadow: 0 0 0 1.5px var(--color-text);
+}
+
 .cp-swatch-sm {
   width: 18px;
   height: 18px;
