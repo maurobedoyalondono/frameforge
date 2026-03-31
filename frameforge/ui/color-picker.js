@@ -119,6 +119,7 @@ export class ColorPicker {
     this._popoverEl   = null;
     this._swatchEl    = null;
     this._expandedHex = null;   // which palette swatch is expanded
+    this._nativePicker = null;
     this._onClick     = null;
     this._onDocClick  = null;
     this._onKeyDown   = null;
@@ -141,11 +142,19 @@ export class ColorPicker {
     }
     this.close();
     this._swatchEl = null;
+    this._onClick = null;
   }
 
   open() {
     if (this._popoverEl) return;
     this._expandedHex = null;
+    this._nativePicker = document.createElement('input');
+    this._nativePicker.type = 'color';
+    this._nativePicker.style.cssText = 'position:absolute;opacity:0;width:0;height:0;pointer-events:none;';
+    this._nativePicker.addEventListener('input', () => {
+      this._applyColor(this._nativePicker.value);
+    });
+    document.body.appendChild(this._nativePicker);
     this._popoverEl = document.createElement('div');
     this._popoverEl.className = 'cp-popover';
     document.body.appendChild(this._popoverEl);
@@ -168,8 +177,12 @@ export class ColorPicker {
     if (!this._popoverEl) return;
     this._popoverEl.remove();
     this._popoverEl = null;
+    this._nativePicker?.remove();
+    this._nativePicker = null;
     document.removeEventListener('click', this._onDocClick);
     document.removeEventListener('keydown', this._onKeyDown);
+    this._onDocClick = null;
+    this._onKeyDown = null;
   }
 
   /** Re-render the popover content (called after color change). */
@@ -247,7 +260,7 @@ export class ColorPicker {
     addBtn.textContent = '+';
     addBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const hex = this._getColor();
+      const hex = (this._getColor() || '').toLowerCase();
       if (!hex) return;
       const arr = loadSaved();
       if (!arr.includes(hex)) { arr.push(hex); saveSaved(arr); }
@@ -264,21 +277,11 @@ export class ColorPicker {
     const customBtn = document.createElement('button');
     customBtn.className = 'cp-custom-btn';
     customBtn.textContent = 'Custom color';
-
-    const nativePicker = document.createElement('input');
-    nativePicker.type = 'color';
-    nativePicker.style.cssText = 'position:absolute;opacity:0;width:0;height:0;';
-    nativePicker.value = this._getColor() || '#000000';
-    nativePicker.addEventListener('input', () => {
-      this._applyColor(nativePicker.value);
-    });
-
     customBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      nativePicker.value = this._getColor() || '#000000';
-      nativePicker.click();
+      this._nativePicker.value = this._getColor() || '#000000';
+      this._nativePicker.click();
     });
-    customSection.appendChild(nativePicker);
     customSection.appendChild(customBtn);
     el.appendChild(customSection);
   }
@@ -309,7 +312,7 @@ export class ColorPicker {
     parent.appendChild(wrap);
   }
 
-  /** A derived (tone/harmony) swatch button — click applies AND re-anchors expansion. */
+  /** A derived (tone/harmony) swatch button — click applies color and collapses expansion to show this color's own tones/harmonies. */
   _derivedSwatch(hex) {
     const btn = document.createElement('button');
     btn.className = 'cp-swatch cp-swatch-sm';
