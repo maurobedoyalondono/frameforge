@@ -88,10 +88,10 @@ export class BriefManager {
     const backdrop = document.createElement('div');
     backdrop.className = 'bm-backdrop';
     backdrop.innerHTML = `
-      <div class="bm-modal" role="dialog" aria-modal="true" aria-label="My Briefs">
+      <div class="bm-modal" role="dialog" aria-modal="true" aria-label="My Projects">
 
         <div class="bm-header">
-          <span class="bm-header-title">My Briefs</span>
+          <span class="bm-header-title">My Projects</span>
           <button class="btn btn-ghost btn-icon bm-close" aria-label="Close">✕</button>
         </div>
 
@@ -99,19 +99,19 @@ export class BriefManager {
           <div class="bm-list-panel">
             <div class="bm-list-toolbar">
               <input type="text" class="input bm-search" id="bm-search"
-                placeholder="Search briefs…" value="${escHtml(this._searchQuery)}" autocomplete="off">
+                placeholder="Search projects…" value="${escHtml(this._searchQuery)}" autocomplete="off">
               <select class="input bm-sort" id="bm-sort">
                 <option value="updated" ${this._sortMode === 'updated' ? 'selected' : ''}>Last updated</option>
                 <option value="title"   ${this._sortMode === 'title'   ? 'selected' : ''}>Title A→Z</option>
                 <option value="created" ${this._sortMode === 'created' ? 'selected' : ''}>Created</option>
               </select>
             </div>
-            <div class="bm-active-hint">Double-click to set active</div>
+            <div class="bm-active-hint">Double-click to set active project</div>
             <div class="bm-list-items" id="bm-list-items">
               ${this._renderListItems()}
             </div>
             <div class="bm-list-footer">
-              <button class="btn btn-secondary btn-sm" id="bm-new">+ New Brief</button>
+              <button class="btn btn-secondary btn-sm" id="bm-new">+ New Project</button>
             </div>
           </div>
 
@@ -153,21 +153,21 @@ export class BriefManager {
 
     if (allBriefs.length === 0) {
       return `<div class="bm-empty">
-        <div>No briefs yet.</div>
-        <button class="btn btn-secondary btn-sm" id="bm-empty-create">+ Create your first brief</button>
+        <div>No projects yet.</div>
+        <button class="btn btn-secondary btn-sm" id="bm-empty-create">+ Create your first project</button>
       </div>`;
     }
 
     const items = this._getFilteredSorted();
 
     if (items.length === 0) {
-      return `<div class="bm-empty"><div>No briefs match your search.</div></div>`;
+      return `<div class="bm-empty"><div>No projects match your search.</div></div>`;
     }
 
     return items.map((b) => `
       <div class="bm-item ${b.id === this._selectedId ? 'selected' : ''} ${b.id === this._activeBriefId ? 'active' : ''}"
            data-id="${escHtml(b.id)}">
-        <div class="bm-item-title">${escHtml(b.title || '(untitled)')}</div>
+        <div class="bm-item-title">${escHtml(b.title || '(untitled)')}<span class="bm-layout-dot" title="${b.hasLayout ? 'Layout loaded' : 'No layout'}">${b.hasLayout ? '●' : '○'}</span></div>
         <div class="bm-item-meta">
           ${escHtml(platformLabel(b.platform))}${b.imageCount ? ` · ${b.imageCount} img` : ''}
           · ${formatDate(b.updated)}
@@ -178,12 +178,12 @@ export class BriefManager {
 
   _renderDetail() {
     if (!this._selectedId) {
-      return `<div class="bm-detail-empty">Select a brief to see details</div>`;
+      return `<div class="bm-detail-empty">Select a project to see details</div>`;
     }
 
     const brief = this._storage.load(this._selectedId);
     if (!brief) {
-      return `<div class="bm-detail-empty">Brief not found.</div>`;
+      return `<div class="bm-detail-empty">Project not found.</div>`;
     }
 
     const plat = platformLabel(brief.platform);
@@ -208,7 +208,7 @@ export class BriefManager {
 
     const deleteHtml = this._deleteConfirmId === brief.id
       ? `<div class="bm-delete-confirm">
-           Delete this brief?
+           Delete this project?
            <button class="btn btn-danger btn-sm" id="bm-delete-confirm-yes">Delete</button>
            <button class="btn btn-ghost btn-sm"  id="bm-delete-confirm-no">Cancel</button>
          </div>`
@@ -362,14 +362,15 @@ export class BriefManager {
       this._refreshDetail();
     });
 
-    b.querySelector('#bm-delete-confirm-yes')?.addEventListener('click', () => {
-      const wasActive = this._selectedId === this._activeBriefId;
-      this._storage.remove(this._selectedId);
+    b.querySelector('#bm-delete-confirm-yes')?.addEventListener('click', async () => {
+      const wasActive  = this._selectedId === this._activeBriefId;
+      const deletedId  = this._selectedId;
+      await this._storage.deleteProject(this._selectedId);
       this._selectedId      = null;
       this._deleteConfirmId = null;
       if (wasActive) {
         this._activeBriefId = null;
-        this._onActiveBriefChange?.(null, null);
+        this._onActiveBriefChange?.(null, null, deletedId);
       }
       this._refreshList();
       this._refreshDetail();
