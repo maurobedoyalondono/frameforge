@@ -1,10 +1,10 @@
 /**
- * concept-builder.js — "New Project Brief" 5-step wizard.
+ * concept-builder.js — "New Project" 5-step wizard.
  *
  * Step 1: Title & Story
  * Step 2: Tone & Style
  * Step 3: Import Images (file picker → onImages callback → tray)
- * Step 4: Export Package (brief .txt + 3 mockup PNGs + thumbnail sheets)
+ * Step 4: Export Package (project file .txt + 3 mockup PNGs + thumbnail sheets)
  * Step 5: Copy Prompt
  */
 
