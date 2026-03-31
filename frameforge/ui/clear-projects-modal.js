@@ -164,13 +164,20 @@ export function showClearProjectsModal(projects, activeProjectId) {
       btnClear.disabled = n === 0;
     }
 
+    function onKeyDown(e) {
+      if (e.key === 'Escape') close([]);
+    }
+
     function close(result) {
+      document.removeEventListener('keydown', onKeyDown);
       backdrop.remove();
       resolve(result);
     }
 
     // ── Event handlers ───────────────────────────────────────────────────────
     btnClose.addEventListener('click', () => close([]));
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) close([]); });
+    document.addEventListener('keydown', onKeyDown);
 
     btnClear.addEventListener('click', () => {
       const ids = [];
