@@ -47,6 +47,10 @@ export class Project {
   /**
    * Load a project from parsed JSON data.
    * @param {object} data
+   * @returns {Promise<{
+   *   assigned: number[],
+   *   conflicts: Array<{frameIndex: number, frameId: string, currentKey: string, newKey: string}>
+   * }>}
    */
   async load(data) {
     this.data = data;
@@ -67,6 +71,9 @@ export class Project {
     for (const [k, v] of Object.entries(storedAssignments)) {
       this.imageAssignments.set(Number(k), v);
     }
+
+    // Auto-assign using image_filename where possible
+    return this._autoAssignImages();
   }
 
   /**
@@ -79,9 +86,14 @@ export class Project {
   }
 
   /**
-   * Merge new image files into the project.
+   * Merge new image files into the project, then run auto-assignment.
    * @param {Object.<string, string>} newImages — filename → dataURL
-   * @returns {Promise<{matched: string[], storageFailed: string[]}>}
+   * @returns {Promise<{
+   *   matched: string[],
+   *   storageFailed: string[],
+   *   assigned: number[],
+   *   conflicts: Array<{frameIndex: number, frameId: string, currentKey: string, newKey: string}>
+   * }>}
    */
   async addImages(newImages) {
     const matched = [];
@@ -95,15 +107,14 @@ export class Project {
       }
     }
 
-    // Save to localStorage — returns list of filenames that couldn't be saved
     const storageFailed = storage.saveImages(this.id, newImages);
 
-    // Pre-load elements
     await Promise.all(toLoad.map(({ filename, dataURL }) =>
       this._loadImageElement(filename, dataURL)
     ));
 
-    return { matched, storageFailed };
+    const { assigned, conflicts } = this._autoAssignImages();
+    return { matched, storageFailed, assigned, conflicts };
   }
 
   /**
@@ -146,19 +157,59 @@ export class Project {
 
   /**
    * Check if a filename is referenced anywhere in the project.
+   * Checks image_filename (raw file) and image_src/src (labels, for legacy).
    * @param {string} filename
    * @returns {boolean}
    */
   _isImageReferenced(filename) {
     if (!this.data) return false;
     for (const frame of this.data.frames) {
-      if (frame.image_src === filename) return true;
-      if (frame.logo?.src === filename) return true;
+      if (frame.image_filename === filename) return true;
+      if (frame.image_src === filename)      return true;
+      if (frame.logo?.src === filename)      return true;
       for (const layer of (frame.layers || [])) {
         if (layer.src === filename) return true;
       }
     }
     return false;
+  }
+
+  /**
+   * Auto-assign images to frames using image_filename from JSON.
+   * Silently assigns frames with no existing assignment.
+   * Returns conflicts where an existing manual assignment differs from image_filename.
+   *
+   * @returns {{
+   *   assigned: number[],
+   *   conflicts: Array<{frameIndex: number, frameId: string, currentKey: string, newKey: string}>
+   * }}
+   */
+  _autoAssignImages() {
+    const assigned  = [];
+    const conflicts = [];
+
+    if (!this.data) return { assigned, conflicts };
+
+    this.data.frames.forEach((frame, frameIndex) => {
+      const filename = frame.image_filename;
+      if (!filename) return;                                     // no mapping → skip
+      const img = this.imageElements.get(filename);
+      if (!img) return;                                         // not loaded or failed → skip
+
+      const currentKey = this.imageAssignments.get(frameIndex); // undefined if unset
+
+      if (currentKey === undefined) {
+        // No existing assignment → auto-assign silently
+        this.assignImage(frameIndex, filename);
+        assigned.push(frameIndex);
+      } else if (currentKey !== filename) {
+        // Different existing assignment → collect as conflict
+        conflicts.push({ frameIndex, frameId: frame.id, currentKey, newKey: filename });
+      }
+      // currentKey === filename → already correct, skip
+    });
+
+    return { assigned, conflicts };
   }
 
   /**
