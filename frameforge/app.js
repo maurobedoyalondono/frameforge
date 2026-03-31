@@ -208,7 +208,7 @@ async function init() {
   const layersPanelEl    = document.getElementById('layers-panel');
 
   const imageToolbar   = new ImageToolbar(imageToolbarEl);
-  const overlayToolbar = new OverlayToolbar(overlayToolbarEl);
+  const overlayToolbar = new OverlayToolbar(overlayToolbarEl, { getProject: () => project });
   const layersPanel    = new LayersPanel(layersPanelEl);
 
   // Canvas for main preview
@@ -448,8 +448,8 @@ async function init() {
       positionElementRight(imageToolbarEl);
       hideOverlay(resizeOverlayEl);
     } else if (layer.type === 'overlay') {
-      positionElementRight(overlayToolbarEl);
       hideOverlay(resizeOverlayEl);
+      // Overlay toolbar manages its own position (drag + localStorage)
     }
   }
 
