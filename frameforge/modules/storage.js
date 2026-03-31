@@ -65,32 +65,32 @@ function saveProjectIndex(index) {
 /**
  * Save a parsed project data object.
  * @param {object} data — full parsed JSON (project + export + globals + frames)
+ * @param {string} projectId — canonical project ID (Brief ID)
  */
-export function saveProject(data) {
-  const id = data.project.id;
-  if (!id) throw new Error('Project has no id');
-
+export function saveProject(data, projectId) {
+  if (!projectId) throw new Error('projectId is required');
   try {
-    localStorage.setItem(projectKey(id), JSON.stringify(data));
+    localStorage.setItem(projectKey(projectId), JSON.stringify(data));
   } catch (e) {
     throw new Error(`Failed to save project (storage quota?): ${e.message}`);
   }
+  // Index is now managed by brief-storage.js — do not update frameforge_projects index here.
+}
 
-  // Update index
-  const index = loadProjectIndex();
-  const existing = index.findIndex((e) => e.id === id);
-  const entry = {
-    id,
-    title:   data.project.title || id,
-    created: data.project.created || new Date().toISOString(),
-    updated: new Date().toISOString(),
-  };
-  if (existing >= 0) {
-    index[existing] = entry;
-  } else {
-    index.push(entry);
-  }
-  saveProjectIndex(index);
+/**
+ * Remove stored layout JSON for a project.
+ * @param {string} projectId
+ */
+export function deleteLayoutData(projectId) {
+  localStorage.removeItem(projectKey(projectId));
+}
+
+/**
+ * Remove stored frame-image assignments for a project.
+ * @param {string} projectId
+ */
+export function clearAssignments(projectId) {
+  localStorage.removeItem(assignmentsKey(projectId));
 }
 
 /**
@@ -112,13 +112,10 @@ export function loadProject(id) {
  * Delete a project and its images.
  * @param {string} id
  */
-export function deleteProject(id) {
-  localStorage.removeItem(projectKey(id));
-  localStorage.removeItem(imagesKey(id));
-  localStorage.removeItem(assignmentsKey(id));
-
-  const index = loadProjectIndex().filter((e) => e.id !== id);
-  saveProjectIndex(index);
+export async function deleteProject(id) {
+  deleteLayoutData(id);
+  clearAssignments(id);
+  await clearImages(id);
 }
 
 // ── Images ─────────────────────────────────────────────────────────────────
