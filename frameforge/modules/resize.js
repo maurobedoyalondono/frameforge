@@ -28,7 +28,7 @@ function canvasPct(event, canvas) {
 function toAbsolutePos(layer) {
   const pos = (layer.position ??= {});
   if (pos.x_pct != null && pos.y_pct != null) return pos;
-  const [ax, ay] = ZONE_ANCHORS[pos.zone ?? 'top-left'] ?? [0, 0];
+  const [ax, ay] = ZONE_ANCHORS[pos.zone] ?? [50, 50];
   pos.x_pct = ax + (pos.offset_x_pct ?? 0);
   pos.y_pct = ay + (pos.offset_y_pct ?? 0);
   delete pos.mode;
@@ -171,6 +171,8 @@ export function initResize(overlayEl, canvas, project, getFrameIndex, onRender, 
       };
     }
 
+    window.removeEventListener('mousemove', handleDrag);
+    window.removeEventListener('mouseup', handleUp);
     window.addEventListener('mousemove', handleDrag);
     window.addEventListener('mouseup', handleUp, { once: true });
   });
@@ -236,7 +238,8 @@ export function positionOverlay(overlayEl, layer, canvas, project) {
   let bounds;
 
   if (layer.type === 'text') {
-    bounds = computeTextBounds(ctx, layer, w, h, project);
+    try { bounds = computeTextBounds(ctx, layer, w, h, project); }
+    catch { bounds = null; }
   } else {
     try { bounds = computeShapeBounds(ctx, layer, w, h, project); }
     catch { bounds = null; }
