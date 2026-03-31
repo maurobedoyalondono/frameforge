@@ -1,2 +1,8 @@
 .worktrees/
 frameforge/data/test-projects/*/images/
+.playwright-mcp/
+.superpowers/brainstorm/
+.claude/settings.json
+.mcp.json
+frame-*.jpeg
+frame-*.png
