@@ -182,9 +182,13 @@ Array of frame objects. \`image_src\` is a descriptive label — NOT a filename:
 {
   "id": "frame-01",
   "image_src": "hero-landscape",
+  "image_filename": "actual-raw-filename.jpg",
   "layers": [ ... ]
 }
 \`\`\`
+
+- \`image_src\` — descriptive slug label used by agent-preview and all downstream agents. Never a real filename.
+- \`image_filename\` — the actual raw source file (e.g. \`CC2A1369.jpg\`). Written by the Technical Producer from the image map. Used by the FrameForge UI to auto-assign images when files are loaded. Omit if unknown — auto-assignment will simply be skipped for that frame.
 
 **white_frame** (optional) — draws a white border (mat) around all frame content.
 \`\`\`json
