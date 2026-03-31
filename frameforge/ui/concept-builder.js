@@ -102,6 +102,7 @@ export class ConceptBuilder {
     this._onImages            = null;
     this._onKeyDown           = null;
     this._briefId             = null;
+    this._onComplete          = null;
     this._onOpenBriefManager  = null;
 
     // Step 1 state
@@ -137,13 +138,18 @@ export class ConceptBuilder {
    * Open the wizard.
    * @param {function(File[]): void} onImages  — called when the user selects images;
    *   forward to app's handleImageFiles to populate the Image Tray.
+   * @param {string|null} [briefId]  — pre-fill from existing brief
+   * @param {number} [startStep]
+   * @param {function(string|null): void} [onComplete]  — called when wizard closes;
+   *   receives the saved brief id (null if closed without saving)
    */
-  open(onImages, briefId = null, startStep = 1) {
+  open(onImages, briefId = null, startStep = 1, onComplete = null) {
     if (this._backdrop) return;
 
     // Reset state
     this._step          = startStep;
     this._onImages      = onImages ?? null;
+    this._onComplete    = onComplete ?? null;
     this._briefId       = null;
     this._title         = '';
     this._platform      = 'instagram-portrait';
@@ -932,6 +938,10 @@ Images: ${imageCount} image${imageCount !== 1 ? 's' : ''} — see attached thumb
       this._previewUrls   = [];
       this._imageFiles    = [];
       this._imageElements = [];
+      const onComplete = this._onComplete;
+      const briefId    = this._briefId;
+      this._onComplete = null;
+      onComplete?.(briefId);
     }
   }
 }

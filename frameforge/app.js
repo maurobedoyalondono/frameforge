@@ -779,8 +779,17 @@ async function init() {
         return;
       }
       if (result.action === 'create') {
-        conceptBuilder.open((files) => handleImageFiles(files));
-        toasts.info('Create a Project', 'Create your project, then load the JSON again.');
+        conceptBuilder.open(
+          (files) => handleImageFiles(files),
+          null, 1,
+          async (newBriefId) => {
+            if (!newBriefId) { status.ready(''); return; }
+            prefs.active_project_id = newBriefId;
+            storage.savePrefs(prefs);
+            updateActiveBriefLabel(tb.activeBriefLabel, briefStorage.load(newBriefId)?.title ?? '');
+            await loadProjectData(data, true, newBriefId);
+          },
+        );
         status.ready('');
         return;
       }
@@ -1016,7 +1025,17 @@ async function init() {
       });
       if (result.action === 'cancel') return;
       if (result.action === 'create') {
-        conceptBuilder.open((files) => handleImageFiles(files));
+        conceptBuilder.open(
+          (f) => handleImageFiles(f),
+          null, 1,
+          async (newBriefId) => {
+            if (!newBriefId) return;
+            prefs.active_project_id = newBriefId;
+            storage.savePrefs(prefs);
+            updateActiveBriefLabel(tb.activeBriefLabel, briefStorage.load(newBriefId)?.title ?? '');
+            await handleImageFiles(files);
+          },
+        );
         return;
       }
       activeProjectId = result.projectId;
