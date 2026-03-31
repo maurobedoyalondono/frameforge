@@ -220,17 +220,17 @@ async function init() {
   });
 
   const textToolbarEl = document.getElementById('text-toolbar');
-  const textToolbar   = new TextToolbar(textToolbarEl, loadFont);
+  const textToolbar   = new TextToolbar(textToolbarEl, loadFont, { getProject: () => project });
 
   const shapeToolbarEl   = document.getElementById('shape-toolbar');
-  const shapeToolbar     = new ShapeToolbar(shapeToolbarEl);
+  const shapeToolbar     = new ShapeToolbar(shapeToolbarEl, { getProject: () => project });
 
   const imageToolbarEl   = document.getElementById('image-toolbar');
   const overlayToolbarEl = document.getElementById('overlay-toolbar');
   const layersPanelEl    = document.getElementById('layers-panel');
 
   const imageToolbar   = new ImageToolbar(imageToolbarEl);
-  const overlayToolbar = new OverlayToolbar(overlayToolbarEl);
+  const overlayToolbar = new OverlayToolbar(overlayToolbarEl, { getProject: () => project });
   const layersPanel    = new LayersPanel(layersPanelEl);
 
   // Canvas for main preview
@@ -470,8 +470,8 @@ async function init() {
       positionElementRight(imageToolbarEl);
       hideOverlay(resizeOverlayEl);
     } else if (layer.type === 'overlay') {
-      positionElementRight(overlayToolbarEl);
       hideOverlay(resizeOverlayEl);
+      // Overlay toolbar manages its own position (drag + localStorage)
     }
   }
 

@@ -1259,20 +1259,16 @@ code {
   border-color: rgba(255,85,85,0.35);
 }
 
-.tt-color {
+.tt-color-swatch {
   width: 22px;
   height: 22px;
-  padding: 0;
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  background: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
   cursor: pointer;
   flex-shrink: 0;
 }
 
-.tt-color::-webkit-color-swatch-wrapper { padding: 0; }
-.tt-color::-webkit-color-swatch { border: none; border-radius: calc(var(--radius-sm) - 1px); }
-.tt-color::-moz-color-swatch { border: none; }
+.tt-color-swatch:hover { border-color: var(--color-accent); }
 
 /* ── Font picker panel ──────────────────────────────────────────────────── */
 
@@ -1380,15 +1376,16 @@ code {
 .st-label { font-size: 10px; color: var(--color-text-muted); user-select: none; flex-shrink: 0; }
 .st-val { font-size: var(--font-size-sm); color: var(--color-text-primary); min-width: 28px; text-align: center; user-select: none; flex-shrink: 0; }
 
-.st-color {
-  width: 22px; height: 22px; padding: 0;
-  border: 1px solid var(--color-border);
+.st-color-swatch {
+  width: 22px;
+  height: 22px;
   border-radius: var(--radius-sm);
-  background: none; cursor: pointer; flex-shrink: 0;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  flex-shrink: 0;
 }
-.st-color::-webkit-color-swatch-wrapper { padding: 0; }
-.st-color::-webkit-color-swatch { border: none; border-radius: calc(var(--radius-sm) - 1px); }
-.st-color::-moz-color-swatch { border: none; }
+
+.st-color-swatch:hover { border-color: var(--color-accent); }
 
 .st-delete { color: var(--color-text-muted); background: transparent; border-color: transparent; }
 .st-delete:hover { color: var(--color-error); background: rgba(255,85,85,0.1); border-color: rgba(255,85,85,0.35); }
@@ -1468,43 +1465,153 @@ code {
 .it-delete { color: var(--color-text-muted); background: transparent; }
 .it-delete:hover { color: var(--color-error); background: rgba(255,85,85,0.1); }
 
-/* ─── Overlay Toolbar ───────────────────────────────────────── */
-.ot-row1, .ot-row2 {
-  display: flex; align-items: center; gap: 4px;
-  padding: 5px 8px; white-space: nowrap;
+/* ── Overlay toolbar sections ───────────────────────────────────────────── */
+
+.ot-drag-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--color-border);
+  cursor: grab;
+  user-select: none;
 }
-.ot-row2 { border-top: 1px solid var(--color-border); }
-.ot-btn {
-  width: 20px; height: 22px; padding: 0;
-  background: var(--color-bg-surface);
+
+.ot-drag-bar:active { cursor: grabbing; }
+
+.ot-grip {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.ot-title {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.ot-delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.ot-delete-btn:hover { color: var(--color-error); background: rgba(255,85,85,0.1); }
+
+.ot-fill-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ot-color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ot-color-swatch:hover { border-color: var(--color-accent); }
+
+.ot-slider-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.ot-slider {
+  flex: 1;
+  min-width: 60px;
+  accent-color: var(--color-accent);
+}
+
+.ot-slider-val {
+  font-size: var(--font-size-sm);
+  min-width: 32px;
+  text-align: right;
+  color: var(--color-text-muted);
+}
+
+.ot-select {
+  background: var(--color-bg-panel-alt);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  padding: 2px 4px;
   cursor: pointer;
 }
-.ot-btn:hover  { background: var(--color-bg-panel-alt); border-color: var(--color-border-light); }
-.ot-toggle     { width: auto; padding: 0 8px; }
-.ot-active {
-  background: color-mix(in srgb, var(--color-accent) 18%, transparent) !important;
-  border-color: var(--color-accent) !important;
-  color: var(--color-accent) !important;
+
+.ot-grad-section {
+  padding: 4px 8px 6px;
 }
-.ot-sep   { width: 1px; height: 16px; background: var(--color-border); margin: 0 2px; }
-.ot-label { font-size: 10px; color: var(--color-text-muted); }
-.ot-val   { font-size: var(--font-size-sm); min-width: 28px; text-align: center; }
-.ot-color {
-  width: 22px; height: 22px; padding: 0;
-  border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer;
+
+.ot-grad-toggle {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: 2px 0;
+  width: 100%;
+  text-align: left;
 }
-.ot-select {
-  height: 22px; padding: 0 4px;
-  background: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm); color: inherit; cursor: pointer;
+
+.ot-grad-toggle:hover { color: var(--color-text); }
+
+.ot-grad-body {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-.ot-delete { color: var(--color-text-muted); background: transparent; }
-.ot-delete:hover { color: var(--color-error); background: rgba(255,85,85,0.1); }
+
+.ot-dir-row {
+  display: flex;
+  gap: 4px;
+}
+
+.ot-dir-swatch {
+  width: 32px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1.5px solid var(--color-border);
+  cursor: pointer;
+  padding: 0;
+}
+
+.ot-dir-swatch:hover    { border-color: var(--color-border-light); }
+.ot-dir-active          { border-color: var(--color-accent) !important; }
+
+.ot-stop {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ot-stop-label {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ot-stop-sublabel {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  width: 48px;
+  flex-shrink: 0;
+}
 
 /* ─── Layers Panel ──────────────────────────────────────────── */
 #layers-panel {
@@ -1655,3 +1762,115 @@ code {
 .rh.s  { bottom: -4px; left: calc(50% - 4px); cursor: s-resize;  }
 .rh.sw { bottom: -4px; left: -4px;            cursor: sw-resize; }
 .rh.w  { top: calc(50% - 4px); left: -4px;   cursor: w-resize;  }
+
+/* ── Color Picker popover ─────────────────────────────────────────────────── */
+
+.cp-popover {
+  position: absolute;
+  z-index: 200;
+  background: var(--color-bg-panel);
+  border: 1.5px solid var(--color-accent);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+  padding: 6px;
+  min-width: 180px;
+  max-width: 220px;
+}
+
+.cp-section {
+  padding: 4px 2px;
+}
+
+.cp-section + .cp-section {
+  border-top: 1px solid var(--color-border);
+  margin-top: 4px;
+  padding-top: 6px;
+}
+
+.cp-title {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cp-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cp-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: border-color 0.1s, transform 0.1s;
+}
+
+.cp-swatch:hover {
+  border-color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+.cp-swatch-sm {
+  width: 18px;
+  height: 18px;
+}
+
+.cp-swatch-add {
+  background: var(--color-bg-panel-alt);
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1;
+  border-color: var(--color-border);
+}
+
+.cp-swatch-add:hover {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.cp-expansion {
+  margin-top: 6px;
+  padding: 4px;
+  background: var(--color-bg-panel-alt);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cp-exp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cp-exp-label {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.cp-custom-btn {
+  width: 100%;
+  background: var(--color-bg-panel-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  padding: 4px 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.cp-custom-btn:hover {
+  border-color: var(--color-accent);
+  background: var(--color-bg-panel);
+}
