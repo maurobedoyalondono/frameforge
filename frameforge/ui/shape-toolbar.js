@@ -22,6 +22,10 @@ export class ShapeToolbar {
     this.onChange = null;
     /** @type {((layer: object) => void) | null} */
     this.onDelete = null;
+    /** @type {((layer: object) => void) | null} */
+    this.onCopy = null;
+    /** @type {(() => void) | null} */
+    this.onPaste = null;
 
     this._build();
   }
@@ -46,6 +50,9 @@ export class ShapeToolbar {
         <span class="st-val" data-field="h">—</span>
         <button class="st-btn" data-action="h-inc">+</button>
         <div class="st-sep"></div>
+        <div class="st-sep"></div>
+        <button class="st-btn" data-action="copy"  title="Copy layer">Copy</button>
+        <button class="st-btn" data-action="paste" title="Paste layer" disabled>Paste</button>
         <button class="st-btn st-delete" data-action="delete" title="Delete shape">🗑</button>
       </div>
       <div class="st-row st-row-align">
@@ -63,6 +70,7 @@ export class ShapeToolbar {
     this._opVal      = this._el.querySelector('[data-field="op"]');
     this._wVal       = this._el.querySelector('[data-field="w"]');
     this._hVal       = this._el.querySelector('[data-field="h"]');
+    this._pasteBtn = this._el.querySelector('[data-action="paste"]');
 
     this._colorInput.addEventListener('input', () => {
       if (!this._layer) return;
@@ -154,6 +162,10 @@ export class ShapeToolbar {
       }
       case 'delete':
         this.onDelete?.(this._layer); break;
+      case 'copy':
+        this.onCopy?.(this._layer); break;
+      case 'paste':
+        this.onPaste?.(); break;
     }
   }
 
@@ -218,6 +230,14 @@ export class ShapeToolbar {
   hide() {
     this._layer = null;
     this._el.style.display = 'none';
+  }
+
+  /**
+   * Enable or disable the paste button (disable when clipboard is empty).
+   * @param {boolean} enabled
+   */
+  setCanPaste(enabled) {
+    if (this._pasteBtn) this._pasteBtn.disabled = !enabled;
   }
 
   get currentLayer() { return this._layer; }
