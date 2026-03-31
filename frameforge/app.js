@@ -30,6 +30,7 @@ import { ShapeToolbar }   from './ui/shape-toolbar.js';
 import { ImageToolbar }   from './ui/image-toolbar.js';
 import { OverlayToolbar } from './ui/overlay-toolbar.js';
 import { LayersPanel }    from './ui/layers-panel.js';
+import { showAssignmentConflictModal } from './ui/assignment-conflict-modal.js';
 
 // ── App State ─────────────────────────────────────────────────────────────
 
@@ -697,8 +698,21 @@ async function init() {
       return;
     }
 
-    // Load project
-    await project.load(data);
+    // Load project — returns auto-assignment results from stored images
+    const { assigned: autoAssigned, conflicts: autoConflicts } = await project.load(data);
+
+    // Resolve conflicts with existing manual assignments before building UI
+    let loadReplacedCount = 0;
+    if (autoConflicts.length > 0) {
+      const decisions = await showAssignmentConflictModal(autoConflicts);
+      decisions.forEach((action, frameIndex) => {
+        if (action === 'replace') {
+          const conflict = autoConflicts.find((c) => c.frameIndex === frameIndex);
+          project.assignImage(frameIndex, conflict.newKey);
+          loadReplacedCount++;
+        }
+      });
+    }
 
     if (saveToStorage) {
       project.save();
@@ -758,7 +772,9 @@ async function init() {
 
     appState = AppState.PROJECT_LOADED;
     const warnMsg = validation.warnings.length > 0 ? ` (${validation.warnings.length} warnings)` : '';
-    status.ready(`Project loaded: ${data.project.title}${warnMsg}`);
+    const totalAutoAssigned = autoAssigned.length + loadReplacedCount;
+    const autoMsg = totalAutoAssigned > 0 ? ` — ${totalAutoAssigned} frame(s) auto-assigned` : '';
+    status.ready(`Project loaded: ${data.project.title}${warnMsg}${autoMsg}`);
 
     if (validation.warnings.length > 0) {
       toasts.warning(`${validation.warnings.length} validation warning(s)`,
@@ -803,10 +819,27 @@ async function init() {
 
     progress.hide();
 
-    const { matched, storageFailed } = await project.addImages(imageMap);
+    const { matched, storageFailed, assigned, conflicts } = await project.addImages(imageMap);
 
-    const total  = Object.keys(imageMap).length;
-    const msg    = `Loaded ${total} image(s), ${matched.length} matched`;
+    // Resolve conflicts with existing manual assignments
+    let replacedCount = 0;
+    if (conflicts.length > 0) {
+      const decisions = await showAssignmentConflictModal(conflicts);
+      decisions.forEach((action, frameIndex) => {
+        if (action === 'replace') {
+          const conflict = conflicts.find((c) => c.frameIndex === frameIndex);
+          project.assignImage(frameIndex, conflict.newKey);
+          replacedCount++;
+        }
+      });
+    }
+
+    const total        = Object.keys(imageMap).length;
+    const autoCount    = assigned.length + replacedCount;
+    const keptCount    = conflicts.length - replacedCount;
+    let msg = `Loaded ${total} image(s)`;
+    if (autoCount > 0) msg += `, ${autoCount} auto-assigned`;
+    if (keptCount > 0) msg += `, ${keptCount} kept manual`;
     status.ready(msg);
     toasts.success('Images Loaded', msg);
 
