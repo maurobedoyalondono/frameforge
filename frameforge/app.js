@@ -764,12 +764,6 @@ async function init() {
     if (!projectId) {
       // No active project — show smart selection prompt
       const projects = briefStorage.list();
-      if (projects.length === 0) {
-        toasts.warning('No Projects', 'Create a project first, then load a JSON.');
-        status.ready('');
-        return;
-      }
-
       const jsonTitle = (data.project?.title ?? '').toLowerCase();
       const suggested = projects.find((p) => p.title.toLowerCase() === jsonTitle);
 
@@ -1017,10 +1011,6 @@ async function init() {
 
     if (!activeProjectId) {
       const projects = briefStorage.list();
-      if (projects.length === 0) {
-        toasts.warning('No Projects', 'Create a project first, then load images.');
-        return;
-      }
       const result = await showProjectSelectModal(projects, {
         message: 'Select a project to load images into, or create a new one.',
       });

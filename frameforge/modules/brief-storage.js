@@ -48,22 +48,30 @@ export function save(brief) {
     updated: now,
   };
 
+  // Upsert index entry — preserve hasLayout from existing entry if caller didn't supply it
+  const index = loadIndex();
+  const pos   = index.findIndex((e) => e.id === brief.id);
+  const existingHasLayout = pos >= 0 ? (index[pos].hasLayout ?? false) : false;
+  const hasLayout = brief.hasLayout ?? existingHasLayout;
+
+  // Ensure the stored brief JSON also carries the preserved flag
+  if (brief.hasLayout === undefined && hasLayout) {
+    brief = { ...brief, hasLayout: true };
+  }
+
   try {
     localStorage.setItem(briefKey(brief.id), JSON.stringify(brief));
   } catch (e) {
     throw new Error(`Failed to save brief (storage quota?): ${e.message}`);
   }
 
-  // Upsert index entry
-  const index = loadIndex();
-  const pos   = index.findIndex((e) => e.id === brief.id);
   const entry = {
     id:         brief.id,
     title:      brief.title      || '(untitled)',
     slug:       brief.slug       || '',
     platform:   brief.platform   || '',
     imageCount: brief.imageCount ?? 0,
-    hasLayout:  brief.hasLayout  ?? false,
+    hasLayout,
     created:    brief.created,
     updated:    brief.updated,
   };
