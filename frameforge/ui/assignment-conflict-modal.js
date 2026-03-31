@@ -22,6 +22,8 @@ export function showAssignmentConflictModal(conflicts) {
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.maxWidth = '560px';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
 
     // ── Header ────────────────────────────────────────────────────────────
     const header = document.createElement('div');
@@ -71,11 +73,11 @@ export function showAssignmentConflictModal(conflicts) {
     /** @type {Map<number, HTMLInputElement>} frameIndex → checkbox */
     const checkboxes = new Map();
 
+    const trunc = (s) => s.length > 28 ? s.slice(0, 26) + '\u2026' : s;
+
     for (const c of conflicts) {
       const row = document.createElement('tr');
       row.style.borderBottom = '1px solid var(--color-border)';
-
-      const trunc = (s) => s.length > 28 ? s.slice(0, 26) + '\u2026' : s;
 
       const cb = document.createElement('input');
       cb.type    = 'checkbox';
@@ -132,7 +134,7 @@ export function showAssignmentConflictModal(conflicts) {
       checkboxes.forEach((cb, frameIndex) => {
         result.set(frameIndex, cb.checked ? 'replace' : 'keep');
       });
-      document.body.removeChild(backdrop);
+      backdrop.remove();
       resolve(result);
     });
 
@@ -142,5 +144,6 @@ export function showAssignmentConflictModal(conflicts) {
     modal.appendChild(footer);
     backdrop.appendChild(modal);
     document.body.appendChild(backdrop);
+    btnApply.focus();
   });
 }
