@@ -237,7 +237,7 @@ Dispatch `frameforge-technical-producer` with:
 >
 > **JSON:** use descriptive `image_src` labels (never raw filenames). One frame per image in the approved sequence. Include `image_index` with a real entry per frame. Apply color-notes overrides. Export target must match the selected platform. No placeholder text, no invented facts.
 
-**Approval gate:** Present the JSON for a spot-check — confirm frame count, sequence, and that copy matches the approved template. Wait for approval before dispatching Step 6.
+**Approval gate:** Present the JSON for a spot-check — confirm frame count, sequence, that copy matches the approved template, and that every frame has an `image_filename` field. The `image_filename` field is what enables auto-assignment when images are loaded in the UI — a frame without it requires manual drag. Wait for approval before dispatching Step 6.
 
 ---
 
