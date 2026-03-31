@@ -1473,11 +1473,9 @@ code {
   gap: 6px;
   padding: 4px 8px;
   border-bottom: 1px solid var(--color-border);
-  cursor: grab;
+  cursor: move;
   user-select: none;
 }
-
-.ot-drag-bar:active { cursor: grabbing; }
 
 .ot-grip {
   color: var(--color-text-muted);
