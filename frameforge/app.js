@@ -24,6 +24,7 @@ import { BriefManager }     from './ui/brief-manager.js';
 import * as briefStorage     from './modules/brief-storage.js';
 import { ImageTray } from './ui/image-tray.js';
 import { initDrag, destroyDrag } from './modules/drag.js';
+import { initResize, positionOverlay, hideOverlay } from './modules/resize.js';
 import { computeTextBounds, computeShapeBounds } from './modules/layers.js';
 import { TextToolbar }    from './ui/text-toolbar.js';
 import { ShapeToolbar }   from './ui/shape-toolbar.js';
@@ -51,6 +52,7 @@ async function init() {
   const filmstripCountEl = document.getElementById('filmstrip-count');
   const canvasAreaEl   = document.getElementById('canvas-area');
   const canvasWrapEl   = document.getElementById('canvas-wrap');
+  const resizeOverlayEl = document.getElementById('resize-overlay');
   const inspectorContentEl = document.getElementById('inspector-content');
   const statusbarEl    = document.getElementById('statusbar');
   const dropzoneEl     = document.getElementById('dropzone');
@@ -363,7 +365,7 @@ async function init() {
 
   function positionToolbar() {
     const layerId = renderer.selectedLayerId;
-    if (!layerId || !project.isLoaded) return;
+    if (!layerId || !project.isLoaded) { hideOverlay(resizeOverlayEl); return; }
     const frame = project.data?.frames?.[project.activeFrameIndex];
     if (!frame) return;
     const layer = (frame.layers ?? []).find(l => l.id === layerId);
@@ -376,13 +378,17 @@ async function init() {
     if (layer.type === 'text') {
       const bounds = computeTextBounds(ctx, layer, w, h, project);
       positionElement(textToolbarEl, bounds);
+      positionOverlay(resizeOverlayEl, layer, mainCanvas, project);
     } else if (layer.type === 'shape') {
       const bounds = computeShapeBounds(ctx, layer, w, h, project);
       positionElement(shapeToolbarEl, bounds);
+      positionOverlay(resizeOverlayEl, layer, mainCanvas, project);
     } else if (layer.type === 'image') {
       positionElementRight(imageToolbarEl);
+      hideOverlay(resizeOverlayEl);
     } else if (layer.type === 'overlay') {
       positionElementRight(overlayToolbarEl);
+      hideOverlay(resizeOverlayEl);
     }
   }
 
@@ -405,11 +411,15 @@ async function init() {
       shapeToolbar.show(layer);
       requestAnimationFrame(() => positionToolbar());
     } else if (layer?.type === 'image') {
+      hideOverlay(resizeOverlayEl);
       imageToolbar.show(layer);
       requestAnimationFrame(() => positionToolbar());
     } else if (layer?.type === 'overlay') {
+      hideOverlay(resizeOverlayEl);
       overlayToolbar.show(layer);
       requestAnimationFrame(() => positionToolbar());
+    } else {
+      hideOverlay(resizeOverlayEl);
     }
 
     layersPanel.setSelectedId(layer?.id ?? null);
@@ -673,6 +683,7 @@ async function init() {
     shapeToolbar.hide();
     imageToolbar.hide();
     overlayToolbar.hide();
+    hideOverlay(resizeOverlayEl);
     layersPanel.hide();
 
     // When switching projects, capture current images so they survive the switch.
@@ -785,6 +796,14 @@ async function init() {
       () => { renderer.isDragging = true; renderCurrentFrame(); positionToolbar(); },
       (frameIndex) => { renderer.isDragging = false; filmstrip.renderOne(frameIndex, project); },
       onLayerClick,
+    );
+    initResize(
+      resizeOverlayEl,
+      mainCanvas,
+      project,
+      () => project.activeFrameIndex,
+      () => { renderer.isDragging = true; renderCurrentFrame(); positionToolbar(); },
+      (frameIndex) => { renderer.isDragging = false; filmstrip.renderOne(frameIndex, project); },
     );
 
     // Inspector
@@ -901,6 +920,7 @@ async function init() {
     shapeToolbar.hide();
     imageToolbar.hide();
     overlayToolbar.hide();
+    hideOverlay(resizeOverlayEl);
 
     if (!project.setActiveFrame(index)) return;
     filmstrip.setActive(index);
@@ -1098,6 +1118,7 @@ async function init() {
     shapeToolbar.hide();
     imageToolbar.hide();
     overlayToolbar.hide();
+    hideOverlay(resizeOverlayEl);
     layersPanel.hide();
     filmstrip.clear();
     inspector.clear();
