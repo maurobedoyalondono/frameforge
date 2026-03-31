@@ -412,6 +412,8 @@ export function updateToolbarState(btns, hasProject, safeZoneActive = false, lay
  * @param {function} handlers.toggleSafeZone
  * @param {function} handlers.toggleLayersPanel
  * @param {function} handlers.rerender
+ * @param {function} [handlers.copyLayer]
+ * @param {function} [handlers.pasteLayer]
  */
 export function registerKeyboardShortcuts(handlers) {
   document.addEventListener('keydown', (e) => {
@@ -454,6 +456,20 @@ export function registerKeyboardShortcuts(handlers) {
       case 'R':
         e.preventDefault();
         handlers.rerender?.();
+        break;
+      case 'c':
+      case 'C':
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          handlers.copyLayer?.();
+        }
+        break;
+      case 'v':
+      case 'V':
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          handlers.pasteLayer?.();
+        }
         break;
     }
   });
