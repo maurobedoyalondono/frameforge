@@ -33,6 +33,8 @@ import { OverlayToolbar } from './ui/overlay-toolbar.js';
 import { LayersPanel }    from './ui/layers-panel.js';
 import { showAssignmentConflictModal } from './ui/assignment-conflict-modal.js';
 import { showClearProjectsModal } from './ui/clear-projects-modal.js';
+import { showProjectSelectModal } from './ui/project-select-modal.js';
+import { showJsonLoadReviewModal } from './ui/json-load-review-modal.js';
 
 // ── App State ─────────────────────────────────────────────────────────────
 
@@ -190,11 +192,31 @@ async function init() {
     briefStorage,
     (briefId, startStep = 1) => conceptBuilder.open((files) => handleImageFiles(files), briefId, startStep),
   );
-  conceptBuilder.setOnOpenBriefManager(() => briefManager.open(prefs.active_brief_id ?? null));
-  briefManager.setOnActiveBriefChange((id, title) => {
-    prefs.active_brief_id = id ?? undefined;
+  conceptBuilder.setOnOpenBriefManager(() => briefManager.open(prefs.active_project_id ?? null));
+  briefManager.setOnActiveBriefChange((id, title, deletedId) => {
+    prefs.active_project_id = id ?? undefined;
     storage.savePrefs(prefs);
     updateActiveBriefLabel(tb.activeBriefLabel, title);
+
+    // If the deleted project was the currently loaded one, reset app state
+    if (deletedId && project.isLoaded && project.id === deletedId) {
+      project.clear();
+      renderer.selectedLayerId = null;
+      textToolbar.hide();
+      shapeToolbar.hide();
+      imageToolbar.hide();
+      overlayToolbar.hide();
+      layersPanel.hide();
+      filmstrip.clear();
+      inspector.clear();
+      imageTray.clear();
+      showEmptyState();
+      updateToolbarState(tb, false, false, false);
+      if (tb.projectTitle) tb.projectTitle.textContent = '';
+      prefs.last_project_id = null;
+      storage.savePrefs(prefs);
+      appState = AppState.EMPTY;
+    }
   });
 
   const textToolbarEl = document.getElementById('text-toolbar');
@@ -283,7 +305,7 @@ async function init() {
   });
 
   tb.btnMyBriefs?.addEventListener('click', () => {
-    briefManager.open(prefs.active_brief_id ?? null);
+    briefManager.open(prefs.active_project_id ?? null);
   });
 
   tb.jsonInput.addEventListener('change', (e) => {
@@ -688,26 +710,24 @@ async function init() {
     filmstrip.renderOne(project.activeFrameIndex, project);
   };
 
-  // ── Auto-restore last project ────────────────────────────────────────────
-  if (prefs.last_project_id) {
-    const saved = storage.loadProject(prefs.last_project_id);
-    if (saved) {
-      try {
-        await loadProjectData(saved, false);
-        status.ready(`Restored project: ${saved.project.title}`);
-      } catch (e) {
-        console.warn('[app] Failed to restore project:', e);
+  // ── Restore active project ────────────────────────────────────────────────
+  if (prefs.active_project_id) {
+    const activeProject = briefStorage.load(prefs.active_project_id);
+    if (activeProject) {
+      updateActiveBriefLabel(tb.activeBriefLabel, activeProject.title);
+      if (activeProject.hasLayout) {
+        const savedData = storage.loadProject(prefs.active_project_id);
+        if (savedData) {
+          try {
+            await loadProjectData(savedData, false, prefs.active_project_id);
+            status.ready(`Restored project: ${activeProject.title}`);
+          } catch (e) {
+            console.warn('[app] Failed to restore project:', e);
+          }
+        }
       }
-    }
-  }
-
-  // ── Restore active brief label ────────────────────────────────────────────
-  if (prefs.active_brief_id) {
-    const activeBrief = briefStorage.load(prefs.active_brief_id);
-    if (activeBrief) {
-      updateActiveBriefLabel(tb.activeBriefLabel, activeBrief.title);
     } else {
-      prefs.active_brief_id = undefined;
+      prefs.active_project_id = undefined;
       storage.savePrefs(prefs);
     }
   }
@@ -738,10 +758,99 @@ async function init() {
       return;
     }
 
-    await loadProjectData(data, true);
+    // Determine which project to load into
+    let projectId = prefs.active_project_id ?? null;
+
+    if (!projectId) {
+      // No active project — show smart selection prompt
+      const projects = briefStorage.list();
+      if (projects.length === 0) {
+        toasts.warning('No Projects', 'Create a project first, then load a JSON.');
+        status.ready('');
+        return;
+      }
+
+      const jsonTitle = (data.project?.title ?? '').toLowerCase();
+      const suggested = projects.find((p) => p.title.toLowerCase() === jsonTitle);
+
+      const result = await showProjectSelectModal(projects, {
+        message:     suggested
+          ? `This looks like "${suggested.title}". Load into it?`
+          : 'Select a project to load this layout into, or create a new one.',
+        suggestedId: suggested?.id ?? null,
+      });
+
+      if (result.action === 'cancel') {
+        status.ready('Load cancelled.');
+        return;
+      }
+      if (result.action === 'create') {
+        conceptBuilder.open((files) => handleImageFiles(files));
+        toasts.info('Create a Project', 'Create your project, then load the JSON again.');
+        status.ready('');
+        return;
+      }
+
+      projectId = result.projectId;
+      prefs.active_project_id = projectId;
+      storage.savePrefs(prefs);
+      const projectEntry = briefStorage.load(projectId);
+      updateActiveBriefLabel(tb.activeBriefLabel, projectEntry?.title ?? '');
+    }
+
+    // Check if this project already has a layout — show per-frame review
+    const projectEntry = briefStorage.load(projectId);
+    if (projectEntry?.hasLayout) {
+      const oldData = (project.isLoaded && project.id === projectId)
+        ? project.data
+        : storage.loadProject(projectId);
+
+      if (oldData) {
+        const frameIdsToReplace = await showJsonLoadReviewModal(oldData, data);
+        if (frameIdsToReplace === null) {
+          status.ready('Load cancelled.');
+          return;
+        }
+
+        if (frameIdsToReplace.size === 0) {
+          status.ready('No frames replaced.');
+          return;
+        }
+
+        // Apply selected frame replacements into the currently loaded project
+        if (!project.isLoaded || project.id !== projectId) {
+          await project.load(oldData, projectId);
+        }
+        for (const frameId of frameIdsToReplace) {
+          const newFrame   = data.frames.find((f) => f.id === frameId);
+          const frameIndex = project.data.frames.findIndex((f) => f.id === frameId);
+          if (newFrame && frameIndex >= 0) {
+            project.data.frames[frameIndex] = newFrame;
+          }
+        }
+        project.isDirty = true;
+        project.save();
+
+        filmstrip.build(project);
+        filmstrip.setActive(project.activeFrameIndex);
+        renderCurrentFrame();
+        inspector.update(project, project.activeFrameIndex, validation);
+        const { assigned } = project._autoAssignImages();
+        assigned.forEach((fi) => {
+          const key = project.imageAssignments.get(fi);
+          if (key) imageTray.showAssignment(key, fi);
+        });
+
+        status.ready(`${frameIdsToReplace.size} frame(s) updated.`);
+        toasts.success('Layout Updated', `${frameIdsToReplace.size} frame(s) replaced.`);
+        return;
+      }
+    }
+
+    await loadProjectData(data, true, projectId);
   }
 
-  async function loadProjectData(data, saveToStorage) {
+  async function loadProjectData(data, saveToStorage, projectId) {
     // Clear any text selection from the previous project
     renderer.selectedLayerId = null;
     textToolbar.hide();
@@ -754,9 +863,8 @@ async function init() {
     // When switching projects, capture current images so they survive the switch.
     // Images loaded for a previous project are stored under that project's ID —
     // clearImages() would delete them before the new project can claim them.
-    const incomingId = data.project?.id;
-    const isSwitching = project.isLoaded && project.id && project.id !== incomingId;
-    const imagesToTransfer = isSwitching ? { ...project.imageMap } : {};
+    const isSwitching = project.isLoaded && project.id && project.id !== projectId;
+    const imagesToTransfer = project.isLoaded ? { ...project.imageMap } : {};
 
     // Clean up images from previous project if switching to a different project ID
     if (isSwitching) {
@@ -765,10 +873,8 @@ async function init() {
 
     // Validate
     const uploadedImages = new Set(Object.keys(project.imageMap ?? {}));
-    // Combine with images from storage if we already have a project ID
-    const projId = data.project?.id;
-    if (projId) {
-      const storedImgs = storage.loadImages(projId);
+    if (projectId) {
+      const storedImgs = storage.loadImages(projectId);
       Object.keys(storedImgs).forEach((k) => uploadedImages.add(k));
     }
 
@@ -781,7 +887,12 @@ async function init() {
     }
 
     // Load project — returns auto-assignment results from stored images
-    const { assigned: autoAssigned, conflicts: autoConflicts } = await project.load(data);
+    const { assigned: autoAssigned, conflicts: autoConflicts } = await project.load(data, projectId);
+
+    // Mark brief as having a layout
+    if (saveToStorage && projectId) {
+      briefStorage.setHasLayout(projectId, true);
+    }
 
     // Re-add images that were loaded under the previous project so they're
     // available in this project and auto-assignment can run on them.
@@ -815,7 +926,8 @@ async function init() {
     }
 
     // Update prefs
-    prefs.last_project_id = project.id;
+    prefs.last_project_id  = project.id;
+    prefs.active_project_id = projectId ?? project.id;
     storage.savePrefs(prefs);
 
     // Update toolbar
@@ -900,8 +1012,31 @@ async function init() {
   }
 
   async function handleImageFiles(files) {
+    let activeProjectId = prefs.active_project_id ?? null;
+
+    if (!activeProjectId) {
+      const projects = briefStorage.list();
+      if (projects.length === 0) {
+        toasts.warning('No Projects', 'Create a project first, then load images.');
+        return;
+      }
+      const result = await showProjectSelectModal(projects, {
+        message: 'Select a project to load images into, or create a new one.',
+      });
+      if (result.action === 'cancel') return;
+      if (result.action === 'create') {
+        conceptBuilder.open((files) => handleImageFiles(files));
+        return;
+      }
+      activeProjectId = result.projectId;
+      prefs.active_project_id = activeProjectId;
+      storage.savePrefs(prefs);
+      const projectEntry = briefStorage.load(activeProjectId);
+      updateActiveBriefLabel(tb.activeBriefLabel, projectEntry?.title ?? '');
+    }
+
     if (!project.isLoaded) {
-      toasts.warning('No project loaded', 'Load a JSON project first, then add images.');
+      toasts.warning('No layout loaded', 'Load a project JSON first, then add images.');
       return;
     }
 
@@ -1165,7 +1300,7 @@ async function init() {
   // ── Clear project ─────────────────────────────────────────────────────────
 
   async function doClearProject() {
-    const projects = storage.loadProjectIndex();
+    const projects = briefStorage.list();
 
     if (projects.length === 0) {
       toasts.info('No Projects', 'No saved projects to clear.');
@@ -1180,7 +1315,12 @@ async function init() {
     if (selectedIds.length === 0) return;
 
     for (const id of selectedIds) {
-      await storage.deleteProject(id);
+      await briefStorage.deleteProject(id);
+      if (prefs.active_project_id === id) {
+        prefs.active_project_id = undefined;
+        storage.savePrefs(prefs);
+        updateActiveBriefLabel(tb.activeBriefLabel, null);
+      }
     }
 
     const clearedActive = project.isLoaded && selectedIds.includes(project.id);

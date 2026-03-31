@@ -19,9 +19,10 @@ const assignmentsKey = (id) => `${PREFIX}_assignments_${id}`;
 // ── Prefs ──────────────────────────────────────────────────────────────────
 
 const DEFAULT_PREFS = {
-  safe_zone_visible: false,
-  zoom_level:        1.0,
-  last_project_id:   null,
+  safe_zone_visible:  false,
+  zoom_level:         1.0,
+  last_project_id:    null,
+  active_project_id:  null,
 };
 
 export function loadPrefs() {
