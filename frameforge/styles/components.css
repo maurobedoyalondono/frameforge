@@ -1094,7 +1094,7 @@ code {
 #shape-toolbar,
 #image-toolbar,
 #overlay-toolbar {
-  position: absolute;
+  position: fixed;
   z-index: 50;
   background: var(--color-bg-panel);
   border: 1.5px solid var(--color-accent);
