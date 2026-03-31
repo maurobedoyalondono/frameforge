@@ -92,3 +92,258 @@ function getHarmonies(hex) {
     rotateHue(hex, 150),   // split-complementary
   ];
 }
+
+// ── Saved colors (localStorage) ────────────────────────────────────────────
+
+const SAVED_KEY = 'ff.saved_colors';
+
+function loadSaved() {
+  try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch { return []; }
+}
+
+function saveSaved(arr) {
+  try { localStorage.setItem(SAVED_KEY, JSON.stringify(arr)); } catch { /* ignore */ }
+}
+
+// ── ColorPicker ─────────────────────────────────────────────────────────────
+
+export class ColorPicker {
+  /**
+   * @param {{ getColor: () => string, setColor: (hex: string) => void, getProject: () => object }} opts
+   */
+  constructor({ getColor, setColor, getProject }) {
+    this._getColor   = getColor;
+    this._setColor   = setColor;
+    this._getProject = getProject;
+
+    this._popoverEl   = null;
+    this._swatchEl    = null;
+    this._expandedHex = null;   // which palette swatch is expanded
+    this._onClick     = null;
+    this._onDocClick  = null;
+    this._onKeyDown   = null;
+  }
+
+  /** Bind the picker to a trigger element. */
+  attach(swatchEl) {
+    this._swatchEl = swatchEl;
+    this._onClick = (e) => {
+      e.stopPropagation();
+      this._popoverEl ? this.close() : this.open();
+    };
+    swatchEl.addEventListener('click', this._onClick);
+  }
+
+  /** Remove all listeners and DOM. */
+  detach() {
+    if (this._swatchEl && this._onClick) {
+      this._swatchEl.removeEventListener('click', this._onClick);
+    }
+    this.close();
+    this._swatchEl = null;
+  }
+
+  open() {
+    if (this._popoverEl) return;
+    this._expandedHex = null;
+    this._popoverEl = document.createElement('div');
+    this._popoverEl.className = 'cp-popover';
+    document.body.appendChild(this._popoverEl);
+    this._render();
+    this._position();
+
+    this._onDocClick = (e) => {
+      if (!this._popoverEl?.contains(e.target) && e.target !== this._swatchEl) {
+        this.close();
+      }
+    };
+    this._onKeyDown = (e) => { if (e.key === 'Escape') this.close(); };
+    setTimeout(() => {
+      document.addEventListener('click', this._onDocClick);
+      document.addEventListener('keydown', this._onKeyDown);
+    }, 0);
+  }
+
+  close() {
+    if (!this._popoverEl) return;
+    this._popoverEl.remove();
+    this._popoverEl = null;
+    document.removeEventListener('click', this._onDocClick);
+    document.removeEventListener('keydown', this._onKeyDown);
+  }
+
+  /** Re-render the popover content (called after color change). */
+  _render() {
+    const el      = this._popoverEl;
+    const palette = this._getProject?.()?.palette ?? [];
+    const saved   = loadSaved();
+
+    el.innerHTML = '';
+
+    // ── Project palette section ──
+    if (palette.length > 0) {
+      const section = document.createElement('div');
+      section.className = 'cp-section';
+      const title = document.createElement('div');
+      title.className = 'cp-title';
+      title.textContent = 'Project palette';
+      section.appendChild(title);
+
+      const swatches = document.createElement('div');
+      swatches.className = 'cp-row';
+      palette.forEach(({ hex, name }) => {
+        const btn = document.createElement('button');
+        btn.className = 'cp-swatch';
+        btn.style.background = hex;
+        btn.title = `${name} ${hex}`;
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this._applyColor(hex);
+          this._expandedHex = this._expandedHex === hex ? null : hex;
+          this._render();
+        });
+        swatches.appendChild(btn);
+      });
+      section.appendChild(swatches);
+
+      // Expansion strip for the expanded palette swatch
+      if (this._expandedHex && palette.some(p => p.hex === this._expandedHex)) {
+        this._appendExpansion(section, this._expandedHex);
+      }
+      el.appendChild(section);
+    }
+
+    // ── Saved colors section ──
+    const savedSection = document.createElement('div');
+    savedSection.className = 'cp-section';
+    const savedTitle = document.createElement('div');
+    savedTitle.className = 'cp-title';
+    savedTitle.textContent = 'Saved colors';
+    savedSection.appendChild(savedTitle);
+
+    const savedRow = document.createElement('div');
+    savedRow.className = 'cp-row';
+
+    saved.forEach((hex, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'cp-swatch';
+      btn.style.background = hex;
+      btn.title = hex + ' (right-click to remove)';
+      btn.addEventListener('click', (e) => { e.stopPropagation(); this._applyColor(hex); });
+      btn.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const arr = loadSaved();
+        arr.splice(i, 1);
+        saveSaved(arr);
+        this._render();
+      });
+      savedRow.appendChild(btn);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'cp-swatch cp-swatch-add';
+    addBtn.title = 'Save current color';
+    addBtn.textContent = '+';
+    addBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const hex = this._getColor();
+      if (!hex) return;
+      const arr = loadSaved();
+      if (!arr.includes(hex)) { arr.push(hex); saveSaved(arr); }
+      this._render();
+    });
+    savedRow.appendChild(addBtn);
+
+    savedSection.appendChild(savedRow);
+    el.appendChild(savedSection);
+
+    // ── Custom color ──
+    const customSection = document.createElement('div');
+    customSection.className = 'cp-section';
+    const customBtn = document.createElement('button');
+    customBtn.className = 'cp-custom-btn';
+    customBtn.textContent = 'Custom color';
+
+    const nativePicker = document.createElement('input');
+    nativePicker.type = 'color';
+    nativePicker.style.cssText = 'position:absolute;opacity:0;width:0;height:0;';
+    nativePicker.value = this._getColor() || '#000000';
+    nativePicker.addEventListener('input', () => {
+      this._applyColor(nativePicker.value);
+    });
+
+    customBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nativePicker.value = this._getColor() || '#000000';
+      nativePicker.click();
+    });
+    customSection.appendChild(nativePicker);
+    customSection.appendChild(customBtn);
+    el.appendChild(customSection);
+  }
+
+  /** Append tones + harmonies expansion strip to a parent element. */
+  _appendExpansion(parent, hex) {
+    const wrap = document.createElement('div');
+    wrap.className = 'cp-expansion';
+
+    const tonesRow = document.createElement('div');
+    tonesRow.className = 'cp-exp-row';
+    const tonesLabel = document.createElement('span');
+    tonesLabel.className = 'cp-exp-label';
+    tonesLabel.textContent = 'Tones';
+    tonesRow.appendChild(tonesLabel);
+    getTones(hex).forEach(t => tonesRow.appendChild(this._derivedSwatch(t)));
+
+    const harmRow = document.createElement('div');
+    harmRow.className = 'cp-exp-row';
+    const harmLabel = document.createElement('span');
+    harmLabel.className = 'cp-exp-label';
+    harmLabel.textContent = 'Harmony';
+    harmRow.appendChild(harmLabel);
+    getHarmonies(hex).forEach(h => harmRow.appendChild(this._derivedSwatch(h)));
+
+    wrap.appendChild(tonesRow);
+    wrap.appendChild(harmRow);
+    parent.appendChild(wrap);
+  }
+
+  /** A derived (tone/harmony) swatch button — click applies AND re-anchors expansion. */
+  _derivedSwatch(hex) {
+    const btn = document.createElement('button');
+    btn.className = 'cp-swatch cp-swatch-sm';
+    btn.style.background = hex;
+    btn.title = hex;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this._applyColor(hex);
+      this._expandedHex = hex;
+      this._render();
+    });
+    return btn;
+  }
+
+  _applyColor(hex) {
+    this._setColor(hex);
+    if (this._swatchEl) this._swatchEl.style.background = hex;
+  }
+
+  _position() {
+    if (!this._popoverEl || !this._swatchEl) return;
+    const r   = this._swatchEl.getBoundingClientRect();
+    const pw  = this._popoverEl.offsetWidth  || 200;
+    const ph  = this._popoverEl.offsetHeight || 200;
+    let top  = r.bottom + 6 + window.scrollY;
+    let left = r.left   + window.scrollX;
+    if (left + pw > window.innerWidth  - 4) left = window.innerWidth  - pw - 4;
+    if (top  + ph > window.innerHeight - 4) top  = r.top - ph - 6 + window.scrollY;
+    this._popoverEl.style.top  = `${Math.round(top)}px`;
+    this._popoverEl.style.left = `${Math.round(left)}px`;
+  }
+
+  /** Update the swatch background to reflect a new color value (called from toolbar). */
+  syncSwatch() {
+    if (this._swatchEl) this._swatchEl.style.background = this._getColor() || '#000000';
+  }
+}
