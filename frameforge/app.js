@@ -31,6 +31,7 @@ import { ImageToolbar }   from './ui/image-toolbar.js';
 import { OverlayToolbar } from './ui/overlay-toolbar.js';
 import { LayersPanel }    from './ui/layers-panel.js';
 import { showAssignmentConflictModal } from './ui/assignment-conflict-modal.js';
+import { showClearProjectsModal } from './ui/clear-projects-modal.js';
 
 // ── App State ─────────────────────────────────────────────────────────────
 
@@ -1080,38 +1081,48 @@ async function init() {
   // ── Clear project ─────────────────────────────────────────────────────────
 
   async function doClearProject() {
-    if (!project.isLoaded) return;
+    const projects = storage.loadProjectIndex();
 
-    const confirmed = await showConfirm(
-      'Clear Project',
-      `Remove "${project.data.project.title}" and all stored images from local storage?`,
-      'Clear',
-      true,
+    if (projects.length === 0) {
+      toasts.info('No Projects', 'No saved projects to clear.');
+      return;
+    }
+
+    const selectedIds = await showClearProjectsModal(
+      projects,
+      project.isLoaded ? project.id : null,
     );
 
-    if (!confirmed) return;
+    if (selectedIds.length === 0) return;
 
-    storage.deleteProject(project.id);
-    project.clear();
-    renderer.selectedLayerId = null;
-    textToolbar.hide();
-    shapeToolbar.hide();
-    imageToolbar.hide();
-    overlayToolbar.hide();
-    layersPanel.hide();
-    filmstrip.clear();
-    inspector.clear();
-    imageTray.clear();
-    showEmptyState();
-    updateToolbarState(tb, false, false, false);
-    if (tb.projectTitle) tb.projectTitle.textContent = '';
+    for (const id of selectedIds) {
+      await storage.deleteProject(id);
+    }
 
-    prefs.last_project_id = null;
-    storage.savePrefs(prefs);
+    const clearedActive = project.isLoaded && selectedIds.includes(project.id);
 
-    appState = AppState.EMPTY;
-    status.set('Project cleared.', 'info', 3000);
-    toasts.info('Project Cleared', 'All project data removed from local storage.');
+    if (clearedActive) {
+      project.clear();
+      renderer.selectedLayerId = null;
+      textToolbar.hide();
+      shapeToolbar.hide();
+      imageToolbar.hide();
+      overlayToolbar.hide();
+      layersPanel.hide();
+      filmstrip.clear();
+      inspector.clear();
+      imageTray.clear();
+      showEmptyState();
+      updateToolbarState(tb, false, false, false);
+      if (tb.projectTitle) tb.projectTitle.textContent = '';
+      prefs.last_project_id = null;
+      storage.savePrefs(prefs);
+      appState = AppState.EMPTY;
+    }
+
+    const n = selectedIds.length;
+    status.set(`${n} project(s) cleared.`, 'info', 3000);
+    toasts.info('Projects Cleared', `${n} project(s) removed from storage.`);
   }
 
   // ── UI helpers ────────────────────────────────────────────────────────────
