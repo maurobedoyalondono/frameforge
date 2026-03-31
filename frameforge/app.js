@@ -675,9 +675,15 @@ async function init() {
     overlayToolbar.hide();
     layersPanel.hide();
 
-    // Clean up images from previous project if switching to a different project ID
+    // When switching projects, capture current images so they survive the switch.
+    // Images loaded for a previous project are stored under that project's ID —
+    // clearImages() would delete them before the new project can claim them.
     const incomingId = data.project?.id;
-    if (project.isLoaded && project.id && project.id !== incomingId) {
+    const isSwitching = project.isLoaded && project.id && project.id !== incomingId;
+    const imagesToTransfer = isSwitching ? { ...project.imageMap } : {};
+
+    // Clean up images from previous project if switching to a different project ID
+    if (isSwitching) {
       storage.clearImages(project.id);
     }
 
@@ -700,6 +706,18 @@ async function init() {
 
     // Load project — returns auto-assignment results from stored images
     const { assigned: autoAssigned, conflicts: autoConflicts } = await project.load(data);
+
+    // Re-add images that were loaded under the previous project so they're
+    // available in this project and auto-assignment can run on them.
+    if (Object.keys(imagesToTransfer).length > 0) {
+      const { assigned: xAssigned, conflicts: xConflicts } = await project.addImages(imagesToTransfer);
+      autoAssigned.push(...xAssigned);
+      for (const c of xConflicts) {
+        if (!autoConflicts.find((e) => e.frameIndex === c.frameIndex)) {
+          autoConflicts.push(c);
+        }
+      }
+    }
 
     // Resolve conflicts with existing manual assignments before building UI
     let loadReplacedCount = 0;
