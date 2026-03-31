@@ -1655,3 +1655,115 @@ code {
 .rh.s  { bottom: -4px; left: calc(50% - 4px); cursor: s-resize;  }
 .rh.sw { bottom: -4px; left: -4px;            cursor: sw-resize; }
 .rh.w  { top: calc(50% - 4px); left: -4px;   cursor: w-resize;  }
+
+/* ── Color Picker popover ─────────────────────────────────────────────────── */
+
+.cp-popover {
+  position: absolute;
+  z-index: 200;
+  background: var(--color-bg-panel);
+  border: 1.5px solid var(--color-accent);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+  padding: 6px;
+  min-width: 180px;
+  max-width: 220px;
+}
+
+.cp-section {
+  padding: 4px 2px;
+}
+
+.cp-section + .cp-section {
+  border-top: 1px solid var(--color-border);
+  margin-top: 4px;
+  padding-top: 6px;
+}
+
+.cp-title {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cp-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cp-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: border-color 0.1s, transform 0.1s;
+}
+
+.cp-swatch:hover {
+  border-color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+.cp-swatch-sm {
+  width: 18px;
+  height: 18px;
+}
+
+.cp-swatch-add {
+  background: var(--color-bg-panel-alt);
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1;
+  border-color: var(--color-border);
+}
+
+.cp-swatch-add:hover {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.cp-expansion {
+  margin-top: 6px;
+  padding: 4px;
+  background: var(--color-bg-panel-alt);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cp-exp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cp-exp-label {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.cp-custom-btn {
+  width: 100%;
+  background: var(--color-bg-panel-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  padding: 4px 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.cp-custom-btn:hover {
+  border-color: var(--color-accent);
+  background: var(--color-bg-panel);
+}
