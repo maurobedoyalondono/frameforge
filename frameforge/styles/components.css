@@ -1376,15 +1376,16 @@ code {
 .st-label { font-size: 10px; color: var(--color-text-muted); user-select: none; flex-shrink: 0; }
 .st-val { font-size: var(--font-size-sm); color: var(--color-text-primary); min-width: 28px; text-align: center; user-select: none; flex-shrink: 0; }
 
-.st-color {
-  width: 22px; height: 22px; padding: 0;
-  border: 1px solid var(--color-border);
+.st-color-swatch {
+  width: 22px;
+  height: 22px;
   border-radius: var(--radius-sm);
-  background: none; cursor: pointer; flex-shrink: 0;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  flex-shrink: 0;
 }
-.st-color::-webkit-color-swatch-wrapper { padding: 0; }
-.st-color::-webkit-color-swatch { border: none; border-radius: calc(var(--radius-sm) - 1px); }
-.st-color::-moz-color-swatch { border: none; }
+
+.st-color-swatch:hover { border-color: var(--color-accent); }
 
 .st-delete { color: var(--color-text-muted); background: transparent; border-color: transparent; }
 .st-delete:hover { color: var(--color-error); background: rgba(255,85,85,0.1); border-color: rgba(255,85,85,0.35); }

@@ -12,11 +12,15 @@
  *   toolbar.hide();
  */
 
+import { ColorPicker } from './color-picker.js';
+
 export class ShapeToolbar {
-  constructor(el) {
-    this._el    = el;
-    this._layer = null;
-    this._squareRef = null;
+  constructor(el, { getProject } = {}) {
+    this._el          = el;
+    this._layer       = null;
+    this._squareRef   = null;
+    this._getProject  = getProject ?? (() => null);
+    this._colorPicker = null;
 
     /** @type {((layer: object) => void) | null} */
     this.onChange = null;
@@ -33,7 +37,7 @@ export class ShapeToolbar {
   _build() {
     this._el.innerHTML = `
       <div class="st-row">
-        <input type="color" class="st-color" title="Fill colour">
+        <div class="st-color-swatch" title="Fill colour"></div>
         <div class="st-sep"></div>
         <span class="st-label" title="Fill opacity">Op</span>
         <button class="st-btn" data-action="op-dec">−</button>
@@ -65,19 +69,22 @@ export class ShapeToolbar {
       </div>
     `;
 
-    this._colorInput = this._el.querySelector('.st-color');
+    this._colorSwatchEl = this._el.querySelector('.st-color-swatch');
+    this._colorPicker   = new ColorPicker({
+      getColor:   () => this._layer?.fill_color ?? this._layer?.color ?? '#ffffff',
+      setColor:   (hex) => {
+        if (!this._layer) return;
+        this._layer.fill_color = hex;
+        delete this._layer.color;
+        this.onChange?.(this._layer);
+      },
+      getProject: this._getProject,
+    });
+    this._colorPicker.attach(this._colorSwatchEl);
     this._opVal      = this._el.querySelector('[data-field="op"]');
     this._wVal       = this._el.querySelector('[data-field="w"]');
     this._hVal       = this._el.querySelector('[data-field="h"]');
     this._pasteBtn = this._el.querySelector('[data-action="paste"]');
-
-    this._colorInput.addEventListener('input', () => {
-      if (!this._layer) return;
-      // Migrate legacy 'color' field → 'fill_color' on first toolbar write
-      this._layer.fill_color = this._colorInput.value;
-      delete this._layer.color;
-      this.onChange?.(this._layer);
-    });
 
     this._el.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action]');
@@ -209,7 +216,8 @@ export class ShapeToolbar {
 
   _updateDisplays() {
     if (!this._layer) return;
-    this._colorInput.value = this._getFillColor();
+    if (this._colorSwatchEl) this._colorSwatchEl.style.background = this._getFillColor();
+    this._colorPicker?.syncSwatch();
     this._opVal.textContent = this._getOpacity().toFixed(2);
     this._wVal.textContent  = `${Math.round(this._layer.dimensions?.width_pct  ?? 10)}%`;
     this._hVal.textContent  = `${Math.round(this._layer.dimensions?.height_pct ?? 10)}%`;
@@ -227,6 +235,7 @@ export class ShapeToolbar {
   }
 
   hide() {
+    this._colorPicker?.close();
     this._layer = null;
     this._el.style.display = 'none';
   }

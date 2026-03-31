@@ -201,7 +201,7 @@ async function init() {
   const textToolbar   = new TextToolbar(textToolbarEl, loadFont, { getProject: () => project });
 
   const shapeToolbarEl   = document.getElementById('shape-toolbar');
-  const shapeToolbar     = new ShapeToolbar(shapeToolbarEl);
+  const shapeToolbar     = new ShapeToolbar(shapeToolbarEl, { getProject: () => project });
 
   const imageToolbarEl   = document.getElementById('image-toolbar');
   const overlayToolbarEl = document.getElementById('overlay-toolbar');
