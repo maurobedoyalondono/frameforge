@@ -1,9 +1,10 @@
 {
   "project": {
     "id": "the-amazon",
-    "title": "The Amazon",
+    "title": "Amazonía",
     "version": "1.0",
-    "created": "2026-03-28"
+    "created": "2026-03-30",
+    "author": "FrameForge"
   },
   "export": {
     "target": "instagram-portrait",
@@ -19,165 +20,126 @@
     "font_defaults": {
       "family": "DM Sans",
       "weight": 400,
-      "color": "#FFFFFF",
+      "color": "#F5EFE0",
       "opacity": 1.0
     },
-    "safe_zone_pct": 5
+    "safe_zone_pct": 6
   },
   "frames": [
     {
       "id": "frame-01",
-      "image_src": "canopy-walkway",
+      "image_src": "aerial-amazon-river",
+      "image_filename": "dji_fly_20260228_131208_0599_1772316094210_photo.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "canopy-walkway",
+          "src": "aerial-amazon-river",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 35 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 45
+          },
           "opacity": 1.0
         },
         {
-          "id": "gradient-overlay",
+          "id": "gradient",
           "type": "overlay",
-          "color": "#0D1F14",
+          "color": "#1B3826",
           "opacity": 1.0,
           "blend_mode": "normal",
           "gradient": {
             "enabled": true,
-            "direction": "to-bottom",
+            "direction": "to-top",
             "from_opacity": 0.0,
-            "from_position_pct": 40,
-            "to_opacity": 0.78,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "headline",
-          "type": "text",
-          "content": "El Amazonas colombiano.",
-          "font": {
-            "family": "DM Serif Display",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 7.5,
-            "line_height": 1.1,
-            "letter_spacing_em": -0.02,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -13
-          },
-          "max_width_pct": 82,
-          "align": "left",
-          "shadow": {
-            "enabled": true,
-            "color": "#000000",
-            "opacity": 0.45,
-            "blur_px": 14,
-            "offset_x": 0,
-            "offset_y": 2
-          }
-        },
-        {
-          "id": "sub",
-          "type": "text",
-          "content": "Un mes adentro de la selva más grande del mundo.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.5,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.01,
-            "color": "#FFFFFF",
-            "opacity": 0.85
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left",
-          "shadow": {
-            "enabled": true,
-            "color": "#000000",
-            "opacity": 0.5,
-            "blur_px": 10,
-            "offset_x": 0,
-            "offset_y": 1
-          }
-        }
-      ]
-    },
-    {
-      "id": "frame-02",
-      "image_src": "towering-trees",
-      "layers": [
-        {
-          "id": "base-photo",
-          "type": "image",
-          "src": "towering-trees",
-          "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 35 },
-          "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 45,
-            "to_opacity": 0.78,
-            "to_position_pct": 100
+            "from_position_pct": 65,
+            "to_opacity": 0.5,
+            "to_position_pct": 0
           }
         },
         {
           "id": "eyebrow",
           "type": "text",
-          "content": "PUERTO NARIÑO · SELVA INUNDABLE",
+          "content": "AMAZONÍA · COLOMBIA",
           "font": {
             "family": "DM Sans",
             "style": "normal",
-            "weight": 700,
+            "weight": 400,
             "size_pct": 1.8,
-            "line_height": 1.4,
+            "line_height": 1.2,
             "letter_spacing_em": 0.15,
-            "color": "#FFFFFF",
-            "opacity": 0.75
+            "color": "#F5EFE0",
+            "opacity": 1.0
           },
           "position": {
             "mode": "zone",
-            "zone": "bottom-left",
+            "zone": "top-left",
             "offset_x_pct": 6,
-            "offset_y_pct": -18
+            "offset_y_pct": 7
+          },
+          "max_width_pct": 70,
+          "align": "left"
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "content": "Amazonía",
+          "font": {
+            "family": "Fraunces",
+            "style": "normal",
+            "weight": 300,
+            "size_pct": 9.5,
+            "line_height": 1.05,
+            "letter_spacing_em": -0.02,
+            "color": "#F5EFE0",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "top-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": 11
           },
           "max_width_pct": 82,
-          "align": "left",
-          "shadow": {
+          "align": "left"
+        }
+      ]
+    },
+    {
+      "id": "frame-02",
+      "image_src": "aerial-river-descent",
+      "image_filename": "dji_fly_20260228_131446_0609_1772316071531_photo.jpg",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "aerial-river-descent",
+          "fit": "cover",
+          "position": {
+            "x_pct": 50,
+            "y_pct": 50
+          },
+          "opacity": 1.0
+        },
+        {
+          "id": "gradient",
+          "type": "overlay",
+          "color": "#1B3826",
+          "opacity": 1.0,
+          "blend_mode": "normal",
+          "gradient": {
             "enabled": true,
-            "color": "#000000",
-            "opacity": 0.4,
-            "blur_px": 8,
-            "offset_x": 0,
-            "offset_y": 1
+            "direction": "to-bottom",
+            "from_opacity": 0.0,
+            "from_position_pct": 78,
+            "to_opacity": 0.55,
+            "to_position_pct": 100
           }
         },
         {
-          "id": "body",
+          "id": "caption",
           "type": "text",
-          "content": "El río puede subir hasta 12 metros e inundar la selva por meses enteros.",
+          "content": "Un mes en la Amazonia colombiana.",
           "font": {
             "family": "DM Sans",
             "style": "normal",
@@ -185,135 +147,48 @@
             "size_pct": 2.5,
             "line_height": 1.5,
             "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
+            "color": "#F5EFE0",
             "opacity": 1.0
           },
           "position": {
             "mode": "zone",
             "zone": "bottom-left",
             "offset_x_pct": 6,
-            "offset_y_pct": -8
+            "offset_y_pct": -6
           },
-          "max_width_pct": 82,
+          "max_width_pct": 80,
           "align": "left",
           "shadow": {
             "enabled": true,
             "color": "#000000",
-            "opacity": 0.5,
-            "blur_px": 10,
+            "opacity": 0.3,
+            "blur_px": 8,
             "offset_x": 0,
-            "offset_y": 2
+            "offset_y": 1
           }
         }
       ]
     },
     {
       "id": "frame-03",
-      "image_src": "aerial-amazon",
+      "image_src": "canoe-interior-river-view",
+      "image_filename": "IMG_9464.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "aerial-amazon",
+          "src": "canoe-interior-river-view",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 45 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 40
+          },
           "opacity": 1.0
         },
         {
-          "id": "gradient-top",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-top",
-            "from_opacity": 0.0,
-            "from_position_pct": 50,
-            "to_opacity": 0.70,
-            "to_position_pct": 0
-          }
-        },
-        {
-          "id": "eyebrow",
+          "id": "caption",
           "type": "text",
-          "content": "AMAZONAS · SELVA TROPICAL",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "top-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": 6
-          },
-          "max_width_pct": 72,
-          "align": "left",
-          "shadow": {
-            "enabled": true,
-            "color": "#000000",
-            "opacity": 0.5,
-            "blur_px": 8,
-            "offset_x": 0,
-            "offset_y": 1
-          }
-        },
-        {
-          "id": "rule-divider",
-          "type": "shape",
-          "shape": "line",
-          "angle_deg": 0,
-          "position": {
-            "mode": "absolute",
-            "x_pct": 6,
-            "y_pct": 11.0
-          },
-          "dimensions": { "width_pct": 18, "height_px": 1 },
-          "fill_color": "#FFFFFF",
-          "fill_opacity": 0.30
-        },
-        {
-          "id": "headline",
-          "type": "text",
-          "content": "La selva tropical más grande del mundo.",
-          "font": {
-            "family": "DM Serif Display",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 6.5,
-            "line_height": 1.08,
-            "letter_spacing_em": -0.02,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "top-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": 13
-          },
-          "max_width_pct": 72,
-          "align": "left",
-          "shadow": {
-            "enabled": true,
-            "color": "#000000",
-            "opacity": 0.4,
-            "blur_px": 14,
-            "offset_x": 0,
-            "offset_y": 2
-          }
-        },
-        {
-          "id": "body",
-          "type": "text",
-          "content": "5,5 millones de kilómetros cuadrados de vida.",
+          "content": "El río: única vía de entrada y salida.",
           "font": {
             "family": "DM Sans",
             "style": "normal",
@@ -321,119 +196,73 @@
             "size_pct": 2.5,
             "line_height": 1.5,
             "letter_spacing_em": 0.0,
-            "color": "#7B9FAE",
+            "color": "#F5EFE0",
             "opacity": 1.0
           },
           "position": {
             "mode": "zone",
-            "zone": "top-left",
+            "zone": "bottom-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 37
+            "offset_y_pct": -6
           },
-          "max_width_pct": 72,
-          "align": "left",
-          "shadow": {
-            "enabled": true,
-            "color": "#000000",
-            "opacity": 0.70,
-            "blur_px": 18,
-            "offset_x": 0,
-            "offset_y": 1
-          }
+          "max_width_pct": 80,
+          "align": "left"
         }
       ]
     },
     {
       "id": "frame-04",
-      "image_src": "canoe-at-dusk",
+      "image_src": "canoe-dusk-silhouette",
+      "image_filename": "CC2A8728.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "canoe-at-dusk",
+          "src": "canoe-dusk-silhouette",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 65 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 55
+          },
           "opacity": 1.0
         }
       ]
     },
     {
       "id": "frame-05",
-      "image_src": "child-in-the-rain",
+      "image_src": "canoes-water-hyacinths",
+      "image_filename": "CC2A0134.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "child-in-the-rain",
+          "src": "canoes-water-hyacinths",
           "fit": "cover",
-          "position": { "x_pct": 45, "y_pct": 40 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 50
+          },
           "opacity": 1.0
         },
         {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 40,
-            "to_opacity": 0.60,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "eyebrow",
-          "type": "text",
-          "content": "UMARIAÇU · TABATINGA · BRASIL",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
-          },
+          "id": "bar",
+          "type": "shape",
+          "shape": "rectangle",
           "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -23
+            "x_pct": 50,
+            "y_pct": 89
           },
-          "max_width_pct": 82,
-          "align": "left"
+          "dimensions": {
+            "width_pct": 100,
+            "height_pct": 22
+          },
+          "fill_color": "#1B3826",
+          "fill_opacity": 0.82
         },
         {
-          "id": "body",
+          "id": "caption",
           "type": "text",
-          "content": "Cuando llega la lluvia, todo el pueblo sale a recibirla.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.8,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -12
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "sub",
-          "type": "text",
-          "content": "La lluvia aquí no interrumpe la vida. Es la vida.",
+          "content": "En la Amazonia, la canoa reemplaza al auto.",
           "font": {
             "family": "DM Sans",
             "style": "normal",
@@ -441,7 +270,7 @@
             "size_pct": 2.5,
             "line_height": 1.5,
             "letter_spacing_em": 0.0,
-            "color": "#7B9FAE",
+            "color": "#F5EFE0",
             "opacity": 1.0
           },
           "position": {
@@ -450,73 +279,46 @@
             "offset_x_pct": 6,
             "offset_y_pct": -6
           },
-          "max_width_pct": 82,
+          "max_width_pct": 80,
           "align": "left"
         }
       ]
     },
     {
       "id": "frame-06",
-      "image_src": "river-as-highway",
+      "image_src": "jungle-canopy-vertical",
+      "image_filename": "CC2A5184.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "river-as-highway",
+          "src": "jungle-canopy-vertical",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 50 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 40
+          },
           "opacity": 1.0
         },
         {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-top",
-            "from_opacity": 0.0,
-            "from_position_pct": 55,
-            "to_opacity": 0.65,
-            "to_position_pct": 0
-          }
-        },
-        {
-          "id": "headline",
-          "type": "text",
-          "content": "No hay carreteras. Solo el río.",
-          "font": {
-            "family": "DM Serif Display",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 6.5,
-            "line_height": 1.1,
-            "letter_spacing_em": -0.02,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
+          "id": "bar",
+          "type": "shape",
+          "shape": "rectangle",
           "position": {
-            "mode": "zone",
-            "zone": "top-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": 7
+            "x_pct": 50,
+            "y_pct": 89
           },
-          "max_width_pct": 82,
-          "align": "left",
-          "shadow": {
-            "enabled": true,
-            "color": "#000000",
-            "opacity": 0.4,
-            "blur_px": 12,
-            "offset_x": 0,
-            "offset_y": 2
-          }
+          "dimensions": {
+            "width_pct": 100,
+            "height_pct": 22
+          },
+          "fill_color": "#1B3826",
+          "fill_opacity": 0.82
         },
         {
-          "id": "sub",
+          "id": "caption",
           "type": "text",
-          "content": "El Amazonas es la única vía.",
+          "content": "El dosel amazónico supera los 30 metros de altura.",
           "font": {
             "family": "DM Sans",
             "style": "normal",
@@ -524,471 +326,145 @@
             "size_pct": 2.5,
             "line_height": 1.5,
             "letter_spacing_em": 0.0,
-            "color": "#7B9FAE",
+            "color": "#F5EFE0",
             "opacity": 1.0
           },
           "position": {
             "mode": "zone",
-            "zone": "top-left",
+            "zone": "bottom-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 24
+            "offset_y_pct": -6
           },
-          "max_width_pct": 82,
+          "max_width_pct": 80,
           "align": "left"
         }
       ]
     },
     {
       "id": "frame-07",
-      "image_src": "soccer-game",
+      "image_src": "buttress-roots-closeup",
+      "image_filename": "CC2A6056.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "soccer-game",
+          "src": "buttress-roots-closeup",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 55 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 55
+          },
           "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-top",
-            "from_opacity": 0.0,
-            "from_position_pct": 60,
-            "to_opacity": 0.55,
-            "to_position_pct": 0
-          }
-        },
-        {
-          "id": "eyebrow",
-          "type": "text",
-          "content": "MOCAGUA · COLOMBIA",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "top-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": 7
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "body",
-          "type": "text",
-          "content": "Un partido. Una fiesta. Su unión.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.8,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "top-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": 12
-          },
-          "max_width_pct": 82,
-          "align": "left"
         }
       ]
     },
     {
       "id": "frame-08",
-      "image_src": "women-laughing",
+      "image_src": "yellow-tree-frog",
+      "image_filename": "CC2A9805.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "women-laughing",
+          "src": "yellow-tree-frog",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 40 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 50
+          },
           "opacity": 1.0
+        },
+        {
+          "id": "bar",
+          "type": "shape",
+          "shape": "rectangle",
+          "position": {
+            "x_pct": 50,
+            "y_pct": 87
+          },
+          "dimensions": {
+            "width_pct": 100,
+            "height_pct": 26
+          },
+          "fill_color": "#1B3826",
+          "fill_opacity": 0.82
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "FAUNA",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 1.8,
+            "line_height": 1.2,
+            "letter_spacing_em": 0.15,
+            "color": "#C4782A",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -15
+          },
+          "max_width_pct": 70,
+          "align": "left"
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "La Amazonia alberga el 10% de la vida silvestre del planeta.",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.0,
+            "color": "#F5EFE0",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 80,
+          "align": "left"
         }
       ]
     },
     {
       "id": "frame-09",
-      "image_src": "squirrel-monkey",
+      "image_src": "howler-monkey-portrait",
+      "image_filename": "CC2A0442.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "squirrel-monkey",
+          "src": "howler-monkey-portrait",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 40 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 40
+          },
           "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 50,
-            "to_opacity": 0.65,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Saimiri sciureus",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -11
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "Viajan en grupos de hasta 75 individuos por el dosel amazónico.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        }
-      ]
-    },
-    {
-      "id": "frame-10",
-      "image_src": "poison-dart-frog",
-      "layers": [
-        {
-          "id": "base-photo",
-          "type": "image",
-          "src": "poison-dart-frog",
-          "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 50 },
-          "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 50,
-            "to_opacity": 0.70,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Dendrobates sp.",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -11
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "Su piel contiene suficiente toxina para paralizar a un predador.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        }
-      ]
-    },
-    {
-      "id": "frame-11",
-      "image_src": "white-chinned-jacamar",
-      "layers": [
-        {
-          "id": "base-photo",
-          "type": "image",
-          "src": "white-chinned-jacamar",
-          "fit": "cover",
-          "position": { "x_pct": 65, "y_pct": 50 },
-          "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 50,
-            "to_opacity": 0.65,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Galbula tombacea",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -11
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "El Amazonas colombiano alberga más de 600 especies de aves.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        }
-      ]
-    },
-    {
-      "id": "frame-12",
-      "image_src": "woolly-monkey",
-      "layers": [
-        {
-          "id": "base-photo",
-          "type": "image",
-          "src": "woolly-monkey",
-          "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 45 },
-          "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 55,
-            "to_opacity": 0.60,
-            "to_position_pct": 100
-          }
         },
         {
           "id": "eyebrow",
           "type": "text",
-          "content": "MOCAGUA · FUNDACIÓN MAIKUCHIGA",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -16
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Lagothrix lagothricha",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -11
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "Vulnerable. Dispersa semillas esenciales para la regeneración del bosque.",
+          "content": "MONO AULLADOR",
           "font": {
             "family": "DM Sans",
             "style": "normal",
             "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        }
-      ]
-    },
-    {
-      "id": "frame-13",
-      "image_src": "pink-dolphin",
-      "layers": [
-        {
-          "id": "base-photo",
-          "type": "image",
-          "src": "pink-dolphin",
-          "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 55 },
-          "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-top",
-            "from_opacity": 0.0,
-            "from_position_pct": 50,
-            "to_opacity": 0.65,
-            "to_position_pct": 0
-          }
-        },
-        {
-          "id": "eyebrow",
-          "type": "text",
-          "content": "RÍO AMAZONAS · VISTA ALEGRE · PERÚ",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
             "size_pct": 1.8,
-            "line_height": 1.4,
+            "line_height": 1.2,
             "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
+            "color": "#F5EFE0",
             "opacity": 1.0
           },
           "position": {
@@ -997,41 +473,106 @@
             "offset_x_pct": 6,
             "offset_y_pct": 7
           },
-          "max_width_pct": 82,
-          "align": "left"
+          "max_width_pct": 70,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.3,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
         },
         {
-          "id": "scientific",
+          "id": "caption",
           "type": "text",
-          "content": "Inia geoffrensis",
+          "content": "Su rugido se escucha a 5 km de distancia.",
           "font": {
             "family": "DM Sans",
-            "style": "italic",
+            "style": "normal",
             "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
+            "size_pct": 2.5,
+            "line_height": 1.5,
             "letter_spacing_em": 0.0,
-            "color": "#C8751E",
+            "color": "#F5EFE0",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 80,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.3,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame-10",
+      "image_src": "squirrel-monkey-branch",
+      "image_filename": "CC2A0551.jpg",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "squirrel-monkey-branch",
+          "fit": "cover",
+          "position": {
+            "x_pct": 50,
+            "y_pct": 45
+          },
+          "opacity": 1.0
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "MONO ARDILLA",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 1.8,
+            "line_height": 1.2,
+            "letter_spacing_em": 0.15,
+            "color": "#C4782A",
             "opacity": 1.0
           },
           "position": {
             "mode": "zone",
             "zone": "top-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 12
+            "offset_y_pct": 7
           },
-          "max_width_pct": 82,
-          "align": "left"
+          "max_width_pct": 70,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 10,
+            "offset_x": 0,
+            "offset_y": 1
+          }
         },
         {
-          "id": "dato",
+          "id": "caption",
           "type": "text",
-          "content": "Un encuentro inesperado: un grupo, río arriba.",
+          "content": "Vive en grupos de hasta 300 individuos.",
           "font": {
             "family": "DM Sans",
             "style": "normal",
             "weight": 400,
-            "size_pct": 2.0,
+            "size_pct": 2.5,
             "line_height": 1.5,
             "letter_spacing_em": 0.0,
             "color": "#FFFFFF",
@@ -1039,296 +580,327 @@
           },
           "position": {
             "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 80,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 10,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame-11",
+      "image_src": "hoatzin-perched",
+      "image_filename": "CC2A6358.jpg",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "hoatzin-perched",
+          "fit": "cover",
+          "position": {
+            "x_pct": 50,
+            "y_pct": 45
+          },
+          "opacity": 1.0
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "HOATZÍN",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 1.8,
+            "line_height": 1.2,
+            "letter_spacing_em": 0.15,
+            "color": "#C4782A",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
             "zone": "top-left",
             "offset_x_pct": 6,
-            "offset_y_pct": 19
+            "offset_y_pct": 7
           },
-          "max_width_pct": 82,
-          "align": "left"
+          "max_width_pct": 70,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.3,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "Sus crías nacen con garras en las alas.",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.0,
+            "color": "#F5EFE0",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 80,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.3,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame-12",
+      "image_src": "kingfisher-amazon",
+      "image_filename": "CC2A4344.jpg",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "kingfisher-amazon",
+          "fit": "cover",
+          "position": {
+            "x_pct": 50,
+            "y_pct": 45
+          },
+          "opacity": 1.0
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "MARTÍN PESCADOR",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 1.8,
+            "line_height": 1.2,
+            "letter_spacing_em": 0.15,
+            "color": "#C4782A",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "top-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": 7
+          },
+          "max_width_pct": 70,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 10,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "Caza en picado a más de 40 km/h.",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.0,
+            "color": "#FFFFFF",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 80,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.35,
+            "blur_px": 10,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "frame-13",
+      "image_src": "trogon-red-black",
+      "image_filename": "CC2A5494.jpg",
+      "layers": [
+        {
+          "id": "photo",
+          "type": "image",
+          "src": "trogon-red-black",
+          "fit": "cover",
+          "position": {
+            "x_pct": 50,
+            "y_pct": 45
+          },
+          "opacity": 1.0
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "TROGÓN",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 1.8,
+            "line_height": 1.2,
+            "letter_spacing_em": 0.15,
+            "color": "#C4782A",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "top-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": 7
+          },
+          "max_width_pct": 70,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.3,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "Solo habita en selva primaria no intervenida.",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.0,
+            "color": "#F5EFE0",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 80,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.3,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
         }
       ]
     },
     {
       "id": "frame-14",
-      "image_src": "musmuquis",
+      "image_src": "heron-golden-light",
+      "image_filename": "CC2A6998.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "musmuquis",
+          "src": "heron-golden-light",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 45 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 50
+          },
           "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 55,
-            "to_opacity": 0.60,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "eyebrow",
-          "type": "text",
-          "content": "VISTA ALEGRE · PERÚ",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -19
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Aotus vociferans",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -14
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "Torturados por décadas para la investigación del Dr. Patarroyo. Hoy, en Vista Alegre, libres.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left"
         }
       ]
     },
     {
       "id": "frame-15",
-      "image_src": "black-tailed-trogon",
+      "image_src": "spider-closeup-eyes",
+      "image_filename": "CC2A1030.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "black-tailed-trogon",
+          "src": "spider-closeup-eyes",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 45 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 50
+          },
           "opacity": 1.0
-        },
-        {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 50,
-            "to_opacity": 0.60,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "eyebrow",
-          "type": "text",
-          "content": "LAGO TARAPOTO · PUERTO NARIÑO",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -16
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Trogon melanurus",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -11
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "Uno de los pájaros más vistosos y menos conocidos del Amazonas.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left"
         }
       ]
     },
     {
       "id": "frame-16",
-      "image_src": "wire-tailed-manakin",
+      "image_src": "boy-canoe-bw",
+      "image_filename": "CC2A0036.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "wire-tailed-manakin",
+          "src": "boy-canoe-bw",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 50 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 40
+          },
           "opacity": 1.0
         },
         {
-          "id": "gradient-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1.0,
-          "blend_mode": "normal",
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "from_position_pct": 50,
-            "to_opacity": 0.60,
-            "to_position_pct": 100
-          }
-        },
-        {
-          "id": "eyebrow",
+          "id": "caption",
           "type": "text",
-          "content": "LAGO EL CORREO · PUERTO NARIÑO",
+          "content": "Este es el hogar.",
           "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -19
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Pipra filicauda",
-          "font": {
-            "family": "DM Sans",
+            "family": "Fraunces",
             "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
+            "weight": 300,
+            "size_pct": 2.5,
             "line_height": 1.4,
             "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -14
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "Un macho en plena danza de cortejo. Un momento que pocos logran presenciar.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
+            "color": "#F5EFE0",
             "opacity": 1.0
           },
           "position": {
@@ -1337,228 +909,146 @@
             "offset_x_pct": 6,
             "offset_y_pct": -6
           },
-          "max_width_pct": 82,
+          "max_width_pct": 80,
           "align": "left"
         }
       ]
     },
     {
       "id": "frame-17",
-      "image_src": "amazon-tree-frog",
+      "image_src": "family-stilt-house-window",
+      "image_filename": "CC2A3875.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "amazon-tree-frog",
+          "src": "family-stilt-house-window",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 45 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 45
+          },
           "opacity": 1.0
+        },
+        {
+          "id": "bar",
+          "type": "shape",
+          "shape": "rectangle",
+          "position": {
+            "x_pct": 50,
+            "y_pct": 89
+          },
+          "dimensions": {
+            "width_pct": 100,
+            "height_pct": 22
+          },
+          "fill_color": "#1B3826",
+          "fill_opacity": 0.82
+        },
+        {
+          "id": "caption",
+          "type": "text",
+          "content": "Casas palafíticas: construidas para sobrevivir las crecidas del río.",
+          "font": {
+            "family": "DM Sans",
+            "style": "normal",
+            "weight": 400,
+            "size_pct": 2.5,
+            "line_height": 1.5,
+            "letter_spacing_em": 0.0,
+            "color": "#F5EFE0",
+            "opacity": 1.0
+          },
+          "position": {
+            "mode": "zone",
+            "zone": "bottom-left",
+            "offset_x_pct": 6,
+            "offset_y_pct": -6
+          },
+          "max_width_pct": 80,
+          "align": "left"
         }
       ]
     },
     {
       "id": "frame-18",
-      "image_src": "striated-heron-dusk",
+      "image_src": "children-football-field",
+      "image_filename": "CC2A1085.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "striated-heron-dusk",
+          "src": "children-football-field",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 50 },
-          "opacity": 1.0
-        },
-        {
-          "id": "text-gradient",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 1,
-          "gradient": {
-            "enabled": true,
-            "direction": "to-bottom",
-            "from_opacity": 0.0,
-            "to_opacity": 0.45
-          }
-        },
-        {
-          "id": "mood-overlay",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 0.10,
-          "blend_mode": "normal",
-          "gradient": { "enabled": false }
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Butorides striata",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
           "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
+            "x_pct": 50,
+            "y_pct": 50
           },
-          "max_width_pct": 82,
-          "align": "left"
+          "opacity": 1.0
         }
       ]
     },
     {
       "id": "frame-19",
-      "image_src": "mouse-opossum",
+      "image_src": "two-canoe-bw",
+      "image_filename": "CC2A4844.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "mouse-opossum",
+          "src": "two-canoe-bw",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 40 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 50
+          },
           "opacity": 1.0
-        },
-        {
-          "id": "flat-overlay-1",
-          "type": "overlay",
-          "color": "#0D1F14",
-          "opacity": 0.20,
-          "blend_mode": "normal",
-          "gradient": { "enabled": false }
-        },
-        {
-          "id": "flat-overlay-2",
-          "type": "overlay",
-          "color": "#0A0510",
-          "opacity": 0.15,
-          "blend_mode": "normal",
-          "gradient": { "enabled": false }
-        },
-        {
-          "id": "scientific",
-          "type": "text",
-          "content": "Marmosa murina",
-          "font": {
-            "family": "DM Sans",
-            "style": "italic",
-            "weight": 400,
-            "size_pct": 2.2,
-            "line_height": 1.4,
-            "letter_spacing_em": 0.0,
-            "color": "#C8751E",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -11
-          },
-          "max_width_pct": 82,
-          "align": "left"
-        },
-        {
-          "id": "dato",
-          "type": "text",
-          "content": "Sin bolsa marsupial. Sus crías se aferran directamente a las mamas.",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 2.0,
-            "line_height": 1.5,
-            "letter_spacing_em": 0.0,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -6
-          },
-          "max_width_pct": 82,
-          "align": "left"
         }
       ]
     },
     {
       "id": "frame-20",
-      "image_src": "woman-with-anaconda",
+      "image_src": "woman-heart-invitation",
+      "image_filename": "IMG_9302.jpg",
       "layers": [
         {
-          "id": "base-photo",
+          "id": "photo",
           "type": "image",
-          "src": "woman-with-anaconda",
+          "src": "woman-heart-invitation",
           "fit": "cover",
-          "position": { "x_pct": 50, "y_pct": 45 },
+          "position": {
+            "x_pct": 50,
+            "y_pct": 45
+          },
           "opacity": 1.0
         },
         {
-          "id": "gradient-overlay",
+          "id": "gradient",
           "type": "overlay",
-          "color": "#0D1F14",
+          "color": "#1B3826",
           "opacity": 1.0,
           "blend_mode": "normal",
           "gradient": {
             "enabled": true,
             "direction": "to-bottom",
             "from_opacity": 0.0,
-            "from_position_pct": 40,
-            "to_opacity": 0.65,
+            "from_position_pct": 72,
+            "to_opacity": 0.55,
             "to_position_pct": 100
           }
         },
         {
-          "id": "headline",
+          "id": "caption",
           "type": "text",
-          "content": "Real. Como el Amazonas.",
+          "content": "Ven a la Amazonia.",
           "font": {
-            "family": "DM Serif Display",
-            "style": "normal",
-            "weight": 400,
-            "size_pct": 6.5,
-            "line_height": 1.1,
-            "letter_spacing_em": -0.02,
-            "color": "#FFFFFF",
-            "opacity": 1.0
-          },
-          "position": {
-            "mode": "zone",
-            "zone": "bottom-left",
-            "offset_x_pct": 6,
-            "offset_y_pct": -11
-          },
-          "max_width_pct": 82,
-          "align": "left",
-          "shadow": {
-            "enabled": true,
-            "color": "#000000",
-            "opacity": 0.4,
-            "blur_px": 12,
-            "offset_x": 0,
-            "offset_y": 2
-          }
-        },
-        {
-          "id": "location",
-          "type": "text",
-          "content": "AMAZONAS COLOMBIANO",
-          "font": {
-            "family": "DM Sans",
-            "style": "normal",
-            "weight": 700,
-            "size_pct": 1.8,
+            "family": "Fraunces",
+            "style": "italic",
+            "weight": 300,
+            "size_pct": 3.0,
             "line_height": 1.4,
-            "letter_spacing_em": 0.15,
-            "color": "#7B9FAE",
+            "letter_spacing_em": 0.0,
+            "color": "#F5EFE0",
             "opacity": 1.0
           },
           "position": {
@@ -1567,132 +1057,140 @@
             "offset_x_pct": 6,
             "offset_y_pct": -6
           },
-          "max_width_pct": 82,
-          "align": "left"
+          "max_width_pct": 80,
+          "align": "left",
+          "shadow": {
+            "enabled": true,
+            "color": "#000000",
+            "opacity": 0.3,
+            "blur_px": 8,
+            "offset_x": 0,
+            "offset_y": 1
+          }
         }
       ]
     }
   ],
   "image_index": [
     {
-      "key": "canopy-walkway",
+      "key": "aerial-amazon-river",
       "frame_id": "frame-01",
       "frame_index": 1,
-      "description": "Sheet 5, image 5. Series opener. Walkway suspended in the canopy; the structure and treetops dominate the upper two-thirds. Negative space: dark lower third where the forest floor falls into shadow. Gradient to-bottom from 40% creates contrast for the headline. Focal point x:50 y:35 keeps the walkway and canopy visible while the lower zone stays open for text. Headline names the place; sub gives personal context."
+      "description": "Sheet 5, image 46. Series opening — aerial drone shot establishing the Colombian Amazon. The river bend and canopy fill the midframe; the upper sky and treetop haze form a quiet zone at the top that receives the eyebrow and headline. Gradient to-top from 65% (transparent) to 0% (50% opacity) anchors the title zone without touching the river. Focal point at x_pct 50, y_pct 45 keeps the river bend centered. Headline 'Amazonía' in Fraunces 300 at size_pct 9.5 — the series title in full scale."
     },
     {
-      "key": "towering-trees",
+      "key": "aerial-river-descent",
       "frame_id": "frame-02",
       "frame_index": 2,
-      "description": "Sheet 3, image 2. Environmental frame establishing forest scale. Dense trunks fill the frame; the subject is the tree mass itself. Negative space: diffuse sky and canopy glow at the top. Gradient to-top from 60% darkens only the upper portion where text lives. Focal point x:50 y:40. Eyebrow names the place and forest type; body delivers the flood-height fact that the image alone cannot communicate."
+      "description": "Sheet 5, image 45. First act marker — aerial descent over the river, establishing trip duration. Wide pale river surface in the lower zone is bright and reflective under overcast sky; gradient to-bottom from 78% to 100% at 55% opacity tones it down sufficiently for #F5EFE0 to read. Caption 'Un mes en la Amazonia colombiana.' anchors the journey duration as the first fact in the series. Focal point centered."
     },
     {
-      "key": "aerial-amazon",
+      "key": "canoe-interior-river-view",
       "frame_id": "frame-03",
       "frame_index": 3,
-      "description": "Sheet 5, image 6. Aerial overview establishing the river system at scale. River curve and immediate forest dominate the lower portion; a band of sky sits above the horizon. Gradient to-top from 50% darkens the sky band for the headline. Focal point x:50 y:55 keeps the river bend centered. Headline announces the system globally; body gives the one figure that contextualizes the aerial view."
+      "description": "Sheet 5, image 48. River introduction — interior of a canoe looking outward toward the river. The dark wooden hull in the lower zone is near-black; no overlay or gradient needed — the canoe interior provides natural contrast for the caption. Caption 'El río: única vía de entrada y salida.' positions the river as the only way in or out. Focal point at x_pct 50, y_pct 40 keeps the river view in frame."
     },
     {
-      "key": "canoe-at-dusk",
+      "key": "canoe-dusk-silhouette",
       "frame_id": "frame-04",
       "frame_index": 4,
-      "description": "Sheet 4, image 8. Silent pause frame between the forest and people sections. Canoe silhouette in the lower third against a golden sky. No text, no overlay — the image's own contrast resolves the composition. Focal point x:50 y:65 keeps the canoe in frame and maximizes the golden sky above."
+      "description": "Sheet 4, image 38. Silent — canoe silhouette at dusk. Cinematically complete; the graphic quality of the silhouette against the dusk sky carries the frame entirely. No text, no overlay, no intervention. The silence after the opening three text frames lets the image breathe. Focal point at x_pct 50, y_pct 55 centers the silhouette."
     },
     {
-      "key": "child-in-the-rain",
+      "key": "canoes-water-hyacinths",
       "frame_id": "frame-05",
       "frame_index": 5,
-      "description": "Sheet 1, image 3. First human frame. Child's face centered in the upper area; lower third falls into dark negative space. Gradient to-bottom from 40%. Focal point x:45 y:40 keeps the face in the upper-center area. Three text layers justified by the gap between what the camera captured (one quiet child) and what actually happened (the whole village celebrating): eyebrow gives location, body narrates the event, sub gives the meaning."
+      "description": "Sheet 1, image 2. Canoes in transit — water hyacinth surface is visually noisy with repeating green and teal texture. A gradient overlay would lose to the texture noise; solid bar at 82% opacity provides a clean reading surface. Caption 'En la Amazonia, la canoa reemplaza al auto.' delivers the key transport fact. Bar height 22% covers the caption zone comfortably. Focal point centered."
     },
     {
-      "key": "river-as-highway",
+      "key": "jungle-canopy-vertical",
       "frame_id": "frame-06",
       "frame_index": 6,
-      "description": "Sheet 5, image 8. River-transport frame. Vessel centered in frame; sky above is the negative space. Gradient to-top from 55%. Focal point x:50 y:50 centers the vessel. Headline delivers the conceptual punchline about the absence of roads; sub reinforces with the single-clause fact."
+      "description": "Sheet 3, image 22. Jungle canopy — extreme vertical shot with dense foliage top to bottom; the background is uniformly noisy in every zone. A gradient would be defeated entirely by the texture. Solid bar at 82% opacity is the only viable treatment. Caption 'El dosel amazónico supera los 30 metros de altura.' delivers the canopy height fact. Focal point at x_pct 50, y_pct 40 features the upper canopy layers."
     },
     {
-      "key": "soccer-game",
+      "key": "buttress-roots-closeup",
       "frame_id": "frame-07",
       "frame_index": 7,
-      "description": "Sheet 1, image 10. Community action frame. Players fill the lower portion; sky above is the quiet zone. Gradient to-top from 60% darkens sky only. Focal point x:50 y:55 keeps the action in frame. Eyebrow anchors to Mocagua; body loads meaning onto the action before the eye reaches the players — sport becomes celebration becomes community in three beats."
+      "description": "Sheet 3, image 26. Silent — buttress roots close-up. Act I closes in silence. The sculptural geometry of the roots is the entire subject; text would diminish it. The silence creates a visual pause before Act II opens with wildlife. Focal point at x_pct 50, y_pct 55."
     },
     {
-      "key": "women-laughing",
+      "key": "yellow-tree-frog",
       "frame_id": "frame-08",
       "frame_index": 8,
-      "description": "Sheet 2, image 9. Emotional breathing room. Faces fill the frame with no clean negative space that does not compete with the expression. No overlay, no text — the laughter is the entire message. Focal point x:50 y:40 centers the faces. Intentional silence after two community frames with text."
+      "description": "Sheet 5, image 42. Act II chapter marker — vivid yellow tree frog on dark leaf litter. Solid bar at 82% opacity handles both the eyebrow and caption cleanly against the complex foliage background. Eyebrow 'FAUNA' in River Amber opens Act II. Caption delivers the biodiversity statistic. Bar height 26% accommodates the two-layer text stack. Focal point centered to keep the frog in frame."
     },
     {
-      "key": "squirrel-monkey",
+      "key": "howler-monkey-portrait",
       "frame_id": "frame-09",
       "frame_index": 9,
-      "description": "Sheet 1, image 6. Fauna section opener. Monkey in the upper area; lower third is the quiet zone. Gradient to-bottom from 50%. Focal point x:50 y:40. Scientific name in amber italic identifies the species; dato gives the social behavior number that contextualizes what the image shows."
+      "description": "Sheet 1, image 4. Howler monkey — first primate identification. Naturally dark warm-brown bokeh background provides full contrast for both text zones without overlay. Eyebrow color overridden from River Amber to warm white (#F5EFE0): the warm-amber background creates a hue conflict — amber text would disappear against amber-toned bokeh. Caption 'Su rugido se escucha a 5 km de distancia.' is the most striking biological fact. Focal point at x_pct 50, y_pct 40."
     },
     {
-      "key": "poison-dart-frog",
+      "key": "squirrel-monkey-branch",
       "frame_id": "frame-10",
       "frame_index": 10,
-      "description": "Sheet 2, image 6. Macro fauna frame. Frog and leaf fill the frame; the lower edge is darkened by a strong gradient (to_opacity 0.70) needed because the leaf surface is highly reflective. Focal point x:50 y:50 centers the frog. Scientific name identifies to genus; dato delivers the toxicity fact without hyperbole."
+      "description": "Sheet 1, image 6. Squirrel monkey — troop size identification. Medium-bright green bokeh in both zones; caption overridden to pure white (#FFFFFF) per color-notes — #F5EFE0 lacks sufficient contrast against bright green bokeh. Eyebrow River Amber reads against medium green with adequate hue separation. Caption 'Vive en grupos de hasta 300 individuos.' uses the most striking behavioral fact. Focal point at x_pct 50, y_pct 45."
     },
     {
-      "key": "white-chinned-jacamar",
+      "key": "hoatzin-perched",
       "frame_id": "frame-11",
       "frame_index": 11,
-      "description": "Sheet 2, image 3. Bird frame with compositional tension. Bird positioned on the right side of frame (focal point x:65 y:50); the lower-left corner is the quiet zone for text. Gradient to-bottom from 50%. The bird's gaze directs toward the right while text anchors left — intentional directional tension. Scientific name corrects the common misidentification as a kingfisher."
+      "description": "Sheet 3, image 27. Hoatzin — prehistoric bird identification. Dark-green foliage background in both text zones provides strong natural contrast. Both spec colors confirmed legible: River Amber eyebrow reads against dark green, warm white caption reads cleanly. Caption 'Sus crías nacen con garras en las alas.' is the most distinctive biological fact — wing claws on chicks, a direct link to dinosaur lineage. Focal point at x_pct 50, y_pct 45."
     },
     {
-      "key": "woolly-monkey",
+      "key": "kingfisher-amazon",
       "frame_id": "frame-12",
       "frame_index": 12,
-      "description": "Sheet 1, image 4. Primate close-up near Fundación Maikuchiga, Mocagua. Face and eyes dominate the upper area; lower third is the quiet zone. Gradient to-bottom from 55%. Focal point x:50 y:45. Three text layers: eyebrow gives location and conservation context, scientific name identifies the species, dato states the IUCN status and ecological role. Mocagua appears second time — the village that plays soccer also lives alongside one of the most threatened primates in the Amazon."
+      "description": "Sheet 2, image 13. Amazon kingfisher — hunting precision identification. Medium-bright green soft-focus foliage in both zones; caption overridden to pure white (#FFFFFF) per color-notes — same condition as frame-10, green bokeh without gradient overlay. Eyebrow River Amber confirmed adequate against medium green. Caption 'Caza en picado a más de 40 km/h.' is the most striking behavioral fact. Focal point at x_pct 50, y_pct 45."
     },
     {
-      "key": "pink-dolphin",
+      "key": "trogon-red-black",
       "frame_id": "frame-13",
       "frame_index": 13,
-      "description": "Sheet 1, image 8. The only frame shot outside Colombia, on the Peruvian bank at Vista Alegre. Dolphin in the lower half of frame; water and sky above are the quiet zone. Gradient to-top from 50%. Focal point x:50 y:55 keeps the dolphin in frame. Three layers: eyebrow marks the border crossing, scientific name, dato captures the spontaneity. The Amazon does not stop at the Colombian border."
+      "description": "Sheet 3, image 24. Trogon — old-growth forest indicator. Near-black canopy shadow in both zones gives maximum contrast for both amber eyebrow and warm white caption; no overrides needed. Caption 'Solo habita en selva primaria no intervenida.' makes this the series' strongest conservation statement — the trogon as a measure of intact forest. Act II closes on this note before the silence of frame-14. Focal point at x_pct 50, y_pct 45."
     },
     {
-      "key": "musmuquis",
+      "key": "heron-golden-light",
       "frame_id": "frame-14",
       "frame_index": 14,
-      "description": "Sheet 1, image 9. Group of three Aotus vociferans (not Cebuella pygmaea) at Vista Alegre, Perú. Group centered in frame; lower edge is the quiet zone. Gradient to-bottom from 55%. Focal point x:50 y:45. Three text layers: eyebrow continues the Peruvian location thread from frame-13, scientific name corrects the common misidentification, dato tells the full story of their capture and recovery under Dr. Patarroyo's research program."
+      "description": "Sheet 3, image 30. Silent — heron in golden-hour light. Painterly quality; naming the bird or adding a caption would shift the frame from mood to field guide. The golden light effect closes Act II on a contemplative note. No text, no overlay. Focal point centered."
     },
     {
-      "key": "black-tailed-trogon",
+      "key": "spider-closeup-eyes",
       "frame_id": "frame-15",
       "frame_index": 15,
-      "description": "Sheet 3, image 4. Bird facing right at Lago Tarapoto. Subject centered, looking right; lower-left corner is the quiet zone for text. Gradient to-bottom from 50%. Focal point x:50 y:45 keeps the crimson breast visible. The bird's rightward gaze creates tension with the left-anchored text block — eye exits right, text pulls it back left. Puerto Nariño appears for the third time."
+      "description": "Sheet 1, image 9. Silent — spider close-up, multiple eyes visible. Act II closes on discomfort. No label defuses the unsettling quality of the close-up; the absence of identification makes the viewer sit with the image. No text, no overlay. Focal point centered."
     },
     {
-      "key": "wire-tailed-manakin",
+      "key": "boy-canoe-bw",
       "frame_id": "frame-16",
       "frame_index": 16,
-      "description": "Sheet 3, image 5. Male in courtship display at Lago el Correo. Bird showing red dorsal plumage and wire filaments; lower zone is quiet. Gradient to-bottom from 50%. Focal point x:50 y:50. Three text layers: eyebrow anchors to location, scientific name, dato captures the rarity of witnessing the display. Puerto Nariño appears fourth time: trogon (stillness) then manakin (motion) — contrasting registers, same place."
+      "description": "Sheet 1, image 1. Act III pivot — boy in canoe, black and white. The B&W treatment signals the shift from nature to community. Dark river water in the lower zone is near-black; no overlay needed. Fraunces italic weight 300 at size_pct 2.5 signals the emotional register shift. Caption 'Este es el hogar.' — three words, direct and complete. The warmth of #F5EFE0 adds subtle tonal contrast against the cold B&W water. Focal point at x_pct 50, y_pct 40."
     },
     {
-      "key": "amazon-tree-frog",
+      "key": "family-stilt-house-window",
       "frame_id": "frame-17",
       "frame_index": 17,
-      "description": "Sheet 5, image 2. Frog on a leaf, centered. No usable negative space that does not compete with the subject. No overlay, no text — intentional silence after two consecutive bird frames with text. The image is complete on its own. Focal point x:50 y:45. The viewer breathes before the series moves to dusk and night."
+      "description": "Sheet 2, image 11. Stilt house — community context. Complex architectural scene with window frames, wall textures, and family figures; any gradient would fight the visual noise in every zone. Solid bar at 82% opacity eliminates background competition entirely. Caption 'Casas palafíticas: construidas para sobrevivir las crecidas del río.' explains the architecture and the river's power in one sentence. Focal point at x_pct 50, y_pct 45."
     },
     {
-      "key": "striated-heron-dusk",
+      "key": "children-football-field",
       "frame_id": "frame-18",
       "frame_index": 18,
-      "description": "Sheet 3, image 10. Heron in golden-hour light — the transition frame between day and night. Flat overlay at 0.10 opacity only (no gradient) preserves the warm amber tones. Focal point x:50 y:50. A single scientific name in amber italic is the only text: the amber color of the type echoes the golden light of the image. Deliberate restraint after eleven fauna frames with data."
+      "description": "Sheet 1, image 10. Silent — children playing football. Joy needs no annotation. The energy of play speaks without text; adding a caption would domesticate what the image already communicates. The silence also provides breathing room between the heavy stilt-house caption and the visual echo frames that follow. Focal point centered."
     },
     {
-      "key": "mouse-opossum",
+      "key": "two-canoe-bw",
       "frame_id": "frame-19",
       "frame_index": 19,
-      "description": "Sheet 2, image 7. Nocturnal frame — the arrival of night. Face illuminated against an absolute black background. Two flat overlays (#0D1F14 at 0.20 + #0A0510 at 0.15) unify the surrounding darkness without adding a directional gradient. Focal point x:50 y:40 centers the illuminated face. Scientific name identifies the species; dato delivers the marsupial fact that subverts the viewer's assumption."
+      "description": "Sheet 2, image 19. Silent — two canoes in black and white. Visual echo of frames 04 and 16; the B&W treatment and the canoe motif recur as a chord. The three canoe frames (04, 16, 19) form an arc — dusk silhouette, boy on the river, two vessels at rest — and the meaning comes from the repetition, not from a label. No text, no overlay. Focal point centered."
     },
     {
-      "key": "woman-with-anaconda",
+      "key": "woman-heart-invitation",
       "frame_id": "frame-20",
       "frame_index": 20,
-      "description": "Sheet 5, image 7. Series closer. Woman holding an anaconda — an unscripted moment. Subject centered; lower third is the quiet zone. Gradient to-bottom from 40%. Focal point x:50 y:45 keeps both woman and anaconda in frame. Two text layers (confirmed): headline delivers the verdict on the place in one compressed thought; location tag grounds it geographically. Echoes frame-01: opens with a name, closes with a truth."
+      "description": "Sheet 5, image 47. Series close — woman making a heart gesture, direct invitation to the viewer. Gradient to-bottom from 72% (transparent) to 100% (55% opacity) anchors the italic caption in the lower zone without covering the gesture. Fraunces italic weight 300 at size_pct 3.0 — slightly larger than the standard caption size, appropriate for the closing line. 'Ven a la Amazonia.' — direct address, imperative, complete. Focal point at x_pct 50, y_pct 45."
     }
   ]
 }
