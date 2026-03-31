@@ -47,6 +47,7 @@ export class Project {
   /**
    * Load a project from parsed JSON data.
    * @param {object} data
+   * @param {string} projectId — canonical brief ID used as the storage key for all operations
    * @returns {Promise<{
    *   assigned: number[],
    *   conflicts: Array<{frameIndex: number, frameId: string, currentKey: string, newKey: string}>
