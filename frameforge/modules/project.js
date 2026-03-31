@@ -52,9 +52,9 @@ export class Project {
    *   conflicts: Array<{frameIndex: number, frameId: string, currentKey: string, newKey: string}>
    * }>}
    */
-  async load(data) {
+  async load(data, projectId) {
     this.data = data;
-    this.id   = data.project.id;
+    this.id   = projectId;
     this.activeFrameIndex = 0;
     this.isDirty = false;
     this.imageElements.clear();
@@ -81,7 +81,7 @@ export class Project {
    */
   save() {
     if (!this.data) return;
-    storage.saveProject(this.data);
+    storage.saveProject(this.data, this.id);
     this.isDirty = false;
   }
 
