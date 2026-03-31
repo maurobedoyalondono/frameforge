@@ -42,6 +42,7 @@ Every row must be filled with the actual raw filename from the image map — loo
 Generate the complete FrameForge JSON following `ai-manual-content.js`:
 
 - Use the descriptive `image_src` labels from `concept-template.md` — never raw filenames
+- For each frame, also write `image_filename`: the exact raw filename from `[IMAGE_MAP_PATH]` for that frame's image. Look up the image number in the map and copy the filename exactly — no invented names, no blanks. This field enables auto-assignment in the FrameForge UI.
 - One frame per image in the approved sequence
 - Include `image_index` with a real entry per frame documenting visual decisions
 - Apply color-notes overrides for any frame with a confirmed conflict — these are per-frame truth and override the concept palette
