@@ -365,15 +365,18 @@ export class BriefManager {
     b.querySelector('#bm-delete-confirm-yes')?.addEventListener('click', async () => {
       const wasActive  = this._selectedId === this._activeBriefId;
       const deletedId  = this._selectedId;
-      await this._storage.deleteProject(this._selectedId);
-      this._selectedId      = null;
-      this._deleteConfirmId = null;
-      if (wasActive) {
-        this._activeBriefId = null;
-        this._onActiveBriefChange?.(null, null, deletedId);
+      try {
+        await this._storage.deleteProject(this._selectedId);
+      } finally {
+        this._selectedId      = null;
+        this._deleteConfirmId = null;
+        if (wasActive) {
+          this._activeBriefId = null;
+          this._onActiveBriefChange?.(null, null, deletedId);
+        }
+        this._refreshList();
+        this._refreshDetail();
       }
-      this._refreshList();
-      this._refreshDetail();
     });
 
     b.querySelector('#bm-delete-confirm-no')?.addEventListener('click', () => {
