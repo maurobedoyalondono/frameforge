@@ -252,6 +252,10 @@ export class OverlayToolbar {
       if (e.target.closest('[data-action]')) return;
       e.preventDefault();
       const rect = this._el.getBoundingClientRect();
+      // Convert to left/top positioning immediately so right doesn't conflict
+      this._el.style.left  = `${rect.left}px`;
+      this._el.style.top   = `${rect.top}px`;
+      this._el.style.right = '';
       startX = e.clientX; startY = e.clientY;
       startLeft = rect.left; startTop = rect.top;
 
@@ -260,9 +264,8 @@ export class OverlayToolbar {
         const h    = this._el.offsetHeight || 100;
         const left = Math.max(0, Math.min(window.innerWidth  - w, startLeft + mv.clientX - startX));
         const top  = Math.max(0, Math.min(window.innerHeight - h, startTop  + mv.clientY - startY));
-        this._el.style.left  = `${left}px`;
-        this._el.style.top   = `${top}px`;
-        this._el.style.right = '';
+        this._el.style.left = `${left}px`;
+        this._el.style.top  = `${top}px`;
       };
       const onUp = () => {
         document.removeEventListener('mousemove', onMove);
