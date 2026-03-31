@@ -256,6 +256,10 @@ export class Project {
     return this.data?.globals ?? {};
   }
 
+  get palette() {
+    return this.data?.palette ?? [];
+  }
+
   get projectMeta() {
     return this.data?.project ?? null;
   }
