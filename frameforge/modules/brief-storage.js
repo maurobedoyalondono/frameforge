@@ -124,6 +124,17 @@ export function setHasLayout(id, value) {
   if (!entry) return;
   entry.hasLayout = value;
   saveIndex(index);
+
+  // Also persist into the full brief so save() doesn't overwrite this flag
+  const brief = load(id);
+  if (brief) {
+    brief.hasLayout = value;
+    try {
+      localStorage.setItem(briefKey(brief.id), JSON.stringify(brief));
+    } catch (e) {
+      console.warn(`[brief-storage] setHasLayout(${id}) full-brief write failed:`, e);
+    }
+  }
 }
 
 /**
