@@ -374,9 +374,11 @@ function drawAdvisorGhosts(ctx, positions, layerSize, activeMode) {
     { key: 'balance',    color: '90,180,255',  label: 'B', pos: positions.balance },
     { key: 'legibility', color: '90,230,140',  label: 'L', pos: positions.legibility },
   ];
+  ghosts.sort((a, b) => (a.key === activeMode ? 1 : -1));
 
   ctx.save();
   for (const ghost of ghosts) {
+    if (!ghost.pos) continue;
     const isActive = ghost.key === activeMode;
     const alpha    = isActive ? 1.0 : 0.4;
     const { x, y } = ghost.pos;
