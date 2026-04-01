@@ -17,7 +17,13 @@ function relativeLuminance(r, g, b) {
   return 0.2126 * linearize(r) + 0.7152 * linearize(g) + 0.0722 * linearize(b);
 }
 
-/** WCAG 2.1 contrast ratio between two hex colours */
+/**
+ * WCAG 2.1 contrast ratio between two hex colours.
+ *
+ * @param {string} hexFg — 6-digit hex colour (e.g. '#ff0000')
+ * @param {string} hexBg — 6-digit hex colour
+ * @returns {number} contrast ratio (1–21)
+ */
 export function wcagContrastRatio(hexFg, hexBg) {
   const parse = (hex) => {
     const h = hex.replace('#', '');
@@ -69,8 +75,7 @@ export function buildHeatmap(imageData, canvasW, canvasH, gridSize = 16) {
       const x1 = Math.floor((col + 1) * cellW);
       const y1 = Math.floor((row + 1) * cellH);
 
-      let sumL = 0, sumS = 0, count = 0;
-      const luminances = [];
+      let sumL = 0, sumL2 = 0, sumS = 0, count = 0;
 
       for (let y = y0; y < y1; y++) {
         for (let x = x0; x < x1; x++) {
@@ -79,10 +84,11 @@ export function buildHeatmap(imageData, canvasW, canvasH, gridSize = 16) {
           const g   = data[idx + 1];
           const b   = data[idx + 2];
 
-          // Luminance (simple, scaled 0–1)
+          // BT.601 luma on gamma-encoded values — intentional; WCAG linear luminance
+          // is reserved for contrast-ratio comparisons only.
           const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-          luminances.push(lum);
-          sumL += lum;
+          sumL  += lum;
+          sumL2 += lum * lum;
 
           // Saturation via HSL
           const rn = r / 255, gn = g / 255, bn = b / 255;
@@ -101,9 +107,8 @@ export function buildHeatmap(imageData, canvasW, canvasH, gridSize = 16) {
       const avgS = sumS / count;
 
       // Local contrast = standard deviation of luminance
-      let variance = 0;
-      for (const l of luminances) variance += (l - avgL) ** 2;
-      const stdDev = Math.sqrt(variance / luminances.length);
+      const variance = (sumL2 / count) - (avgL * avgL);
+      const stdDev = Math.sqrt(Math.max(0, variance));
       const contrast = Math.min(stdDev * 4, 1); // scale stddev to ~0–1
 
       scores[row * gridSize + col] = 0.4 * avgL + 0.4 * contrast + 0.2 * avgS;
@@ -128,14 +133,16 @@ export function buildHeatmap(imageData, canvasW, canvasH, gridSize = 16) {
  */
 export function analyzeZone(imageData, canvasW, x, y, w, h) {
   const data   = imageData.data;
-  let sumR = 0, sumG = 0, sumB = 0, sumL = 0, sumS = 0, count = 0;
-  const luminances = [];
+  let sumR = 0, sumG = 0, sumB = 0, sumL = 0, sumL2 = 0, sumS = 0, count = 0;
 
-  const x1 = x + w;
-  const y1 = y + h;
+  const canvasH = imageData.data.length / 4 / canvasW;
+  const clampedX  = Math.max(0, x);
+  const clampedY  = Math.max(0, y);
+  const clampedX1 = Math.min(x + w, canvasW);
+  const clampedY1 = Math.min(y + h, canvasH);
 
-  for (let py = y; py < y1; py++) {
-    for (let px = x; px < x1; px++) {
+  for (let py = clampedY; py < clampedY1; py++) {
+    for (let px = clampedX; px < clampedX1; px++) {
       const idx = (py * canvasW + px) * 4;
       const r   = data[idx];
       const g   = data[idx + 1];
@@ -145,9 +152,11 @@ export function analyzeZone(imageData, canvasW, x, y, w, h) {
       sumG += g;
       sumB += b;
 
+      // BT.601 luma on gamma-encoded values — intentional; WCAG linear luminance
+      // is reserved for contrast-ratio comparisons only.
       const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-      luminances.push(lum);
-      sumL += lum;
+      sumL  += lum;
+      sumL2 += lum * lum;
 
       const rn = r / 255, gn = g / 255, bn = b / 255;
       const cmax = Math.max(rn, gn, bn);
@@ -169,9 +178,8 @@ export function analyzeZone(imageData, canvasW, x, y, w, h) {
   const avgL = sumL / count;
   const avgS = sumS / count;
 
-  let variance = 0;
-  for (const l of luminances) variance += (l - avgL) ** 2;
-  const stdDev   = Math.sqrt(variance / luminances.length);
+  const variance = (sumL2 / count) - (avgL * avgL);
+  const stdDev   = Math.sqrt(Math.max(0, variance));
   const contrast = Math.min(stdDev * 4, 1);
 
   const contrastLabel = stdDev < 0.15 ? 'Low' : stdDev < 0.35 ? 'Medium' : 'High';
