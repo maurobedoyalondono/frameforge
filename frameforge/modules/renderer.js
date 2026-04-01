@@ -224,9 +224,11 @@ function drawGoldenSpiral(ctx, w, h, orientation, alpha, lw) {
 
   ctx.beginPath();
   for (let i = 0; i < rects.length; i++) {
-    const r      = rects[i];
+    const r          = rects[i];
     const [acx, acy] = cornerOffsets[i % 4](r);
-    ctx.arc(acx, acy, r.s, startAngles[i], startAngles[i] + Math.PI / 2);
+    const startAngle = startAngles[i];
+    ctx.moveTo(acx + r.s * Math.cos(startAngle), acy + r.s * Math.sin(startAngle));
+    ctx.arc(acx, acy, r.s, startAngle, startAngle + Math.PI / 2);
   }
   ctx.stroke();
   ctx.restore();
