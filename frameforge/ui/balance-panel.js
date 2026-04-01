@@ -216,16 +216,15 @@ export class BalancePanel {
           ${options}
         </select>
       </div>
-      ${advisorPositions ? `
       <div class="balance-advisor-mode-row">
         <span class="balance-advisor-label">Mode</span>
         <div class="balance-advisor-mode-btns">
           <button class="balance-advisor-mode-btn${advisorMode === 'balance' ? ' active' : ''}" data-mode="balance">● Balance</button>
           <button class="balance-advisor-mode-btn${advisorMode === 'legibility' ? ' active' : ''}" data-mode="legibility">● Legibility</button>
         </div>
-      </div>` : ''}
+      </div>
       ${posHtml}
-      ${advisorPositions ? `<button class="balance-move-here-btn" ${!advisorLayerId ? 'disabled' : ''}>Move here</button>` : ''}
+      <button class="balance-move-here-btn" ${!advisorLayerId ? 'disabled' : ''}>Move here</button>
     `;
 
     el.querySelector('#balance-advisor-layer-select')?.addEventListener('change', (e) => {
