@@ -307,7 +307,7 @@ export function buildToolbar(toolbarEl) {
         <path d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4z"/>
       </svg>
     </button>
-    <button class="btn btn-ghost btn-icon" id="btn-balance" title="Visual Balance [B]" disabled>
+    <button class="btn btn-ghost btn-icon" id="btn-balance" title="Visual Balance [B]" aria-expanded="false" aria-controls="balance-dropdown" disabled>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12 3a1 1 0 0 1 .894.553l3.382 6.764 4.618.672a1 1 0 0 1 .555 1.706l-3.342 3.258.789 4.601a1 1 0 0 1-1.451 1.054L12 19.347l-4.445 2.261a1 1 0 0 1-1.451-1.054l.789-4.601L3.551 12.695a1 1 0 0 1 .555-1.706l4.618-.672L12.106 3.553A1 1 0 0 1 12 3z" opacity="0.6"/>
         <line x1="4" y1="21" x2="20" y2="21" stroke="currentColor" stroke-width="1.5"/>
@@ -317,8 +317,8 @@ export function buildToolbar(toolbarEl) {
     </button>
 
     <!-- Balance dropdown (hidden by default) -->
-    <div id="balance-dropdown" class="balance-dropdown" style="display:none" role="menu" aria-label="Visual Balance options">
-      <div class="balance-dropdown-header">Visual Balance</div>
+    <div id="balance-dropdown" class="balance-dropdown" style="display:none" role="group" aria-labelledby="balance-dropdown-title">
+      <div class="balance-dropdown-header" id="balance-dropdown-title">Visual Balance</div>
       <div class="balance-dropdown-section-label">Composition Guides</div>
       <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="off" checked> Off</label>
       <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="thirds"> Rule of Thirds</label>
