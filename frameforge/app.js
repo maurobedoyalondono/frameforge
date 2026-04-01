@@ -377,8 +377,11 @@ async function init() {
       ? renderer.advisorPositions.legibility
       : renderer.advisorPositions.balance;
 
-    layer.x = pos.x;
-    layer.y = pos.y;
+    const w = mainCanvas.width, h = mainCanvas.height;
+    layer.position = {
+      x_pct: Math.round((pos.x / w) * 100),
+      y_pct: Math.round((pos.y / h) * 100),
+    };
     project.save();
     renderCurrentFrame();
     filmstrip.renderOne(project.activeFrameIndex, project);
