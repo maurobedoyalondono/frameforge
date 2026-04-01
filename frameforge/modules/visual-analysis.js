@@ -60,10 +60,13 @@ export function recommendTextColor(avgR, avgG, avgB) {
  * @param {number} canvasW
  * @param {number} canvasH
  * @param {number} [gridSize=16]
- * @returns {Float32Array} gridSize×gridSize scores in row-major order (0–1)
+ * @returns {{ scores: Float32Array, lumaScores: Float32Array, contrastScores: Float32Array, satScores: Float32Array }}
  */
 export function buildHeatmap(imageData, canvasW, canvasH, gridSize = 16) {
-  const scores = new Float32Array(gridSize * gridSize);
+  const scores        = new Float32Array(gridSize * gridSize);
+  const lumaScores    = new Float32Array(gridSize * gridSize);
+  const contrastScores = new Float32Array(gridSize * gridSize);
+  const satScores     = new Float32Array(gridSize * gridSize);
   const cellW  = canvasW / gridSize;
   const cellH  = canvasH / gridSize;
   const data   = imageData.data;
@@ -111,11 +114,109 @@ export function buildHeatmap(imageData, canvasW, canvasH, gridSize = 16) {
       const stdDev = Math.sqrt(Math.max(0, variance));
       const contrast = Math.min(stdDev * 4, 1); // scale stddev to ~0–1
 
-      scores[row * gridSize + col] = 0.4 * avgL + 0.4 * contrast + 0.2 * avgS;
+      const cellIndex = row * gridSize + col;
+      lumaScores[cellIndex]      = avgL;
+      contrastScores[cellIndex]  = contrast;
+      satScores[cellIndex]       = avgS;
+      scores[cellIndex]          = 0.4 * avgL + 0.4 * contrast + 0.2 * avgS;
     }
   }
 
-  return scores;
+  return { scores, lumaScores, contrastScores, satScores };
+}
+
+/**
+ * Find the best canvas position for a layer to either balance or complement
+ * the photo's visual weight.
+ *
+ * @param {Float32Array} heatmapScores — gridSize×gridSize combined weight scores (0–1)
+ * @param {number} canvasW — canvas width in pixels
+ * @param {number} canvasH — canvas height in pixels
+ * @param {number} layerW  — layer bounding box width in pixels
+ * @param {number} layerH  — layer bounding box height in pixels
+ * @param {number} [gridSize=16]
+ * @returns {{ balance: {x:number, y:number}, legibility: {x:number, y:number} }}
+ *   Pixel coordinates for the layer top-left, clamped to canvas bounds.
+ */
+export function findBestPosition(heatmapScores, canvasW, canvasH, layerW, layerH, gridSize = 16) {
+  const cellW = canvasW / gridSize;
+  const cellH = canvasH / gridSize;
+
+  // Pre-compute left/right weight split from the heatmap
+  let sumLeft = 0, sumRight = 0;
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      const score = heatmapScores[row * gridSize + col];
+      const cellCX = (col + 0.5) * cellW;
+      if (cellCX < canvasW / 2) sumLeft  += score;
+      else                       sumRight += score;
+    }
+  }
+  const totalWeight = sumLeft + sumRight || 1;
+  const maxDelta    = totalWeight;
+
+  // Synthetic element weight: proportional to area, capped at 40% of total
+  const elemArea   = (layerW * layerH) / (canvasW * canvasH);
+  const elemWeight = Math.min(elemArea * totalWeight * 0.4, totalWeight * 0.4);
+
+  // 5×5 candidate grid for top-left anchor (12.5% increments)
+  const STEPS = 5;
+  let bestBalance    = { score: -1, x: 0, y: 0 };
+  let bestLegibility = { score: -1, x: 0, y: 0 };
+
+  for (let row = 0; row < STEPS; row++) {
+    for (let col = 0; col < STEPS; col++) {
+      const cx = Math.round(col * canvasW * 0.125);
+      const cy = Math.round(row * canvasH * 0.125);
+
+      // Skip if element overflows canvas
+      if (cx + layerW > canvasW || cy + layerH > canvasH) continue;
+
+      // ── Legibility score ────────────────────────────────────────────────
+      let overlapSum = 0, overlapCount = 0;
+      for (let gr = 0; gr < gridSize; gr++) {
+        for (let gc = 0; gc < gridSize; gc++) {
+          const cellX0 = gc * cellW, cellX1 = (gc + 1) * cellW;
+          const cellY0 = gr * cellH, cellY1 = (gr + 1) * cellH;
+          if (cellX1 > cx && cellX0 < cx + layerW &&
+              cellY1 > cy && cellY0 < cy + layerH) {
+            overlapSum += heatmapScores[gr * gridSize + gc];
+            overlapCount++;
+          }
+        }
+      }
+      const avgOverlap      = overlapCount > 0 ? overlapSum / overlapCount : 0;
+      const legibilityScore = 1 - avgOverlap;
+
+      // ── Balance score ────────────────────────────────────────────────────
+      const elemCX   = cx + layerW / 2;
+      const onRight  = elemCX >= canvasW / 2;
+      const newLeft  = onRight ? sumLeft  : sumLeft  + elemWeight;
+      const newRight = onRight ? sumRight + elemWeight : sumRight;
+      const newDelta = Math.abs(newLeft - newRight);
+      const balanceScore = 1 - (newDelta / maxDelta);
+
+      // ── Combined scores ──────────────────────────────────────────────────
+      const balanceCombined    = 0.75 * balanceScore + 0.25 * legibilityScore;
+      const legibilityCombined = 0.25 * balanceScore + 0.75 * legibilityScore;
+
+      if (balanceCombined    > bestBalance.score)    { bestBalance    = { score: balanceCombined,    x: cx, y: cy }; }
+      if (legibilityCombined > bestLegibility.score) { bestLegibility = { score: legibilityCombined, x: cx, y: cy }; }
+    }
+  }
+
+  // Clamp to canvas bounds
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  return {
+    balance: {
+      x: clamp(bestBalance.x,    0, canvasW - layerW),
+      y: clamp(bestBalance.y,    0, canvasH - layerH),
+    },
+    legibility: {
+      x: clamp(bestLegibility.x, 0, canvasW - layerW),
+      y: clamp(bestLegibility.y, 0, canvasH - layerH),
+    },
+  };
 }
 
 // ── Zone analysis ──────────────────────────────────────────────────────────
