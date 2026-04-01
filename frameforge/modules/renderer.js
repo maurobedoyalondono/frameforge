@@ -85,6 +85,153 @@ function drawError(ctx, w, h, message) {
   ctx.restore();
 }
 
+// ── Composition guide overlays ────────────────────────────────────────────
+
+/**
+ * Draw the selected composition guide onto ctx.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} w  effective canvas width
+ * @param {number} h  effective canvas height
+ * @param {string} guide  guide key
+ * @param {number} [spiralOrientation=0]  0–3
+ */
+function drawCompositionGuide(ctx, w, h, guide, spiralOrientation = 0) {
+  if (!guide || guide === 'off') return;
+
+  ctx.save();
+  const lw = Math.max(1, w / 600);
+
+  function line(x1, y1, x2, y2, alpha = 0.35) {
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+    ctx.shadowBlur  = 2;
+    ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+    ctx.lineWidth   = lw;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function dot(x, y, alpha = 0.6) {
+    ctx.save();
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x, y, lw * 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  if (guide === 'thirds') {
+    const x1 = w / 3, x2 = w * 2 / 3;
+    const y1 = h / 3, y2 = h * 2 / 3;
+    line(x1, 0, x1, h); line(x2, 0, x2, h);
+    line(0, y1, w, y1); line(0, y2, w, y2);
+    for (const x of [x1, x2]) for (const y of [y1, y2]) dot(x, y);
+  }
+
+  if (guide === 'phi') {
+    const phi = 0.381966;
+    const x1 = w * phi, x2 = w * (1 - phi);
+    const y1 = h * phi, y2 = h * (1 - phi);
+    line(x1, 0, x1, h); line(x2, 0, x2, h);
+    line(0, y1, w, y1); line(0, y2, w, y2);
+    for (const x of [x1, x2]) for (const y of [y1, y2]) dot(x, y);
+  }
+
+  if (guide === 'cross') {
+    line(w / 2, 0, w / 2, h); line(0, h / 2, w, h / 2);
+    dot(w / 2, h / 2);
+  }
+
+  if (guide === 'diagonals') {
+    line(0, 0, w, h); line(w, 0, 0, h);
+  }
+
+  if (guide === 'quadrants') {
+    line(w / 2, 0, w / 2, h); line(0, h / 2, w, h / 2);
+    const labels    = ['1', '2', '3', '4'];
+    const positions = [[w * 0.25, h * 0.25], [w * 0.75, h * 0.25], [w * 0.25, h * 0.75], [w * 0.75, h * 0.75]];
+    const fSize     = Math.max(12, w * 0.022);
+    ctx.save();
+    ctx.font             = `bold ${fSize}px sans-serif`;
+    ctx.fillStyle        = 'rgba(255,255,255,0.35)';
+    ctx.textAlign        = 'center';
+    ctx.textBaseline     = 'middle';
+    for (let i = 0; i < 4; i++) ctx.fillText(labels[i], positions[i][0], positions[i][1]);
+    ctx.restore();
+  }
+
+  if (guide === 'spiral') {
+    for (let ori = 0; ori < 4; ori++) {
+      const alpha = ori === spiralOrientation ? 0.5 : 0.12;
+      drawGoldenSpiral(ctx, w, h, ori, alpha, lw);
+    }
+  }
+
+  ctx.restore();
+}
+
+/**
+ * Draw a golden spiral (Fibonacci arc approximation) for one orientation.
+ * Orientations: 0=TL, 1=TR, 2=BR, 3=BL
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} w
+ * @param {number} h
+ * @param {number} orientation  0–3
+ * @param {number} alpha
+ * @param {number} lw  line width
+ */
+function drawGoldenSpiral(ctx, w, h, orientation, alpha, lw) {
+  ctx.save();
+  ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+  ctx.lineWidth   = lw;
+  ctx.setLineDash([]);
+
+  // Mirror transformations for 4 orientations
+  ctx.translate(w / 2, h / 2);
+  if (orientation === 1) ctx.scale(-1,  1);
+  if (orientation === 2) ctx.scale(-1, -1);
+  if (orientation === 3) ctx.scale( 1, -1);
+  ctx.translate(-w / 2, -h / 2);
+
+  // Decompose canvas into Fibonacci rectangles and draw one arc per square
+  let bw = w, bh = h, bx = 0, by = 0;
+  const rects = [];
+  for (let i = 0; i < 6; i++) {
+    if (bw >= bh) {
+      rects.push({ x: bx, y: by, s: bh });
+      bx += bh;
+      bw -= bh;
+    } else {
+      rects.push({ x: bx, y: by, s: bw });
+      by += bw;
+      bh -= bw;
+    }
+  }
+
+  // Arc start angles for each successive square (clockwise spiral from top-right)
+  const startAngles = [Math.PI, Math.PI * 1.5, 0, Math.PI * 0.5, Math.PI, Math.PI * 1.5];
+  // Arc center corners: cycle through bottom-right, bottom-left, top-left, top-right
+  const cornerOffsets = [
+    (r) => [r.x + r.s, r.y + r.s],
+    (r) => [r.x,       r.y + r.s],
+    (r) => [r.x,       r.y      ],
+    (r) => [r.x + r.s, r.y      ],
+  ];
+
+  ctx.beginPath();
+  for (let i = 0; i < rects.length; i++) {
+    const r      = rects[i];
+    const [acx, acy] = cornerOffsets[i % 4](r);
+    ctx.arc(acx, acy, r.s, startAngles[i], startAngles[i] + Math.PI / 2);
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
 // ── Main renderer ─────────────────────────────────────────────────────────
 
 export class Renderer {
@@ -97,6 +244,16 @@ export class Renderer {
     this.selectedLayerId = null;
     /** @type {boolean} */
     this.isDragging = false;
+    /** @type {string|null} active composition guide key */
+    this.activeGuide       = null;
+    /** @type {number} golden spiral orientation 0–3 */
+    this.spiralOrientation = 0;
+    /** @type {boolean} */
+    this.showHeatmap       = false;
+    /** @type {Array} analysis zones [{id,x,y,w,h,analysis}] */
+    this.analysisZones     = [];
+    /** @type {Float32Array|null} pre-computed heatmap scores */
+    this._heatmapScores    = null;
   }
 
   /**
@@ -267,6 +424,11 @@ export class Renderer {
             }
           }
         } catch { /* cosmetic — must not break render */ }
+      }
+
+      // Composition guide overlay
+      if (!forExport && this.activeGuide) {
+        drawCompositionGuide(ctx, effW, effH, this.activeGuide, this.spiralOrientation);
       }
 
       // Safe zone overlay
