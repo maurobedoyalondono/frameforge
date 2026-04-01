@@ -35,6 +35,8 @@ import { showAssignmentConflictModal } from './ui/assignment-conflict-modal.js';
 import { showClearProjectsModal } from './ui/clear-projects-modal.js';
 import { showProjectSelectModal } from './ui/project-select-modal.js';
 import { showJsonLoadReviewModal } from './ui/json-load-review-modal.js';
+import { buildHeatmap, analyzeZone } from './modules/visual-analysis.js';
+import { BalancePanel } from './ui/balance-panel.js';
 
 // ── App State ─────────────────────────────────────────────────────────────
 
@@ -243,6 +245,58 @@ async function init() {
   // Safe zone overlay element inside canvas wrap
   const safeZoneEl = document.getElementById('safe-zone-overlay');
 
+  // ── Balance Panel ──────────────────────────────────────────────────────
+  let balancePanel = null;
+  let zoneDrawState = { active: false, startX: 0, startY: 0, currentRect: null };
+  let nextZoneNum = 1;
+
+  function getOrCreateBalancePanel() {
+    if (!balancePanel) {
+      balancePanel = new BalancePanel(canvasAreaEl, {
+        onDeleteZone: (id) => {
+          renderer.analysisZones = renderer.analysisZones.filter(z => z.id !== id);
+          syncBalancePanel();
+          renderCurrentFrame();
+        },
+        onClearAll: clearAllZones,
+        onClose:    hideBalancePanel,
+      });
+    }
+    return balancePanel;
+  }
+
+  function syncBalancePanel() {
+    const panel = getOrCreateBalancePanel();
+    const hasContent = renderer.analysisZones.length > 0 || renderer.showHeatmap;
+    panel.setVisible(hasContent);
+    panel.update(renderer.analysisZones, renderer.showHeatmap);
+    const clearBtn = tb.balanceDropdown?.querySelector('#balance-clear-zones');
+    if (clearBtn) clearBtn.disabled = renderer.analysisZones.length === 0;
+    const dzChk = tb.balanceDropdown?.querySelector('#balance-draw-zones');
+    if (dzChk) dzChk.disabled = renderer.analysisZones.length >= 8 && !zoneDrawState.active;
+  }
+
+  function clearAllZones() {
+    renderer.analysisZones = [];
+    nextZoneNum = 1;
+    zoneDrawState.active = false;
+    canvasWrapEl.classList.remove('zone-draw-mode');
+    const dzChk = tb.balanceDropdown?.querySelector('#balance-draw-zones');
+    if (dzChk) dzChk.checked = false;
+    syncBalancePanel();
+    renderCurrentFrame();
+  }
+
+  function hideBalancePanel() {
+    if (balancePanel) balancePanel.setVisible(false);
+  }
+
+  function updateBalanceBtnState() {
+    if (!tb.btnBalance) return;
+    const isActive = renderer.activeGuide || renderer.showHeatmap || renderer.analysisZones.length > 0;
+    tb.btnBalance.style.color = isActive ? 'var(--color-accent)' : '';
+  }
+
   // ── Sub-UI instances ────────────────────────────────────────────────────
   const filmstrip  = new Filmstrip(filmstripListEl, filmstripCountEl, ctxMenu);
   const inspector  = new Inspector(inspectorContentEl);
@@ -268,6 +322,8 @@ async function init() {
   let prefs = storage.loadPrefs();
   renderer.showSafeZone    = prefs.safe_zone_visible ?? false;
   renderer.showLayerBounds = prefs.layers_visible    ?? false;
+  renderer.activeGuide       = prefs.active_guide       ?? null;
+  renderer.spiralOrientation = prefs.spiral_orientation ?? 0;
 
   // ── DropZone ─────────────────────────────────────────────────────────────
   new DropZone(
@@ -327,6 +383,159 @@ async function init() {
   tb.btnLayers    .addEventListener('click', () => toggleLayersPanel());
   tb.btnClear     .addEventListener('click', () => doClearProject());
 
+  // ── Balance button click → open/close dropdown ──────────────────────────
+  tb.btnBalance?.addEventListener('click', (e) => {
+    const dd = tb.balanceDropdown;
+    if (!dd) return;
+    const isOpen = dd.style.display !== 'none';
+    if (isOpen) {
+      dd.style.display = 'none';
+      tb.btnBalance.setAttribute('aria-expanded', 'false');
+    } else {
+      const btnRect = tb.btnBalance.getBoundingClientRect();
+      dd.style.display  = '';
+      dd.style.top      = `${btnRect.bottom + 4}px`;
+      dd.style.left     = `${btnRect.left}px`;
+      tb.btnBalance.setAttribute('aria-expanded', 'true');
+    }
+    e.stopPropagation();
+  });
+
+  document.addEventListener('click', (e) => {
+    const dd = tb.balanceDropdown;
+    if (!dd || dd.style.display === 'none') return;
+    if (!dd.contains(e.target) && e.target !== tb.btnBalance) {
+      dd.style.display = 'none';
+      tb.btnBalance?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ── Guide radio buttons ──────────────────────────────────────────────────
+  tb.balanceDropdown?.querySelectorAll('input[name="balance-guide"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const val = radio.value;
+      if (val === 'spiral' && val === renderer.activeGuide) {
+        renderer.spiralOrientation = (renderer.spiralOrientation + 1) % 4;
+        prefs.spiral_orientation = renderer.spiralOrientation;
+        storage.savePrefs(prefs);
+      }
+      renderer.activeGuide = val === 'off' ? null : val;
+      prefs.active_guide = renderer.activeGuide;
+      storage.savePrefs(prefs);
+      updateBalanceBtnState();
+      renderCurrentFrame();
+    });
+  });
+
+  // Restore active guide radio from prefs on load
+  if (renderer.activeGuide) {
+    const radio = tb.balanceDropdown?.querySelector(`input[value="${renderer.activeGuide}"]`);
+    if (radio) radio.checked = true;
+  }
+
+  // ── Heatmap checkbox ─────────────────────────────────────────────────────
+  tb.balanceDropdown?.querySelector('#balance-heatmap')?.addEventListener('change', (e) => {
+    renderer.showHeatmap = e.target.checked;
+    if (renderer.showHeatmap) {
+      requestAnimationFrame(() => {
+        if (!project.isLoaded) return;
+        const ctx = mainCanvas.getContext('2d');
+        const imgData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+        renderer._heatmapScores = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
+        renderCurrentFrame();
+        syncBalancePanel();
+      });
+    } else {
+      renderer._heatmapScores = null;
+      syncBalancePanel();
+      renderCurrentFrame();
+    }
+    updateBalanceBtnState();
+  });
+
+  // ── Draw Zones checkbox and canvas interaction ────────────────────────────
+  tb.balanceDropdown?.querySelector('#balance-draw-zones')?.addEventListener('change', (e) => {
+    zoneDrawState.active = e.target.checked;
+    canvasWrapEl.classList.toggle('zone-draw-mode', zoneDrawState.active);
+  });
+
+  canvasWrapEl.addEventListener('mousedown', (e) => {
+    if (!zoneDrawState.active || !project.isLoaded) return;
+    if (e.button !== 0) return;
+    e.stopPropagation();
+    const rect = mainCanvas.getBoundingClientRect();
+    zoneDrawState.startX = e.clientX - rect.left;
+    zoneDrawState.startY = e.clientY - rect.top;
+    zoneDrawState.currentRect = null;
+  }, true);
+
+  canvasWrapEl.addEventListener('mousemove', (e) => {
+    if (!zoneDrawState.active || !project.isLoaded) return;
+    if (!(e.buttons & 1)) return;
+    const rect = mainCanvas.getBoundingClientRect();
+    const ex = e.clientX - rect.left;
+    const ey = e.clientY - rect.top;
+    zoneDrawState.currentRect = {
+      x: Math.min(zoneDrawState.startX, ex),
+      y: Math.min(zoneDrawState.startY, ey),
+      w: Math.abs(ex - zoneDrawState.startX),
+      h: Math.abs(ey - zoneDrawState.startY),
+    };
+    renderCurrentFrame();
+    const ctx = mainCanvas.getContext('2d');
+    const scaleX = mainCanvas.width  / rect.width;
+    const scaleY = mainCanvas.height / rect.height;
+    const r = zoneDrawState.currentRect;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(90,200,250,0.9)';
+    ctx.lineWidth   = 2;
+    ctx.setLineDash([8, 6]);
+    ctx.strokeRect(r.x * scaleX, r.y * scaleY, r.w * scaleX, r.h * scaleY);
+    ctx.restore();
+  });
+
+  canvasWrapEl.addEventListener('mouseup', (e) => {
+    if (!zoneDrawState.active || !project.isLoaded) return;
+    if (!zoneDrawState.currentRect) return;
+    const rect = mainCanvas.getBoundingClientRect();
+    const r = zoneDrawState.currentRect;
+    if (r.w < 10 || r.h < 10) { zoneDrawState.currentRect = null; return; }
+
+    const scaleX = mainCanvas.width  / rect.width;
+    const scaleY = mainCanvas.height / rect.height;
+    const cx = Math.round(r.x * scaleX);
+    const cy = Math.round(r.y * scaleY);
+    const cw = Math.round(r.w * scaleX);
+    const ch = Math.round(r.h * scaleY);
+
+    const fx = Math.max(0, Math.min(cx, mainCanvas.width  - 1));
+    const fy = Math.max(0, Math.min(cy, mainCanvas.height - 1));
+    const fw = Math.min(cw, mainCanvas.width  - fx);
+    const fh = Math.min(ch, mainCanvas.height - fy);
+
+    if (fw < 4 || fh < 4) { zoneDrawState.currentRect = null; return; }
+
+    const ctx = mainCanvas.getContext('2d');
+    const imgData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+    const analysis = analyzeZone(imgData, mainCanvas.width, fx, fy, fw, fh);
+
+    const zone = { id: `Z${nextZoneNum++}`, x: fx, y: fy, w: fw, h: fh, analysis };
+    renderer.analysisZones = [...renderer.analysisZones, zone];
+    zoneDrawState.currentRect = null;
+
+    syncBalancePanel();
+    renderCurrentFrame();
+    updateBalanceBtnState();
+    getOrCreateBalancePanel().setVisible(true);
+  });
+
+  // ── Clear All Zones button ────────────────────────────────────────────────
+  tb.balanceDropdown?.querySelector('#balance-clear-zones')?.addEventListener('click', () => {
+    clearAllZones();
+    tb.balanceDropdown.style.display = 'none';
+    tb.btnBalance?.setAttribute('aria-expanded', 'false');
+  });
+
   // ── Keyboard shortcuts ───────────────────────────────────────────────────
   registerKeyboardShortcuts({
     nextFrame:       () => navigateFrame(1),
@@ -338,6 +547,14 @@ async function init() {
     rerender:          () => project.isLoaded && renderCurrentFrame(),
     copyLayer:         copySelectedLayer,
     pasteLayer:        pasteLayer,
+    toggleBalance: () => {
+      if (!project.isLoaded) return;
+      const dd = tb.balanceDropdown;
+      if (!dd) return;
+      const isOpen = dd.style.display !== 'none';
+      dd.style.display = isOpen ? 'none' : '';
+      tb.btnBalance?.setAttribute('aria-expanded', String(!isOpen));
+    },
   });
 
   // ── White frame changes ───────────────────────────────────────────────────
@@ -1135,6 +1352,16 @@ async function init() {
     overlayToolbar.hide();
     hideOverlay(resizeOverlayEl);
 
+    // Clear analysis zones on frame switch
+    if (renderer.analysisZones.length > 0) {
+      renderer.analysisZones = [];
+      nextZoneNum = 1;
+      syncBalancePanel();
+    }
+    if (renderer.showHeatmap) {
+      renderer._heatmapScores = null;
+    }
+
     if (!project.setActiveFrame(index)) return;
     filmstrip.setActive(index);
     updateNavButtons();
@@ -1147,6 +1374,17 @@ async function init() {
 
     renderCurrentFrame();
     inspector.update(project, index, validation);
+
+    // Recompute heatmap for the new frame
+    if (renderer.showHeatmap) {
+      requestAnimationFrame(() => {
+        if (!project.isLoaded) return;
+        const ctx = mainCanvas.getContext('2d');
+        const imgData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+        renderer._heatmapScores = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
+        renderCurrentFrame();
+      });
+    }
   }
 
   function navigateFrame(delta) {
