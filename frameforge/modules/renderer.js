@@ -266,7 +266,7 @@ function drawHeatmap(ctx, w, h, scores, gridSize = 16) {
 
     // Interpolate cool (low weight) → warm (high weight)
     const r = Math.round(40  + score * (255 - 40));
-    const g = Math.round(120 - score * 120);
+    const g = Math.round(120 + score * 20);
     const b = Math.round(255 - score * 255);
     const a = 0.15 + score * 0.35;
     ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
