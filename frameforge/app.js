@@ -250,6 +250,7 @@ async function init() {
   let zoneDrawState = { active: false, startX: 0, startY: 0, currentRect: null };
   let nextZoneNum = 1;
   let _advisorActive = false;
+  let _panelManuallyHidden = false;
 
   function getOrCreateBalancePanel() {
     if (!balancePanel) {
@@ -260,7 +261,7 @@ async function init() {
           renderCurrentFrame();
         },
         onClearAll: clearAllZones,
-        onClose:    hideBalancePanel,
+        onClose: () => { _panelManuallyHidden = true; hideBalancePanel(); },
         onMoveHere: () => _applyAdvisorPosition(),
         onAdvisorLayerChange: (layerId) => {
           renderer.advisorLayer = layerId || null;
@@ -291,8 +292,13 @@ async function init() {
 
   function syncBalancePanel() {
     const panel = getOrCreateBalancePanel();
-    const hasContent = renderer.analysisZones.length > 0 || renderer.showHeatmap || _advisorActive;
-    panel.setVisible(hasContent);
+    const hasContent = renderer.analysisZones.length > 0 || _advisorActive;
+    if (!hasContent) {
+      panel.setVisible(false);
+      _panelManuallyHidden = false; // reset so it opens next time there is content
+    } else if (!_panelManuallyHidden) {
+      panel.setVisible(true);
+    }
     panel.update(
       renderer.analysisZones,
       renderer.showHeatmap,
@@ -621,10 +627,10 @@ async function init() {
     renderer.analysisZones = [...renderer.analysisZones, zone];
     zoneDrawState.currentRect = null;
 
+    _panelManuallyHidden = false; // new zone drawn — show the panel
     syncBalancePanel();
     renderCurrentFrame();
     updateBalanceBtnState();
-    getOrCreateBalancePanel().setVisible(true);
   });
 
   // ── Clear All Zones button ────────────────────────────────────────────────
@@ -637,6 +643,7 @@ async function init() {
   // ── Element Advisor checkbox ──────────────────────────────────────────────
   tb.balanceDropdown?.querySelector('#balance-advisor')?.addEventListener('change', (e) => {
     _advisorActive = e.target.checked;
+    if (_advisorActive) _panelManuallyHidden = false; // activating advisor should open the panel
     const sel = tb.balanceDropdown?.querySelector('#balance-advisor-layer');
     if (sel) sel.style.display = _advisorActive ? '' : 'none';
 

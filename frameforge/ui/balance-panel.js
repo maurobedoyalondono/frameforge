@@ -249,8 +249,12 @@ export class BalancePanel {
    */
   update(zones, heatmapActive, heatmap = null, advisorState = null) {
     if (!this._el) return;
+
+    // Only show the "Clear All Zones" actions bar when zones exist
+    const actionsEl = this._el.querySelector('.balance-panel-actions');
+    if (actionsEl) actionsEl.style.display = zones.length > 0 ? '' : 'none';
     const clearBtn = this._el.querySelector('.balance-clear-all');
-    clearBtn.disabled = zones.length === 0;
+    if (clearBtn) clearBtn.disabled = zones.length === 0;
 
     // Weight readout (top of body, always first)
     this.updateWeightReadout(heatmap);
