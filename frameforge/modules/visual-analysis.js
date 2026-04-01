@@ -153,7 +153,7 @@ export function findBestPosition(heatmapScores, canvasW, canvasH, layerW, layerH
     }
   }
   const totalWeight = sumLeft + sumRight || 1;
-  const maxDelta    = totalWeight;
+  const maxDelta    = totalWeight + elemWeight;
 
   // Synthetic element weight: proportional to area, capped at 40% of total
   const elemArea   = (layerW * layerH) / (canvasW * canvasH);
