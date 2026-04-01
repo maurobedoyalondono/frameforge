@@ -89,9 +89,9 @@ export class BalancePanel {
         <span class="balance-zone-name">${escHtml(zone.id)}</span>
         <button class="balance-zone-delete" data-id="${escHtml(zone.id)}" title="Delete zone" aria-label="Delete zone ${escHtml(zone.id)}">×</button>
       </div>
-      <div class="balance-zone-row"><span>Avg Luminance</span><span>${a.avgLuminance}/100</span></div>
+      <div class="balance-zone-row"><span>Avg Luminance</span><span>${escHtml(a.avgLuminance)}/100</span></div>
       <div class="balance-zone-row"><span>Contrast</span><span>${escHtml(a.contrastScore)}</span></div>
-      <div class="balance-zone-row"><span>Visual Weight</span><span>${a.visualWeight}/10</span></div>
+      <div class="balance-zone-row"><span>Visual Weight</span><span>${escHtml(a.visualWeight)}/10</span></div>
       <div class="balance-zone-row">
         <span>Dominant</span>
         <span class="balance-swatch-row">
@@ -107,7 +107,7 @@ export class BalancePanel {
           ${escHtml(a.textRec.color === '#ffffff' ? 'White' : 'Black')} ${escHtml(a.textRec.color)}
         </div>
         <div class="balance-rec-row">
-          WCAG ratio: ${a.textRec.ratio}:1 &nbsp;
+          WCAG ratio: ${escHtml(a.textRec.ratio)}:1 &nbsp;
           <span class="balance-badge ${wcagBadgeClass}">${escHtml(a.textRec.level)}</span>
         </div>
         <div class="balance-rec-desc">${escHtml(a.descriptor)}</div>
