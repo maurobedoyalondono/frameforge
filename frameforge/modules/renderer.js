@@ -234,6 +234,131 @@ function drawGoldenSpiral(ctx, w, h, orientation, alpha, lw) {
   ctx.restore();
 }
 
+// ── Heatmap overlay ───────────────────────────────────────────────────────
+
+/**
+ * Draw the visual weight heatmap on ctx using pre-computed scores.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} w
+ * @param {number} h
+ * @param {Float32Array} scores  gridSize×gridSize scores 0–1 in row-major order
+ * @param {number} [gridSize=16]
+ */
+function drawHeatmap(ctx, w, h, scores, gridSize = 16) {
+  if (!scores || scores.length < gridSize * gridSize) return;
+
+  const cellW = w / gridSize;
+  const cellH = h / gridSize;
+
+  // Find top-3 heaviest and top-3 lightest indices
+  const indexed = Array.from(scores).map((s, i) => ({ s, i }));
+  const sorted  = [...indexed].sort((a, b) => b.s - a.s);
+  const heavySet = new Set(sorted.slice(0, 3).map(e => e.i));
+  const lightSet = new Set(sorted.slice(-3).map(e => e.i));
+
+  ctx.save();
+  for (let idx = 0; idx < scores.length; idx++) {
+    const score = scores[idx];
+    const row   = Math.floor(idx / gridSize);
+    const col   = idx % gridSize;
+    const x     = col * cellW;
+    const y     = row * cellH;
+
+    // Interpolate cool (low weight) → warm (high weight)
+    const r = Math.round(40  + score * (255 - 40));
+    const g = Math.round(120 - score * 120);
+    const b = Math.round(255 - score * 255);
+    const a = 0.15 + score * 0.35;
+    ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+    ctx.fillRect(x, y, cellW, cellH);
+  }
+
+  // Badge marks on top-3 heaviest and lightest cells
+  const fSize = Math.max(10, cellW * 0.35);
+  ctx.font         = `bold ${fSize}px sans-serif`;
+  ctx.textAlign    = 'center';
+  ctx.textBaseline = 'middle';
+
+  for (let idx = 0; idx < scores.length; idx++) {
+    const row = Math.floor(idx / gridSize);
+    const col = idx % gridSize;
+    const cx  = col * cellW + cellW / 2;
+    const cy  = row * cellH + cellH / 2;
+    if (heavySet.has(idx)) {
+      ctx.fillStyle = 'rgba(255,140,0,0.9)';
+      ctx.fillText('▲', cx, cy);
+    } else if (lightSet.has(idx)) {
+      ctx.fillStyle = 'rgba(90,200,250,0.9)';
+      ctx.fillText('▽', cx, cy);
+    }
+  }
+
+  ctx.restore();
+}
+
+// ── Zone overlays ─────────────────────────────────────────────────────────
+
+/**
+ * Draw analysis zone rectangles on ctx.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} w  canvas effective width
+ * @param {number} h  canvas effective height
+ * @param {Array} zones  [{id, x, y, w, h, analysis}] — in canvas pixel coords
+ */
+function drawZoneOverlays(ctx, w, h, zones) {
+  if (!zones || zones.length === 0) return;
+
+  const lw = Math.max(1, w / 600);
+  ctx.save();
+
+  for (const zone of zones) {
+    // Dashed cyan border
+    ctx.strokeStyle = 'rgba(90,200,250,0.8)';
+    ctx.lineWidth   = lw * 1.5;
+    ctx.setLineDash([w / 60, w / 80]);
+    ctx.strokeRect(zone.x, zone.y, zone.w, zone.h);
+
+    // Number badge — background rect + text
+    ctx.setLineDash([]);
+    const fSize = Math.max(11, w * 0.018);
+    ctx.font = `bold ${fSize}px sans-serif`;
+    const label  = zone.id;
+    const padX   = fSize * 0.5;
+    const padY   = fSize * 0.3;
+    const tw     = ctx.measureText(label).width + padX * 2;
+    const th     = fSize + padY * 2;
+
+    ctx.fillStyle = 'rgba(90,200,250,0.85)';
+    ctx.fillRect(zone.x, zone.y, tw, th);
+
+    ctx.fillStyle    = '#000';
+    ctx.textAlign    = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(label, zone.x + padX, zone.y + padY);
+
+    // "Good for text" badge for low-weight zones (weight <= 4.0)
+    if (zone.analysis && zone.analysis.visualWeight <= 4.0) {
+      const badge  = '✓ Good for text';
+      const bSize  = Math.max(10, w * 0.014);
+      ctx.font     = `${bSize}px sans-serif`;
+      const bPadX  = bSize * 0.5;
+      const bPadY  = bSize * 0.3;
+      const bw     = ctx.measureText(badge).width + bPadX * 2;
+      const bh     = bSize + bPadY * 2;
+      const bx     = zone.x + zone.w - bw;
+      const by     = zone.y;
+      ctx.fillStyle = 'rgba(50,200,100,0.85)';
+      ctx.fillRect(bx, by, bw, bh);
+      ctx.fillStyle    = '#000';
+      ctx.textAlign    = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText(badge, zone.x + zone.w - bPadX, by + bPadY);
+    }
+  }
+
+  ctx.restore();
+}
+
 // ── Main renderer ─────────────────────────────────────────────────────────
 
 export class Renderer {
@@ -431,6 +556,16 @@ export class Renderer {
       // Composition guide overlay
       if (!forExport && this.activeGuide) {
         drawCompositionGuide(ctx, effW, effH, this.activeGuide, this.spiralOrientation);
+      }
+
+      // Heatmap overlay (scores pre-computed by app.js after each render)
+      if (!forExport && this.showHeatmap && this._heatmapScores) {
+        drawHeatmap(ctx, effW, effH, this._heatmapScores);
+      }
+
+      // Zone overlays
+      if (!forExport && this.analysisZones.length > 0) {
+        drawZoneOverlays(ctx, effW, effH, this.analysisZones);
       }
 
       // Safe zone overlay
