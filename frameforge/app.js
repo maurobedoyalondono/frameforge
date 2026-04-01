@@ -10,7 +10,7 @@ import { validateProject } from './modules/validator.js';
 import { loadProjectFonts, loadFont } from './modules/fonts.js';
 import * as storage      from './modules/storage.js';
 import { exportFrame, exportAllFrames } from './modules/export.js';
-import { buildHeatmap, analyzeZone } from './modules/visual-analysis.js';
+import { buildHeatmap, analyzeZone, findBestPosition } from './modules/visual-analysis.js';
 
 import {
   StatusBar, ToastManager, ProgressOverlay, ContextMenu,
@@ -249,6 +249,7 @@ async function init() {
   let balancePanel = null;
   let zoneDrawState = { active: false, startX: 0, startY: 0, currentRect: null };
   let nextZoneNum = 1;
+  let _advisorActive = false;
 
   function getOrCreateBalancePanel() {
     if (!balancePanel) {
@@ -260,6 +261,29 @@ async function init() {
         },
         onClearAll: clearAllZones,
         onClose:    hideBalancePanel,
+        onMoveHere: () => _applyAdvisorPosition(),
+        onAdvisorLayerChange: (layerId) => {
+          renderer.advisorLayer = layerId || null;
+          if (renderer.advisorLayer) {
+            _runAdvisor();
+          } else {
+            renderer.advisorPositions = null;
+            renderer.advisorLayerSize = null;
+            syncBalancePanel();
+            renderCurrentFrame();
+          }
+          // Sync the dropdown select
+          const sel = tb.balanceDropdown?.querySelector('#balance-advisor-layer');
+          if (sel && sel.value !== (layerId ?? '')) sel.value = layerId ?? '';
+        },
+        onAdvisorModeChange: (mode) => {
+          renderer.advisorMode = mode;
+          syncBalancePanel();
+          renderCurrentFrame();
+        },
+        onWeightAxisChange: () => {
+          syncBalancePanel();
+        },
       });
     }
     return balancePanel;
@@ -267,9 +291,20 @@ async function init() {
 
   function syncBalancePanel() {
     const panel = getOrCreateBalancePanel();
-    const hasContent = renderer.analysisZones.length > 0 || renderer.showHeatmap;
+    const hasContent = renderer.analysisZones.length > 0 || renderer.showHeatmap || _advisorActive;
     panel.setVisible(hasContent);
-    panel.update(renderer.analysisZones, renderer.showHeatmap);
+    panel.update(
+      renderer.analysisZones,
+      renderer.showHeatmap,
+      renderer._heatmap,
+      _advisorActive ? {
+        layers:       _getAdvisorEligibleLayers(),
+        layerId:      renderer.advisorLayer,
+        mode:         renderer.advisorMode,
+        positions:    renderer.advisorPositions,
+        active:       _advisorActive,
+      } : null,
+    );
     const clearBtn = tb.balanceDropdown?.querySelector('#balance-clear-zones');
     if (clearBtn) clearBtn.disabled = renderer.analysisZones.length === 0;
     const dzChk = tb.balanceDropdown?.querySelector('#balance-draw-zones');
@@ -289,6 +324,66 @@ async function init() {
 
   function hideBalancePanel() {
     if (balancePanel) balancePanel.setVisible(false);
+  }
+
+  function recomputeHeatmap() {
+    if (!renderer.showHeatmap || !project.isLoaded) return;
+    const ctx = mainCanvas.getContext('2d');
+    const imgData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+    renderer._heatmap = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
+    renderCurrentFrame();
+    syncBalancePanel();
+  }
+
+  function _getAdvisorEligibleLayers() {
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    return (frame?.layers ?? []).filter(l => l.type === 'text' || l.type === 'shape');
+  }
+
+  function _runAdvisor() {
+    if (!renderer.advisorLayer || !renderer._heatmap) return;
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    const layer = (frame?.layers ?? []).find(l => l.id === renderer.advisorLayer);
+    if (!layer) return;
+
+    const ctx = mainCanvas.getContext('2d');
+    const w = mainCanvas.width, h = mainCanvas.height;
+
+    let layerW, layerH;
+    if (layer.type === 'text') {
+      const bounds = computeTextBounds(ctx, layer, w, h, project);
+      layerW = bounds ? Math.max(1, bounds.right - bounds.left) : Math.round(w * 0.3);
+      layerH = bounds ? Math.max(1, bounds.bottom - bounds.top)  : Math.round(h * 0.1);
+    } else {
+      const bounds = computeShapeBounds(ctx, layer, w, h, project);
+      layerW = bounds ? Math.max(1, bounds.right - bounds.left) : Math.round(w * 0.2);
+      layerH = bounds ? Math.max(1, bounds.bottom - bounds.top)  : Math.round(h * 0.2);
+    }
+
+    const positions = findBestPosition(renderer._heatmap.scores, w, h, layerW, layerH);
+    renderer.advisorPositions = positions;
+    renderer.advisorLayerSize = { w: layerW, h: layerH };
+    syncBalancePanel();
+    renderCurrentFrame();
+  }
+
+  function _applyAdvisorPosition() {
+    if (!renderer.advisorLayer || !renderer.advisorPositions) return;
+    const frame = project.data?.frames?.[project.activeFrameIndex];
+    const layer = (frame?.layers ?? []).find(l => l.id === renderer.advisorLayer);
+    if (!layer) return;
+
+    const pos = renderer.advisorMode === 'legibility'
+      ? renderer.advisorPositions.legibility
+      : renderer.advisorPositions.balance;
+
+    layer.x = pos.x;
+    layer.y = pos.y;
+    project.save();
+    renderCurrentFrame();
+    filmstrip.renderOne(project.activeFrameIndex, project);
+    recomputeHeatmap();
+    _runAdvisor();
   }
 
   function updateBalanceBtnState() {
@@ -441,12 +536,12 @@ async function init() {
         if (!project.isLoaded) return;
         const ctx = mainCanvas.getContext('2d');
         const imgData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
-        renderer._heatmapScores = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
+        renderer._heatmap = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
         renderCurrentFrame();
         syncBalancePanel();
       });
     } else {
-      renderer._heatmapScores = null;
+      renderer._heatmap = null;
       syncBalancePanel();
       renderCurrentFrame();
     }
@@ -534,6 +629,44 @@ async function init() {
     clearAllZones();
     tb.balanceDropdown.style.display = 'none';
     tb.btnBalance?.setAttribute('aria-expanded', 'false');
+  });
+
+  // ── Element Advisor checkbox ──────────────────────────────────────────────
+  tb.balanceDropdown?.querySelector('#balance-advisor')?.addEventListener('change', (e) => {
+    _advisorActive = e.target.checked;
+    const sel = tb.balanceDropdown?.querySelector('#balance-advisor-layer');
+    if (sel) sel.style.display = _advisorActive ? '' : 'none';
+
+    if (!_advisorActive) {
+      renderer.advisorLayer     = null;
+      renderer.advisorPositions = null;
+      renderer.advisorLayerSize = null;
+      if (sel) sel.value = '';
+    } else if (project.isLoaded) {
+      // Populate the layer select
+      const layers = _getAdvisorEligibleLayers();
+      if (sel) {
+        sel.innerHTML = '<option value="">— pick a layer —</option>' +
+          layers.map(l => `<option value="${escHtml(l.id)}">${escHtml(l.label ?? l.id)}</option>`).join('');
+      }
+    }
+
+    syncBalancePanel();
+    renderCurrentFrame();
+    updateBalanceBtnState();
+  });
+
+  // ── Element Advisor layer select ──────────────────────────────────────────
+  tb.balanceDropdown?.querySelector('#balance-advisor-layer')?.addEventListener('change', (e) => {
+    renderer.advisorLayer = e.target.value || null;
+    if (renderer.advisorLayer && renderer._heatmap) {
+      _runAdvisor();
+    } else {
+      renderer.advisorPositions = null;
+      renderer.advisorLayerSize = null;
+      syncBalancePanel();
+      renderCurrentFrame();
+    }
   });
 
   // ── Keyboard shortcuts ───────────────────────────────────────────────────
@@ -1195,7 +1328,12 @@ async function init() {
       project,
       () => project.activeFrameIndex,
       () => { renderer.isDragging = true; renderCurrentFrame(); positionToolbar(); },
-      (frameIndex) => { renderer.isDragging = false; filmstrip.renderOne(frameIndex, project); },
+      (frameIndex) => {
+        renderer.isDragging = false;
+        filmstrip.renderOne(frameIndex, project);
+        recomputeHeatmap();
+        if (renderer.advisorLayer) _runAdvisor();
+      },
       onLayerClick,
     );
     initResize(
@@ -1204,7 +1342,12 @@ async function init() {
       project,
       () => project.activeFrameIndex,
       () => { renderer.isDragging = true; renderCurrentFrame(); positionToolbar(); },
-      (frameIndex) => { renderer.isDragging = false; filmstrip.renderOne(frameIndex, project); },
+      (frameIndex) => {
+        renderer.isDragging = false;
+        filmstrip.renderOne(frameIndex, project);
+        recomputeHeatmap();
+        if (renderer.advisorLayer) _runAdvisor();
+      },
     );
 
     // Inspector
@@ -1352,15 +1495,23 @@ async function init() {
     overlayToolbar.hide();
     hideOverlay(resizeOverlayEl);
 
-    // Clear analysis zones on frame switch
+    // Clear analysis zones and advisor state on frame switch
     if (renderer.analysisZones.length > 0) {
       renderer.analysisZones = [];
       nextZoneNum = 1;
-      syncBalancePanel();
     }
-    if (renderer.showHeatmap) {
-      renderer._heatmapScores = null;
+    renderer._heatmap        = null;
+    renderer.advisorLayer    = null;
+    renderer.advisorPositions = null;
+    renderer.advisorLayerSize = null;
+    if (_advisorActive) {
+      const sel = tb.balanceDropdown?.querySelector('#balance-advisor-layer');
+      if (sel) {
+        sel.value = '';
+        sel.innerHTML = '<option value="">— pick a layer —</option>';
+      }
     }
+    syncBalancePanel();
 
     if (!project.setActiveFrame(index)) return;
     filmstrip.setActive(index);
@@ -1381,7 +1532,7 @@ async function init() {
         if (!project.isLoaded) return;
         const ctx = mainCanvas.getContext('2d');
         const imgData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
-        renderer._heatmapScores = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
+        renderer._heatmap = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
         renderCurrentFrame();
         syncBalancePanel();
       });
