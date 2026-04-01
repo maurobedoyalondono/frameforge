@@ -153,11 +153,13 @@ export function findBestPosition(heatmapScores, canvasW, canvasH, layerW, layerH
     }
   }
   const totalWeight = sumLeft + sumRight || 1;
-  const maxDelta    = totalWeight + elemWeight;
 
   // Synthetic element weight: proportional to area, capped at 40% of total
   const elemArea   = (layerW * layerH) / (canvasW * canvasH);
   const elemWeight = Math.min(elemArea * totalWeight * 0.4, totalWeight * 0.4);
+
+  // maxDelta: worst-case delta after adding element to one side
+  const maxDelta   = totalWeight + elemWeight;
 
   // 5×5 candidate grid for top-left anchor (12.5% increments)
   const STEPS = 5;
