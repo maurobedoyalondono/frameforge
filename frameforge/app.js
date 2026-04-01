@@ -10,6 +10,7 @@ import { validateProject } from './modules/validator.js';
 import { loadProjectFonts, loadFont } from './modules/fonts.js';
 import * as storage      from './modules/storage.js';
 import { exportFrame, exportAllFrames } from './modules/export.js';
+import { buildHeatmap, analyzeZone } from './modules/visual-analysis.js';
 
 import {
   StatusBar, ToastManager, ProgressOverlay, ContextMenu,
@@ -35,7 +36,6 @@ import { showAssignmentConflictModal } from './ui/assignment-conflict-modal.js';
 import { showClearProjectsModal } from './ui/clear-projects-modal.js';
 import { showProjectSelectModal } from './ui/project-select-modal.js';
 import { showJsonLoadReviewModal } from './ui/json-load-review-modal.js';
-import { buildHeatmap, analyzeZone } from './modules/visual-analysis.js';
 import { BalancePanel } from './ui/balance-panel.js';
 
 // ── App State ─────────────────────────────────────────────────────────────
@@ -1383,6 +1383,7 @@ async function init() {
         const imgData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
         renderer._heatmapScores = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
         renderCurrentFrame();
+        syncBalancePanel();
       });
     }
   }
