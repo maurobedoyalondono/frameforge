@@ -307,6 +307,32 @@ export function buildToolbar(toolbarEl) {
         <path d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4z"/>
       </svg>
     </button>
+    <button class="btn btn-ghost btn-icon" id="btn-balance" title="Visual Balance [B]" aria-expanded="false" aria-controls="balance-dropdown" disabled>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 3a1 1 0 0 1 .894.553l3.382 6.764 4.618.672a1 1 0 0 1 .555 1.706l-3.342 3.258.789 4.601a1 1 0 0 1-1.451 1.054L12 19.347l-4.445 2.261a1 1 0 0 1-1.451-1.054l.789-4.601L3.551 12.695a1 1 0 0 1 .555-1.706l4.618-.672L12.106 3.553A1 1 0 0 1 12 3z" opacity="0.6"/>
+        <line x1="4" y1="21" x2="20" y2="21" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span style="font-size:9px;line-height:1;margin-left:-2px">▾</span>
+    </button>
+
+    <!-- Balance dropdown (hidden by default) -->
+    <div id="balance-dropdown" class="balance-dropdown" style="display:none" role="group" aria-labelledby="balance-dropdown-title">
+      <div class="balance-dropdown-header" id="balance-dropdown-title">Visual Balance</div>
+      <div class="balance-dropdown-section-label">Composition Guides</div>
+      <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="off" checked> Off</label>
+      <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="thirds"> Rule of Thirds</label>
+      <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="phi"> Phi Grid</label>
+      <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="spiral"> Golden Spiral</label>
+      <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="cross"> Center Cross</label>
+      <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="diagonals"> Diagonals</label>
+      <label class="balance-dropdown-item"><input type="radio" name="balance-guide" value="quadrants"> Quadrants</label>
+      <div class="balance-dropdown-divider"></div>
+      <div class="balance-dropdown-section-label">Visual Analysis</div>
+      <label class="balance-dropdown-item"><input type="checkbox" id="balance-heatmap"> Weight Heatmap</label>
+      <label class="balance-dropdown-item" id="balance-draw-zones-label"><input type="checkbox" id="balance-draw-zones"> Draw Zones</label>
+      <button class="balance-dropdown-item balance-clear-zones-btn" id="balance-clear-zones" disabled>✕ Clear All Zones</button>
+    </div>
 
     <div class="toolbar-sep"></div>
 
@@ -366,6 +392,8 @@ export function buildToolbar(toolbarEl) {
     btnExportAll: document.getElementById('btn-export-all'),
     btnSafeZone:  document.getElementById('btn-safe-zone'),
     btnLayers:    document.getElementById('btn-layers'),
+    btnBalance:      document.getElementById('btn-balance'),
+    balanceDropdown: document.getElementById('balance-dropdown'),
     btnClear:     document.getElementById('btn-clear-project'),
     projectTitle: document.getElementById('project-title'),
   };
@@ -385,6 +413,7 @@ export function updateToolbarState(btns, hasProject, safeZoneActive = false, lay
     btns.btnExportAll,
     btns.btnSafeZone,
     btns.btnLayers,
+    btns.btnBalance,
     btns.btnClear,
   ];
   for (const el of els) {
@@ -450,6 +479,13 @@ export function registerKeyboardShortcuts(handlers) {
         if (!e.ctrlKey && !e.metaKey && !e.altKey) {
           e.preventDefault();
           handlers.toggleLayersPanel?.();
+        }
+        break;
+      case 'b':
+      case 'B':
+        if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          handlers.toggleBalance?.();
         }
         break;
       case 'r':
