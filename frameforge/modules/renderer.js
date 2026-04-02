@@ -359,6 +359,62 @@ function drawZoneOverlays(ctx, w, h, zones) {
   ctx.restore();
 }
 
+/**
+ * Draw ghost outlines for the Element Advisor's two candidate positions.
+ *
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{balance:{x:number,y:number},legibility:{x:number,y:number}}} positions
+ * @param {{w:number,h:number}} layerSize — bounding box in canvas pixels
+ * @param {'balance'|'legibility'} activeMode
+ */
+function drawAdvisorGhosts(ctx, positions, layerSize, activeMode) {
+  const { w, h } = layerSize;
+
+  const ghosts = [
+    { key: 'balance',    color: '90,180,255',  label: 'B', pos: positions.balance },
+    { key: 'legibility', color: '90,230,140',  label: 'L', pos: positions.legibility },
+  ];
+  ghosts.sort((a, b) => (a.key === activeMode ? 1 : -1));
+
+  ctx.save();
+  for (const ghost of ghosts) {
+    if (!ghost.pos) continue;
+    const isActive = ghost.key === activeMode;
+    const alpha    = isActive ? 1.0 : 0.4;
+    const { x, y } = ghost.pos;
+
+    // Fill
+    ctx.globalAlpha = isActive ? 0.15 : 0.06;
+    ctx.fillStyle   = `rgba(${ghost.color},1)`;
+    ctx.fillRect(x, y, w, h);
+
+    // Dashed stroke
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = `rgba(${ghost.color},0.85)`;
+    ctx.lineWidth   = isActive ? 2 : 1.5;
+    ctx.setLineDash([8, 5]);
+    ctx.strokeRect(x, y, w, h);
+    ctx.setLineDash([]);
+
+    // Badge label above the ghost
+    const badgeW = 20, badgeH = 16;
+    const bx = x, by = Math.max(0, y - badgeH - 2);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle   = `rgba(${ghost.color},0.9)`;
+    ctx.beginPath();
+    ctx.roundRect(bx, by, badgeW, badgeH, 3);
+    ctx.fill();
+
+    ctx.globalAlpha = 1;
+    ctx.fillStyle   = '#000';
+    ctx.font        = `bold 11px sans-serif`;
+    ctx.textAlign   = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(ghost.label, bx + badgeW / 2, by + badgeH / 2);
+  }
+  ctx.restore();
+}
+
 // ── Main renderer ─────────────────────────────────────────────────────────
 
 export class Renderer {
@@ -379,8 +435,16 @@ export class Renderer {
     this.showHeatmap       = false;
     /** @type {Array} analysis zones [{id,x,y,w,h,analysis}] */
     this.analysisZones     = [];
-    /** @type {Float32Array|null} pre-computed heatmap scores */
-    this._heatmapScores    = null;
+    /** @type {{scores:Float32Array,lumaScores:Float32Array,contrastScores:Float32Array,satScores:Float32Array}|null} pre-computed heatmap data */
+    this._heatmap          = null;
+    /** @type {string|null} layer id selected in Element Advisor */
+    this.advisorLayer      = null;
+    /** @type {'balance'|'legibility'} active advisor mode */
+    this.advisorMode       = 'balance';
+    /** @type {{balance:{x:number,y:number},legibility:{x:number,y:number}}|null} */
+    this.advisorPositions  = null;
+    /** @type {{w:number,h:number}|null} bounding box of the selected advisor layer */
+    this.advisorLayerSize  = null;
   }
 
   /**
@@ -559,13 +623,18 @@ export class Renderer {
       }
 
       // Heatmap overlay (scores pre-computed by app.js after each render)
-      if (!forExport && this.showHeatmap && this._heatmapScores) {
-        drawHeatmap(ctx, effW, effH, this._heatmapScores);
+      if (!forExport && this.showHeatmap && this._heatmap?.scores) {
+        drawHeatmap(ctx, effW, effH, this._heatmap.scores);
       }
 
       // Zone overlays
       if (!forExport && this.analysisZones.length > 0) {
         drawZoneOverlays(ctx, effW, effH, this.analysisZones);
+      }
+
+      // Advisor ghost overlays
+      if (!forExport && this.advisorPositions && this.advisorLayerSize) {
+        drawAdvisorGhosts(ctx, this.advisorPositions, this.advisorLayerSize, this.advisorMode);
       }
 
       // Safe zone overlay

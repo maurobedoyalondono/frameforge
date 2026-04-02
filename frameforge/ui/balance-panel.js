@@ -13,11 +13,14 @@ export class BalancePanel {
    * @param {function} [callbacks.onClearAll]    — called with no args
    * @param {function} [callbacks.onClose]       — called with no args
    */
-  constructor(canvasArea, { onDeleteZone, onClearAll, onClose } = {}) {
+  constructor(canvasArea, { onDeleteZone, onClearAll, onClose, onMoveHere, onAdvisorLayerChange, onAdvisorModeChange } = {}) {
     this._canvasArea   = canvasArea;
     this._onDeleteZone = onDeleteZone ?? (() => {});
     this._onClearAll   = onClearAll   ?? (() => {});
     this._onClose      = onClose      ?? (() => {});
+    this._onMoveHere           = onMoveHere           ?? (() => {});
+    this._onAdvisorLayerChange = onAdvisorLayerChange ?? (() => {});
+    this._onAdvisorModeChange  = onAdvisorModeChange  ?? (() => {});
     this._el           = null;
     this._build();
   }
@@ -35,7 +38,9 @@ export class BalancePanel {
       <div class="balance-panel-actions">
         <button class="btn btn-ghost balance-clear-all" disabled>Clear All Zones</button>
       </div>
-      <div class="balance-panel-body"></div>
+      <div class="balance-panel-body">
+        <div class="balance-advisor-card" style="display:none"></div>
+      </div>
     `;
     el.querySelector('.balance-panel-close').addEventListener('click', () => this._onClose());
     el.querySelector('.balance-clear-all').addEventListener('click', () => this._onClearAll());
@@ -50,19 +55,112 @@ export class BalancePanel {
   }
 
   /**
-   * Re-render zone cards.
+   * Update the Element Advisor card.
+   * @param {Array} layers — text and shape layers from the active frame
+   * @param {string|null} advisorLayerId — currently selected layer id
+   * @param {'balance'|'legibility'} advisorMode
+   * @param {{balance:{x:number,y:number},legibility:{x:number,y:number}}|null} advisorPositions
+   * @param {boolean} advisorActive — whether the advisor checkbox is checked
+   */
+  updateAdvisorCard(layers, advisorLayerId, advisorMode, advisorPositions, advisorActive) {
+    const el = this._el?.querySelector('.balance-advisor-card');
+    if (!el) return;
+
+    if (!advisorActive) {
+      el.style.display = 'none';
+      return;
+    }
+    el.style.display = '';
+
+    const options = layers
+      .filter(l => l.type === 'text' || l.type === 'shape')
+      .map(l => `<option value="${escHtml(l.id)}"${l.id === advisorLayerId ? ' selected' : ''}>${escHtml(l.label || l.id)}</option>`)
+      .join('');
+
+    const posHtml = advisorPositions
+      ? `<div class="balance-advisor-positions">
+           <div class="balance-advisor-pos-row">
+             <span class="balance-advisor-pos-badge balance">B</span>
+             <span>x=${Math.round(advisorPositions.balance.x)}&thinsp;px, y=${Math.round(advisorPositions.balance.y)}&thinsp;px</span>
+           </div>
+           <div class="balance-advisor-pos-row">
+             <span class="balance-advisor-pos-badge legibility">L</span>
+             <span>x=${Math.round(advisorPositions.legibility.x)}&thinsp;px, y=${Math.round(advisorPositions.legibility.y)}&thinsp;px</span>
+           </div>
+         </div>`
+      : `<div class="balance-advisor-hint">Select a layer to see suggestions.</div>`;
+
+    el.innerHTML = `
+      <div class="balance-advisor-header">
+        <span class="balance-advisor-title">Element Advisor</span>
+      </div>
+      <div class="balance-advisor-row">
+        <label class="balance-advisor-label" for="balance-advisor-layer-select">Layer</label>
+        <select id="balance-advisor-layer-select" class="balance-advisor-select">
+          <option value="">— pick a layer —</option>
+          ${options}
+        </select>
+      </div>
+      <div class="balance-advisor-mode-row">
+        <span class="balance-advisor-label">Mode</span>
+        <div class="balance-advisor-mode-btns">
+          <button class="balance-advisor-mode-btn${advisorMode === 'balance' ? ' active' : ''}" data-mode="balance">● Balance</button>
+          <button class="balance-advisor-mode-btn${advisorMode === 'legibility' ? ' active' : ''}" data-mode="legibility">● Legibility</button>
+        </div>
+      </div>
+      ${posHtml}
+      <button class="balance-move-here-btn" ${!advisorLayerId ? 'disabled' : ''}>Move here</button>
+    `;
+
+    el.querySelector('#balance-advisor-layer-select')?.addEventListener('change', (e) => {
+      this._onAdvisorLayerChange(e.target.value || null);
+    });
+
+    el.querySelectorAll('.balance-advisor-mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => this._onAdvisorModeChange(btn.dataset.mode));
+    });
+
+    el.querySelector('.balance-move-here-btn')?.addEventListener('click', () => {
+      this._onMoveHere(advisorMode);
+    });
+  }
+
+  /**
+   * Re-render the panel body.
    * @param {Array} zones  [{id, x, y, w, h, analysis}]
    * @param {boolean} heatmapActive
+   * @param {object|null} [heatmap] — full heatmap object from buildHeatmap
+   * @param {object|null} [advisorState] — { layers, layerId, mode, positions, active }
    */
-  update(zones, heatmapActive) {
+  update(zones, heatmapActive, advisorState = null) {
     if (!this._el) return;
+
+    // Only show the "Clear All Zones" actions bar when zones exist
+    const actionsEl = this._el.querySelector('.balance-panel-actions');
+    if (actionsEl) actionsEl.style.display = zones.length > 0 ? '' : 'none';
     const clearBtn = this._el.querySelector('.balance-clear-all');
-    clearBtn.disabled = zones.length === 0;
+    if (clearBtn) clearBtn.disabled = zones.length === 0;
+
+    // Advisor card
+    if (advisorState) {
+      this.updateAdvisorCard(
+        advisorState.layers,
+        advisorState.layerId,
+        advisorState.mode,
+        advisorState.positions,
+        advisorState.active,
+      );
+    }
 
     const body = this._el.querySelector('.balance-panel-body');
-    body.innerHTML = '';
+    // Clear only zone cards, keep the advisor card div
+    [...body.children].forEach(child => {
+      if (!child.classList.contains('balance-advisor-card')) {
+        child.remove();
+      }
+    });
 
-    if (heatmapActive && zones.length === 0) {
+    if (heatmapActive && zones.length === 0 && !advisorState?.active) {
       const info = document.createElement('p');
       info.className = 'balance-panel-hint';
       info.textContent = 'Heatmap active — warm cells have high visual weight.';

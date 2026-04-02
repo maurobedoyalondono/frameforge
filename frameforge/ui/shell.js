@@ -332,6 +332,12 @@ export function buildToolbar(toolbarEl) {
       <label class="balance-dropdown-item"><input type="checkbox" id="balance-heatmap"> Weight Heatmap</label>
       <label class="balance-dropdown-item" id="balance-draw-zones-label"><input type="checkbox" id="balance-draw-zones"> Draw Zones</label>
       <button class="balance-dropdown-item balance-clear-zones-btn" id="balance-clear-zones" disabled>✕ Clear All Zones</button>
+      <div class="balance-dropdown-divider"></div>
+      <div class="balance-dropdown-section-label">Element Advisor</div>
+      <label class="balance-dropdown-item" id="balance-advisor-label"><input type="checkbox" id="balance-advisor"> Element Advisor</label>
+      <select id="balance-advisor-layer" class="balance-dropdown-advisor-select" style="display:none">
+        <option value="">— pick a layer —</option>
+      </select>
     </div>
 
     <div class="toolbar-sep"></div>
