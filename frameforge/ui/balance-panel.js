@@ -13,7 +13,7 @@ export class BalancePanel {
    * @param {function} [callbacks.onClearAll]    — called with no args
    * @param {function} [callbacks.onClose]       — called with no args
    */
-  constructor(canvasArea, { onDeleteZone, onClearAll, onClose, onMoveHere, onAdvisorLayerChange, onAdvisorModeChange, onWeightAxisChange } = {}) {
+  constructor(canvasArea, { onDeleteZone, onClearAll, onClose, onMoveHere, onAdvisorLayerChange, onAdvisorModeChange } = {}) {
     this._canvasArea   = canvasArea;
     this._onDeleteZone = onDeleteZone ?? (() => {});
     this._onClearAll   = onClearAll   ?? (() => {});
@@ -21,8 +21,6 @@ export class BalancePanel {
     this._onMoveHere           = onMoveHere           ?? (() => {});
     this._onAdvisorLayerChange = onAdvisorLayerChange ?? (() => {});
     this._onAdvisorModeChange  = onAdvisorModeChange  ?? (() => {});
-    this._onWeightAxisChange   = onWeightAxisChange   ?? (() => {});
-    this._weightAxis           = 'lr'; // 'lr' or 'tb'
     this._el           = null;
     this._build();
   }
@@ -41,7 +39,6 @@ export class BalancePanel {
         <button class="btn btn-ghost balance-clear-all" disabled>Clear All Zones</button>
       </div>
       <div class="balance-panel-body">
-        <div class="balance-weight-readout" style="display:none"></div>
         <div class="balance-advisor-card" style="display:none"></div>
       </div>
     `;
@@ -55,118 +52,6 @@ export class BalancePanel {
   setVisible(visible) {
     if (!this._el) return;
     this._el.style.display = visible ? '' : 'none';
-  }
-
-  /**
-   * Update the visual weight balance readout.
-   * @param {{scores:Float32Array,lumaScores:Float32Array,contrastScores:Float32Array,satScores:Float32Array}|null} heatmap
-   */
-  updateWeightReadout(heatmap) {
-    const el = this._el?.querySelector('.balance-weight-readout');
-    if (!el) return;
-
-    if (!heatmap?.scores) {
-      el.style.display = 'none';
-      return;
-    }
-    el.style.display = '';
-
-    const axis     = this._weightAxis;
-    const gridSize = 16;
-    const scores   = heatmap.scores;
-    const lumaS    = heatmap.lumaScores;
-    const contS    = heatmap.contrastScores;
-    const satS     = heatmap.satScores;
-
-    let sumA = 0, sumB = 0;
-    let lumaA = 0, lumaB = 0, contA = 0, contB = 0, satA = 0, satB = 0;
-    let countA = 0, countB = 0;
-
-    for (let row = 0; row < gridSize; row++) {
-      for (let col = 0; col < gridSize; col++) {
-        const idx  = row * gridSize + col;
-        const inA  = axis === 'lr' ? col < gridSize / 2 : row < gridSize / 2;
-        if (inA) {
-          sumA += scores[idx]; lumaA += lumaS[idx]; contA += contS[idx]; satA += satS[idx]; countA++;
-        } else {
-          sumB += scores[idx]; lumaB += lumaS[idx]; contB += contS[idx]; satB += satS[idx]; countB++;
-        }
-      }
-    }
-
-    const total = (sumA + sumB) || 1;
-    const pctA  = Math.round((sumA / total) * 100);
-    const pctB  = 100 - pctA;
-    const heavyIsA = sumA >= sumB;
-
-    const [labelA, labelB] = axis === 'lr' ? ['LEFT', 'RIGHT'] : ['TOP', 'BOTTOM'];
-    const heavyLabel = heavyIsA ? labelA : labelB;
-
-    const avgLA = countA ? lumaA / countA : 0;
-    const avgLB = countB ? lumaB / countB : 0;
-    const avgCA = countA ? contA / countA : 0;
-    const avgCB = countB ? contB / countB : 0;
-    const avgSA = countA ? satA  / countA : 0;
-    const avgSB = countB ? satB  / countB : 0;
-
-    const [heavyL, lightL] = heavyIsA ? [avgLA, avgLB] : [avgLB, avgLA];
-    const [heavyC, lightC] = heavyIsA ? [avgCA, avgCB] : [avgCB, avgCA];
-    const [heavyS, lightS] = heavyIsA ? [avgSA, avgSB] : [avgSB, avgSA];
-
-    const lumaDelta = lightL > 0 ? Math.round((heavyL - lightL) / lightL * 100) : 0;
-    const contDelta = lightC > 0 ? Math.round((heavyC - lightC) / lightC * 100) : 0;
-    const satDelta  = lightS > 0 ? Math.round((heavyS - lightS) / lightS * 100) : 0;
-
-    const fmtDelta = (d) => d === 0 ? null : `${d > 0 ? '+' : ''}${d}%`;
-
-    const whyRows = [
-      ['Brightness', fmtDelta(lumaDelta)],
-      ['Contrast',   fmtDelta(contDelta)],
-      ['Saturation', fmtDelta(satDelta)],
-    ].filter(([, v]) => v !== null);
-
-    const whyHtml = whyRows.length > 0
-      ? `<div class="balance-why-title">Why:</div>` +
-        whyRows.map(([name, val]) =>
-          `<div class="balance-why-row"><span>${escHtml(name)}</span><span class="${val.startsWith('+') ? 'balance-why-pos' : 'balance-why-neg'}">${escHtml(val)}</span></div>`
-        ).join('')
-      : `<div class="balance-why-title">Evenly balanced.</div>`;
-
-    el.innerHTML = `
-      <div class="balance-weight-header">
-        <span class="balance-weight-title">Visual Weight</span>
-        <div class="balance-axis-toggle">
-          <button class="balance-axis-btn${axis === 'lr' ? ' active' : ''}" data-axis="lr" title="Left / Right">L/R ↔</button>
-          <button class="balance-axis-btn${axis === 'tb' ? ' active' : ''}" data-axis="tb" title="Top / Bottom">T/B ↕</button>
-        </div>
-      </div>
-      <div class="balance-weight-bars">
-        <div class="balance-weight-bar-row">
-          <span class="balance-weight-label">${escHtml(labelA)}</span>
-          <div class="balance-weight-track">
-            <div class="balance-weight-fill${heavyIsA ? ' heavy' : ''}" style="width:${pctA}%"></div>
-          </div>
-          <span class="balance-weight-pct">${pctA}%</span>
-        </div>
-        <div class="balance-weight-bar-row">
-          <span class="balance-weight-label">${escHtml(labelB)}</span>
-          <div class="balance-weight-track">
-            <div class="balance-weight-fill${!heavyIsA ? ' heavy' : ''}" style="width:${pctB}%"></div>
-          </div>
-          <span class="balance-weight-pct">${pctB}%</span>
-        </div>
-      </div>
-      <div class="balance-heavy-label">▲ Heavy side: ${escHtml(heavyLabel)}</div>
-      <div class="balance-why">${whyHtml}</div>
-    `;
-
-    el.querySelectorAll('.balance-axis-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this._weightAxis = btn.dataset.axis;
-        this._onWeightAxisChange(this._weightAxis);
-        this.updateWeightReadout(heatmap);
-      });
-    });
   }
 
   /**
@@ -247,7 +132,7 @@ export class BalancePanel {
    * @param {object|null} [heatmap] — full heatmap object from buildHeatmap
    * @param {object|null} [advisorState] — { layers, layerId, mode, positions, active }
    */
-  update(zones, heatmapActive, heatmap = null, advisorState = null) {
+  update(zones, heatmapActive, advisorState = null) {
     if (!this._el) return;
 
     // Only show the "Clear All Zones" actions bar when zones exist
@@ -255,9 +140,6 @@ export class BalancePanel {
     if (actionsEl) actionsEl.style.display = zones.length > 0 ? '' : 'none';
     const clearBtn = this._el.querySelector('.balance-clear-all');
     if (clearBtn) clearBtn.disabled = zones.length === 0;
-
-    // Weight readout (top of body, always first)
-    this.updateWeightReadout(heatmap);
 
     // Advisor card
     if (advisorState) {
@@ -271,10 +153,9 @@ export class BalancePanel {
     }
 
     const body = this._el.querySelector('.balance-panel-body');
-    // Clear only zone cards, preserve the readout and advisor divs
+    // Clear only zone cards, keep the advisor card div
     [...body.children].forEach(child => {
-      if (!child.classList.contains('balance-weight-readout') &&
-          !child.classList.contains('balance-advisor-card')) {
+      if (!child.classList.contains('balance-advisor-card')) {
         child.remove();
       }
     });

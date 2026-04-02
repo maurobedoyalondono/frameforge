@@ -37,6 +37,7 @@ import { showClearProjectsModal } from './ui/clear-projects-modal.js';
 import { showProjectSelectModal } from './ui/project-select-modal.js';
 import { showJsonLoadReviewModal } from './ui/json-load-review-modal.js';
 import { BalancePanel } from './ui/balance-panel.js';
+import { WeightReadoutPanel } from './ui/weight-readout-panel.js';
 
 // ── App State ─────────────────────────────────────────────────────────────
 
@@ -247,6 +248,7 @@ async function init() {
 
   // ── Balance Panel ──────────────────────────────────────────────────────
   let balancePanel = null;
+  let weightPanel  = null;
   let zoneDrawState = { active: false, startX: 0, startY: 0, currentRect: null };
   let nextZoneNum = 1;
   let _advisorActive = false;
@@ -282,9 +284,6 @@ async function init() {
           syncBalancePanel();
           renderCurrentFrame();
         },
-        onWeightAxisChange: () => {
-          syncBalancePanel();
-        },
       });
     }
     return balancePanel;
@@ -302,7 +301,6 @@ async function init() {
     panel.update(
       renderer.analysisZones,
       renderer.showHeatmap,
-      renderer._heatmap,
       _advisorActive ? {
         layers:       _getAdvisorEligibleLayers(),
         layerId:      renderer.advisorLayer,
@@ -339,6 +337,7 @@ async function init() {
     renderer._heatmap = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
     renderCurrentFrame();
     syncBalancePanel();
+    weightPanel?.update(renderer._heatmap);
   }
 
   function _getAdvisorEligibleLayers() {
@@ -540,6 +539,11 @@ async function init() {
   // ── Heatmap checkbox ─────────────────────────────────────────────────────
   tb.balanceDropdown?.querySelector('#balance-heatmap')?.addEventListener('change', (e) => {
     renderer.showHeatmap = e.target.checked;
+    if (!weightPanel) {
+      weightPanel = new WeightReadoutPanel(canvasAreaEl, {
+        onClose: () => weightPanel.setVisible(false),
+      });
+    }
     if (renderer.showHeatmap) {
       requestAnimationFrame(() => {
         if (!project.isLoaded) return;
@@ -548,9 +552,13 @@ async function init() {
         renderer._heatmap = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
         renderCurrentFrame();
         syncBalancePanel();
+        weightPanel.update(renderer._heatmap);
+        weightPanel.setVisible(true);
       });
     } else {
       renderer._heatmap = null;
+      weightPanel.update(null);
+      weightPanel.setVisible(false);
       syncBalancePanel();
       renderCurrentFrame();
     }
@@ -1511,6 +1519,7 @@ async function init() {
       nextZoneNum = 1;
     }
     renderer._heatmap        = null;
+    weightPanel?.update(null); // clear weight readout while new frame loads
     renderer.advisorLayer    = null;
     renderer.advisorPositions = null;
     renderer.advisorLayerSize = null;
@@ -1545,6 +1554,7 @@ async function init() {
         renderer._heatmap = buildHeatmap(imgData, mainCanvas.width, mainCanvas.height);
         renderCurrentFrame();
         syncBalancePanel();
+        weightPanel?.update(renderer._heatmap);
       });
     }
   }
